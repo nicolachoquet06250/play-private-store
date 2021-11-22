@@ -1,7 +1,7 @@
 <template>
   <ion-app>
     <ion-content>
-      <ion-header>
+      <ion-header ref="header">
         <ion-toolbar>
           <ion-grid>
             <ion-row>
@@ -26,10 +26,23 @@
 
 <script setup>
 import Sidebar from './components/Sidebar.vue';
+import { ref, computed, onMounted } from 'vue';
+
+const header = ref(null);
+const offsetHeight = computed(() => (header.value?.offsetHeight ?? 0) + 'px');
+const marginTop = ref(offsetHeight.value);
+
+const resizeMarginTop = () => (marginTop.value = header.value.offsetHeight + 'px');
+
+onMounted(() => {
+  setTimeout(resizeMarginTop, 1500);
+});
+
+window.addEventListener('resize', resizeMarginTop);
 </script>
 
 <style>
 #main {
-  padding-top: 70px;
+  padding-top: v-bind(marginTop);
 }
 </style>
