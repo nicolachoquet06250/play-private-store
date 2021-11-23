@@ -12,7 +12,6 @@ const guest = reactive({
 export const useGuest = () => {
     const $router = useRouter();
     const $route = useRoute();
-
     return {
         isSignedIn: computed(() => isSignedIn.value),
     
@@ -22,7 +21,13 @@ export const useGuest = () => {
             }
             return null;
         }),
-    
+
+        users: computed(() => [{ ...guest }]),
+        user(id) {
+            return [{ ...guest }].reduce((r, c) => 
+                c.id === id ? c : r, null);
+        },
+
         signIn(email, password, redirect) {
             console.log(email, password);
 

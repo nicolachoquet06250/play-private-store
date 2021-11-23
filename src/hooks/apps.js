@@ -62,6 +62,9 @@ export const useApps = () => ({
     }
 });
 
-export const useApp = () => ({
-    
+export const useApp = id => ({
+    app: computed(() => 
+        appList.value.reduce((r, c) => 
+            c.id === id ? c : r, null)
+    )
 });
