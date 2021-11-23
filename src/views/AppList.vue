@@ -4,7 +4,7 @@
             <ion-grid>
                 <ion-col style="width: 110px;" v-for="app of list" :key="app.id">
                     <router-link :to="{ name: 'ShowApp', params: { appId: app.id } }">
-                        <div style="border: 1px solid black; width: 100px; height: 100px; border-radius: 10px;">
+                        <div class="app-icon" :style="{ '--icon': `url(${app.logo})` }">
                             <!-- affichgage du logo de l'application -->
                         </div>
 
@@ -26,10 +26,19 @@
 </template>
 
 <script setup>
+import { defineProps, computed } from 'vue';
 import { useApps, useGuest } from '@/hooks';
 
-const { list } = useApps();
+const props = defineProps({
+    mine: {
+        default: false
+    }
+});
+
+const { list: globalList, myList } = useApps();
 const { guest } = useGuest();
+
+const list = computed(() => props.mine ? myList.value : globalList.value);
 </script>
 
 <style lang="scss">
@@ -43,6 +52,19 @@ const { guest } = useGuest();
 
             &:hover div {
                 opacity: .8;
+            }
+
+            .app-icon {
+                border: 1px solid black; 
+                width: 100px; 
+                height: 100px; 
+                border-radius: 10px;
+                background-image: var(--icon, none);
+                background-color: white;
+                background-position: center;
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-attachment: inherit;
             }
         }
     }

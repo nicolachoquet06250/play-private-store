@@ -5,7 +5,7 @@ const appList = ref([
     {
         id: 0,
         name: 'Budget Management',
-        logo: '',
+        logo: 'https://thumbs.dreamstime.com/z/vecteur-d-ic%C3%B4ne-de-calcul-argent-budget-encaissant-le-logo-illustration-symbole-financier-paiement-152384739.jpg',
         version: '1.0.0',
         apkUrl: 'https://github.com/nicolachoquet06250/budget-management-apk/releases/download/0.1.0/budget-management-0-1-0.apk',
         description: `apks signés générés pour l'application budget-management`,
@@ -28,7 +28,7 @@ export const useApps = () => ({
     list: computed(() => appList.value),
     myList: computed(() => 
         appList.value.reduce((r, c) => 
-            c.author === guest.value.id ? [...r, c] : r, [])),
+            c.author === guest.value?.id ? [...r, c] : r, [])),
 
     /**
      * @param {String} version version de l'application

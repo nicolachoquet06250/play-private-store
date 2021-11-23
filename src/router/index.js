@@ -3,7 +3,6 @@ import About from '../views/About.vue';
 import Account from '../views/Account.vue';
 import CreateApp from '../views/CreateApp.vue';
 import Home from '../views/Home.vue';
-import MyApps from '../views/MyApps.vue';
 import NotFound from '../views/NotFound.vue';
 import ShowApp from '../views/ShowApp.vue';
 import AppList from '../views/AppList.vue';
@@ -35,7 +34,10 @@ const routes = [
   {
     path: '/my-apps',
     name: 'MyApps',
-    component: MyApps
+    component: AppList,
+    props: {
+      mine: true
+    }
   },
   {
     path: '/apps',
