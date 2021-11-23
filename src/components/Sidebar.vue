@@ -1,5 +1,5 @@
 <template>
-    <ion-menu side="start" type="overlay" menu-id="menu" content-id="main" ref="sidebar">
+    <ion-menu side="start" type="overlay" menu-id="menu" content-id="main">
         <ion-header>
             <ion-toolbar>
                 <ion-title v-if="guest !== null"> {{ fullname }} </ion-title>

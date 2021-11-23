@@ -8,12 +8,12 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@ionic/storage": "3.0.6",
+    "@ionic/vue": "^5.8.5",
+    "@vueuse/core": "^6.7.6",
     "core-js": "^3.6.5",
     "vue": "^3.0.0",
-    "vue-router": "^4.0.0-0",
-    "@vueuse/core": "^6.7.6",
-    "@ionic/vue": "^5.8.5",
-    "@ionic/storage": "3.0.6"
+    "vue-router": "^4.0.0-0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

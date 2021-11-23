@@ -26,23 +26,41 @@
 
 <script setup>
 import Sidebar from './components/Sidebar.vue';
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed } from 'vue';
+import { useResponsive } from '@/hooks';
 
-const header = ref(null);
+const { resize, xs, sm } = useResponsive();
+
+const header = ref();
 const offsetHeight = computed(() => (header.value?.offsetHeight ?? 0) + 'px');
 const marginTop = ref(offsetHeight.value);
+const searchBarWidth = ref('calc(100% - 60px)');
 
-const resizeMarginTop = () => (marginTop.value = header.value.offsetHeight + 'px');
+resize(() => {
+  marginTop.value = header.value?.offsetHeight + 'px';
 
-onMounted(() => {
-  setTimeout(resizeMarginTop, 1500);
+  setTimeout(() => {
+    marginTop.value = header.value?.offsetHeight + 'px';
+  }, 200);
 });
 
-window.addEventListener('resize', resizeMarginTop);
+xs(() => {
+  searchBarWidth.value = 'calc(100% - 60px)';
+});
+
+sm(() => {
+  searchBarWidth.value = 'auto';
+});
 </script>
 
 <style>
 #main {
   padding-top: v-bind(marginTop);
+}
+</style>
+
+<style scoped>
+ion-header ion-toolbar ion-grid ion-row div:nth-child(2) {
+  width: v-bind(searchBarWidth)
 }
 </style>
