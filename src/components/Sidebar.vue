@@ -2,7 +2,7 @@
     <ion-menu side="start" type="overlay" menu-id="menu" content-id="main">
         <ion-header>
             <ion-toolbar>
-                <ion-title v-if="guest !== null"> {{ fullname }} </ion-title>
+                <ion-title v-if="isSignedIn"> {{ fullname }} </ion-title>
                 
                 <ion-title v-else>
                     <ion-button @click="$router.push({ name: 'Signin' })" tag="ion-button">
