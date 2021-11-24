@@ -21,9 +21,9 @@ const appList = ref([
         ],
         comments: [
             {
-                author: 0,
+                author: 1,
                 comment: 'Je suis très satisfait de cette application.',
-                note: '2.5',
+                note: 3.5,
                 date: '2021-11-24'
             }
         ],
@@ -38,7 +38,7 @@ const appList = ref([
         version: '0.1.0',
         versionSlug: '0-1-0',
         description: `apks signés générés pour l'application budget-management`,
-        stars: 3.5,
+        stars: 4,
         screenshots: [],
         permissions: [],
         categories: [
@@ -50,7 +50,7 @@ const appList = ref([
             {
                 author: 0,
                 comment: 'Je suis très satisfait de cette application.',
-                note: '2.5',
+                note: 2.5,
                 date: '2021-11-24'
             }
         ],
@@ -65,7 +65,7 @@ const appList = ref([
         version: '0.1.0',
         versionSlug: '0-1-0',
         description: `apks signés générés pour l'application budget-management`,
-        stars: 3.5,
+        stars: 2.5,
         screenshots: [],
         permissions: [],
         categories: [
@@ -75,9 +75,9 @@ const appList = ref([
         ],
         comments: [
             {
-                author: 0,
+                author: 1,
                 comment: 'Je suis très satisfait de cette application.',
-                note: '2.5',
+                note: 2.5,
                 date: '2021-11-24'
             }
         ],
