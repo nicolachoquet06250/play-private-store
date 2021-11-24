@@ -33,11 +33,10 @@ export const useGuest = () => {
 
     return {
         isSignedIn: computed(() => isSignedIn.value),
-        guest: computed(() => isSignedIn.value ? 
-            users.value.reduce((r, c) => c.id === guest.value 
-                ? c 
-                    : r, null) 
-                : null),
+        guest: computed(() => 
+            users.value.reduce((r, c) => 
+                c.id === guest.value 
+                    ? c : r, null)),
         users: computed(() => users.value),
         error: computed(() => error.value),
 

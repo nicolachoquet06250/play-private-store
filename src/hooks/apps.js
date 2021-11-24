@@ -29,48 +29,51 @@ const appList = ref([
     }
 ]);
 
-const { guest } = useGuest();
+export const useApps = () => {
+    const { guest } = useGuest();
 
-export const useApps = () => ({
-    list: computed(() => appList.value),
-    myList: computed(() => 
-        appList.value.reduce((r, c) => 
-            c.author === guest.value ? [...r, c] : r, [])),
-
-    /**
-     * @param {String} version version de l'application
-     * @param {String} name nom de l'application
-     * @param {String} url vers le logo de l'application
-     * @param {String} apkUrl url vers l'apk afin de pouvoir le télécharger
-     * @param {String} description desription de l'application
-     * @param {Array<String>} screenshots screenshots de l'application afin d'avoir un apercu
-     * @param {Array<String>} permissions permissions demandées à l'utilisateur par l'application pour qu'il soit au courrent avant de l'installée
-     * @param {Array<String>} categories catégories de l'application pour faciliter la recherche
-     */
-    createApp(version, name, logo, apkUrl, description, screenshots, permissions, categories) {
-        appList.value = [...appList.value, {
-            id: (appList.value[appList.value.length - 1]?.id ?? 0),
-            name,
-            logo,
-            version,
-            apkUrl,
-            stars: 0,
-            description,
-            screenshots,
-            permissions,
-            categories,
-            comments: [],
-            author: guest.value
-        }]
-    },
-
-    /**
-     * @param {Number} id 
-     */
-    deleteApp(id) {
-        appList.value = appList.value.reduce((r, c) => c.id !== id ? [...r, c] : r);
+    return {
+        list: computed(() => appList.value),
+        myList: computed(() => {
+            return appList.value.reduce((r, c) => 
+                c.author === guest.value?.id ? [...r, c] : r, [])
+        }),
+    
+        /**
+         * @param {String} version version de l'application
+         * @param {String} name nom de l'application
+         * @param {String} url vers le logo de l'application
+         * @param {String} apkUrl url vers l'apk afin de pouvoir le télécharger
+         * @param {String} description desription de l'application
+         * @param {Array<String>} screenshots screenshots de l'application afin d'avoir un apercu
+         * @param {Array<String>} permissions permissions demandées à l'utilisateur par l'application pour qu'il soit au courrent avant de l'installée
+         * @param {Array<String>} categories catégories de l'application pour faciliter la recherche
+         */
+        createApp(version, name, logo, apkUrl, description, screenshots, permissions, categories) {
+            appList.value = [...appList.value, {
+                id: (appList.value[appList.value.length - 1]?.id ?? 0),
+                name,
+                logo,
+                version,
+                apkUrl,
+                stars: 0,
+                description,
+                screenshots,
+                permissions,
+                categories,
+                comments: [],
+                author: guest.value
+            }]
+        },
+    
+        /**
+         * @param {Number} id 
+         */
+        deleteApp(id) {
+            appList.value = appList.value.reduce((r, c) => c.id !== id ? [...r, c] : r);
+        }
     }
-});
+};
 
 export const useApp = id => ({
     app: computed(() => 

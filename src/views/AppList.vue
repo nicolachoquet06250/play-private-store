@@ -58,10 +58,10 @@ const props = defineProps({
 
 const $router = useRouter();
 const { list: globalList, myList } = useApps();
-const { guest } = useGuest();
+const { guest, isSignedIn } = useGuest();
 const { show } = useSearchbar();
 
-if (guest.value === null && props.mine) {
+if (!isSignedIn.value && props.mine) {
     $router.push({ name: 'AppList' });
 }
 
