@@ -28,7 +28,61 @@ const appList = ref([
             }
         ],
         author: 0
-    }
+    },
+    {
+        id: 1,
+        name: 'Budget Management',
+        nameSlug: 'budget-management',
+        repoName: 'budget-management-apk',
+        logo: 'https://thumbs.dreamstime.com/z/vecteur-d-ic%C3%B4ne-de-calcul-argent-budget-encaissant-le-logo-illustration-symbole-financier-paiement-152384739.jpg',
+        version: '0.1.0',
+        versionSlug: '0-1-0',
+        description: `apks signés générés pour l'application budget-management`,
+        stars: 3.5,
+        screenshots: [],
+        permissions: [],
+        categories: [
+            'budget',
+            'budgetaire',
+            'monnaitaire'
+        ],
+        comments: [
+            {
+                author: 0,
+                comment: 'Je suis très satisfait de cette application.',
+                note: '2.5',
+                date: '2021-11-24'
+            }
+        ],
+        author: 0
+    },
+    {
+        id: 2,
+        name: 'Budget Management',
+        nameSlug: 'budget-management',
+        repoName: 'budget-management-apk',
+        logo: 'https://thumbs.dreamstime.com/z/vecteur-d-ic%C3%B4ne-de-calcul-argent-budget-encaissant-le-logo-illustration-symbole-financier-paiement-152384739.jpg',
+        version: '0.1.0',
+        versionSlug: '0-1-0',
+        description: `apks signés générés pour l'application budget-management`,
+        stars: 3.5,
+        screenshots: [],
+        permissions: [],
+        categories: [
+            'budget',
+            'budgetaire',
+            'monnaitaire'
+        ],
+        comments: [
+            {
+                author: 0,
+                comment: 'Je suis très satisfait de cette application.',
+                note: '2.5',
+                date: '2021-11-24'
+            }
+        ],
+        author: 0
+    },
 ]);
 
 const slugify = value => value.replace(/\./g, '-').replace(/ /g, '-');
