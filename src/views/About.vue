@@ -11,3 +11,9 @@ const { hide } = useSearchbar();
 
 hide();
 </script>
+
+<style scoped>
+#main {
+  padding-top: 0!important;
+}
+</style>

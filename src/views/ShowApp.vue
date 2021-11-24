@@ -121,9 +121,10 @@ const description = computed(() => (app.value.description ?? '').split(' ').leng
         { cmp: 0, result: [] }
     ).result.join(' ') + ' ...' 
         : (app.value.description ?? ''));
+const apkUrl = computed(() => user(app.value.author).github + '/' + app.value.repoName + '/releases/download/' + app.value.version + '/' + app.value.nameSlug + '-' + app.value.versionSlug + '.apk')
 
 const openApk = () => {
-    window.open(app.value.apkUrl, '_blank');
+    window.open(apkUrl.value, '_blank');
 };
 </script>
 

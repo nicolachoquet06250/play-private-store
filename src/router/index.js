@@ -8,6 +8,7 @@ import ShowApp from '../views/ShowApp.vue';
 import AppList from '../views/AppList.vue';
 import Signin from '../views/Signin.vue';
 import Signup from '../views/Signup.vue';
+import { useGuest } from '@/hooks';
 
 const routes = [
   {
@@ -19,17 +20,44 @@ const routes = [
   {
     path: '/signin',
     name: 'Signin',
-    component: Signin
+    component: Signin,
+    beforeEnter(to, from, next) {
+      const { isSignedIn } = useGuest();
+
+      if (isSignedIn.value) {
+        next({ name: 'AppList' });
+      } else {
+        next();
+      }
+    }
   },
   {
     path: '/signup',
     name: 'Signup',
-    component: Signup
+    component: Signup,
+    beforeEnter(to, from, next) {
+      const { isSignedIn } = useGuest();
+
+      if (isSignedIn.value) {
+        next({ name: 'AppList' });
+      } else {
+        next();
+      }
+    }
   },
   {
     path: '/account',
     name: 'Account',
-    component: Account
+    component: Account,
+    beforeEnter(to, from, next) {
+      const { isSignedIn } = useGuest();
+
+      if (!isSignedIn.value) {
+        next({ name: 'Signin' });
+      } else {
+        next();
+      }
+    }
   },
   {
     path: '/my-apps',
@@ -37,6 +65,15 @@ const routes = [
     component: AppList,
     props: {
       mine: true
+    },
+    beforeEnter(to, from, next) {
+      const { isSignedIn } = useGuest();
+
+      if (!isSignedIn.value) {
+        next({ name: 'AppList' });
+      } else {
+        next();
+      }
     }
   },
   {
@@ -52,7 +89,16 @@ const routes = [
   {
     path: '/create-app',
     name: 'CreateApp',
-    component: CreateApp
+    component: CreateApp,
+    beforeEnter(to, from, next) {
+      const { isSignedIn } = useGuest();
+
+      if (!isSignedIn.value) {
+        next({ name: 'Signin' });
+      } else {
+        next();
+      }
+    }
   },
   {
     path: '/about',
