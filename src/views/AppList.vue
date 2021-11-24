@@ -4,16 +4,16 @@
             <ion-grid>
                 <ion-col style="width: 110px;" v-for="app of list" :key="app.id">
                     <router-link :to="{ name: 'ShowApp', params: { appId: app.id } }">
-                        <div class="app-icon" :style="{ '--icon': `url(${app.logo})` }">
-                            <!-- affichgage du logo de l'application -->
-                        </div>
+                        <div class="app-icon" 
+                             :style="{ '--icon': `url(${app.logo})` }"></div>
 
                         <div style="text-align: left; padding-top: 5px;"> 
                             {{ app.name }}
                         </div>
 
                         <div style="text-align: left; padding-left: 5px;">
-                            {{ app.stars }} <ion-icon name="star"></ion-icon>
+                            <Stars :note="app.stars" size="small" />
+                            
                             <template v-if="guest !== null && guest.id === app.author">
                                 <ion-icon name="person"></ion-icon>
                             </template>
@@ -26,6 +26,7 @@
 </template>
 
 <script setup>
+import Stars from '@/components/Stars.vue';
 import { defineProps, computed } from 'vue';
 import { useApps, useGuest } from '@/hooks';
 

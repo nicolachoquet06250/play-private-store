@@ -9,7 +9,7 @@ const appList = ref([
         version: '1.0.0',
         apkUrl: 'https://github.com/nicolachoquet06250/budget-management-apk/releases/download/0.1.0/budget-management-0-1-0.apk',
         description: `apks signés générés pour l'application budget-management`,
-        stars: 5,
+        stars: 3.5,
         screenshots: [],
         permissions: [],
         categories: [
@@ -17,7 +17,14 @@ const appList = ref([
             'budgetaire',
             'monnaitaire'
         ],
-        comments: [],
+        comments: [
+            {
+                author: 0,
+                comment: 'Je suis très satisfait de cette application.',
+                note: '2.5',
+                date: '2021-11-24'
+            }
+        ],
         author: 0
     }
 ]);
