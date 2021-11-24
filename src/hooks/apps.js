@@ -35,7 +35,7 @@ export const useApps = () => ({
     list: computed(() => appList.value),
     myList: computed(() => 
         appList.value.reduce((r, c) => 
-            c.author === guest.value?.id ? [...r, c] : r, [])),
+            c.author === guest.value ? [...r, c] : r, [])),
 
     /**
      * @param {String} version version de l'application
@@ -54,10 +54,13 @@ export const useApps = () => ({
             logo,
             version,
             apkUrl,
+            stars: 0,
             description,
             screenshots,
             permissions,
-            categories
+            categories,
+            comments: [],
+            author: guest.value
         }]
     },
 

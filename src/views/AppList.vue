@@ -2,24 +2,43 @@
     <ion-app>
         <ion-content id="app-list">
             <ion-grid>
-                <ion-col style="width: 110px;" v-for="app of list" :key="app.id">
-                    <router-link :to="{ name: 'ShowApp', params: { appId: app.id } }">
-                        <div class="app-icon" 
-                             :style="{ '--icon': `url(${app.logo})` }"></div>
+                <template v-if="list.length > 0">
+                    <ion-col style="width: 125px;" 
+                         v-for="app of list" :key="app.id">
+                        <router-link :to="{ name: 'ShowApp', params: { appId: app.id } }">
+                            <div class="app-icon" 
+                                :style="{ '--icon': `url(${app.logo})` }"></div>
 
-                        <div style="text-align: left; padding-top: 5px;"> 
-                            {{ app.name }}
-                        </div>
+                            <div style="text-align: left; padding-top: 5px;"> 
+                                {{ app.name }}
+                            </div>
 
-                        <div style="text-align: left; padding-left: 5px;">
-                            <Stars :note="app.stars" size="small" />
-                            
-                            <template v-if="guest !== null && guest.id === app.author">
-                                <ion-icon name="person"></ion-icon>
-                            </template>
-                        </div>
-                    </router-link>
-                </ion-col>
+                            <div style="text-align: left; padding-left: 0; display: flex;">
+                                <div style="display: flex; justify-content: center; align-items: center;">
+                                    <Stars :note="app.stars" size="small" />
+                                </div>
+
+                                <template v-if="guest !== null && guest.id === app.author">
+                                    <div style="display: flex; justify-content: center; align-items: center;">
+                                        <ion-icon name="person"></ion-icon>
+                                    </div>
+                                </template>
+                            </div>
+                        </router-link>
+                    </ion-col>
+                </template>
+                
+                <template v-else>
+                    <ion-col>
+                        <ion-fab-button @click="$router.push({ name: 'CreateApp' })">
+                            <ion-icon name="add"></ion-icon>
+                        </ion-fab-button>
+
+                        <ion-text style="font-size: 20px; top: 70px; position: absolute;">
+                            Vous n'avez enregistré encore aucune application.
+                        </ion-text>
+                    </ion-col>
+                </template>
             </ion-grid>
         </ion-content>
     </ion-app>
@@ -28,7 +47,8 @@
 <script setup>
 import Stars from '@/components/Stars.vue';
 import { defineProps, computed } from 'vue';
-import { useApps, useGuest } from '@/hooks';
+import { useRouter } from 'vue-router';
+import { useApps, useGuest, useSearchbar } from '@/hooks';
 
 const props = defineProps({
     mine: {
@@ -36,8 +56,16 @@ const props = defineProps({
     }
 });
 
+const $router = useRouter();
 const { list: globalList, myList } = useApps();
 const { guest } = useGuest();
+const { show } = useSearchbar();
+
+if (guest.value === null && props.mine) {
+    $router.push({ name: 'AppList' });
+}
+
+show();
 
 const list = computed(() => props.mine ? myList.value : globalList.value);
 </script>

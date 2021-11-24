@@ -9,7 +9,7 @@
                 <ion-menu-button menu="menu"></ion-menu-button>
               </div>
 
-              <div>
+              <div v-if="showed">
                 <ion-searchbar show-cancel-button="focus"></ion-searchbar>
               </div>
             </ion-row>
@@ -27,20 +27,21 @@
 <script setup>
 import Sidebar from './components/Sidebar.vue';
 import { ref, computed } from 'vue';
-import { useResponsive } from '@/hooks';
+import { useResponsive, useSearchbar } from '@/hooks';
 
 const { resize, xs, sm } = useResponsive();
+const { showed } = useSearchbar();
 
 const header = ref();
 const offsetHeight = computed(() => (header.value?.offsetHeight ?? 0) + 'px');
-const marginTop = ref(offsetHeight.value);
+const marginTop = ref('50px');
 const searchBarWidth = ref('calc(100% - 60px)');
 
 resize(() => {
-  marginTop.value = header.value?.offsetHeight + 'px';
+  marginTop.value = offsetHeight.value;
 
   setTimeout(() => {
-    marginTop.value = header.value?.offsetHeight + 'px';
+    marginTop.value = offsetHeight.value;
   }, 200);
 });
 
@@ -55,7 +56,7 @@ sm(() => {
 
 <style>
 #main {
-  padding-top: v-bind(marginTop);
+  padding-top: 70px;
 }
 </style>
 

@@ -79,8 +79,12 @@
 <script setup>
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
+import { useSearchbar } from '@/hooks';
 
 const $router = useRouter();
+const { hide } = useSearchbar();
+
+hide();
 
 const createdUser = reactive({
     firstname: '',
@@ -93,9 +97,7 @@ const createdUser = reactive({
 const signUp = () => {
     console.log(createdUser);
 
-    $router.push({
-        name: 'Signin'
-    })
+    $router.push({ name: 'Signin' });
 };
 </script>
 

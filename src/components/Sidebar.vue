@@ -5,9 +5,9 @@
                 <ion-title v-if="guest !== null"> {{ fullname }} </ion-title>
                 
                 <ion-title v-else>
-                    <router-link :to="{ name: 'Signin' }">
+                    <ion-button @click="$router.push({ name: 'Signin' })" tag="ion-button">
                         Se connecter 
-                    </router-link>
+                    </ion-button>
                 </ion-title>
             </ion-toolbar>
         </ion-header>
@@ -31,7 +31,6 @@
 </template>
 
 <script setup>
-// import DarkModeButton from "@/components/DarkModeButton.vue";
 import { computed } from 'vue';
 import { useGuest } from '@/hooks';
 
@@ -97,42 +96,4 @@ const routes = computed(() => [
 ]);
 
 const fullname = computed(() => guest.value.firstname + ' ' + guest.value.lastname);
-// import { useRoute } from "vue-router";
-// import { useTheme, useDark } from "@/hooks";
-
-// const { bgPrimary, colorPrimary, bgSecondary, colorSecondary } = useTheme();
-// const $route = useRoute();
-// const { isDark } = useDark();
-
-/*const selectedRoute = computed(() => $route.name);
-
-const sidebarToolbarTheme = () => ({
-  "--ion-color-md-danger": bgPrimary[isDark.value],
-  "--color": colorPrimary[isDark.value],
-});
-
-const sidebarContentTheme = () => ({
-  "--ion-background-md-color": bgSecondary[isDark.value],
-  "--ion-background-color": bgSecondary[isDark.value],
-  "--ion-text-md-color": colorSecondary[isDark.value],
-  "--ion-text-color": colorSecondary[isDark.value],
-});
-
-const darkModeButtonTheme = () => ({
-  "--margin-right": "5px",
-  "--margin-left": "10px",
-  "--color": colorSecondary[isDark.value],
-  '--ion-color-md-primary': isDark.value ? '#222428' : '#0000FF',
-  '--ion-color-primary': isDark.value ? '#222428' : '#0000FF',
-  '--ion-color-md-primary-contrast': 'white',
-  '--ion-color-primary-contrast': 'white'
-});
-
-const linkTheme = (name) => ({
-  color:
-    selectedRoute.value === name
-      ? (isDark.value ? 'white' : 'gray')
-      : colorSecondary[isDark.value],
-});*/
-
 </script>

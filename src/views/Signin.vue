@@ -34,8 +34,16 @@
                                     <ion-button size="default"> Annuler </ion-button>
                                 </ion-col>
 
-                                <ion-col>
+                                <ion-col style="display: flex; justify-content: flex-end;">
                                     <ion-button size="default" @click="signIn(email, password, 'Home')"> Se connecter </ion-button>
+                                </ion-col>
+                            </ion-row>
+
+                            <ion-row v-if="error">
+                                <ion-col>
+                                    <div class="alert">
+                                        {{ error }}
+                                    </div>
                                 </ion-col>
                             </ion-row>
                         </ion-grid>
@@ -53,8 +61,12 @@
 <script setup>
 import { ref } from 'vue';
 import { useGuest } from '@/hooks';
+import { useSearchbar } from '@/hooks';
 
-const { signIn } = useGuest();
+const { signIn, error } = useGuest();
+const { hide } = useSearchbar();
+
+hide();
 
 const email = ref('');
 const password = ref('');
@@ -68,6 +80,14 @@ const password = ref('');
                 justify-content: center; 
                 align-items: center;
             }
+        }
+
+        .alert {
+            padding: 10px;
+            background-color: #AA0000;
+            color: white;
+            width: 100%;
+            border-radius: 5px;
         }
     }
 </style>

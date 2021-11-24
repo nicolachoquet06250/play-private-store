@@ -1,9 +1,9 @@
 <template>
-    <ion-app>
+    <ion-app v-if="app !== null">
         <ion-content id="show-app">
             <ion-grid>
                 <ion-row>
-                    <div>       
+                    <div>
                         <div class="app-icon"></div>
                     </div>
 
@@ -90,30 +90,37 @@
             </ion-grid>
         </ion-content>
     </ion-app>
+
+    <ion-app v-else>
+        <NotFound message="Application not found" />
+    </ion-app>
 </template>
 
 <script setup>
 import Stars from '@/components/Stars.vue';
+import NotFound from '@/views/NotFound.vue';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useApp, useGuest } from '@/hooks';
+import { useSearchbar } from '@/hooks';
 
 const $route = useRoute();
 const appId = computed(() => parseInt($route.params.appId));
 const { app } = useApp(appId.value);
 const { user } = useGuest();
+const { hide } = useSearchbar();
+
+hide();
 
 const guest = user(app.value.author);
 const icon = computed(() => `url(${app.value.logo})`);
 const fullname = computed(() => guest.firstname + ' ' + guest.lastname);
-const description = computed(() => {
-    return (app.value.description ?? '').split(' ').length > 15 
-        ? (app.value.description ?? '').split(' ').reduce((r, c) => 
-            ({ cmp: r.cmp + 1, result: (r.cmp > 15 ? r : [...r.result, c]) }), 
-            { cmp: 0, result: [] }
-        ).result.join(' ') + ' ...' 
-            : (app.value.description ?? '');
-});
+const description = computed(() => (app.value.description ?? '').split(' ').length > 15 
+    ? (app.value.description ?? '').split(' ').reduce((r, c) => 
+        ({ cmp: r.cmp + 1, result: (r.cmp > 15 ? r : [...r.result, c]) }), 
+        { cmp: 0, result: [] }
+    ).result.join(' ') + ' ...' 
+        : (app.value.description ?? ''));
 
 const openApk = () => {
     window.open(app.value.apkUrl, '_blank');
