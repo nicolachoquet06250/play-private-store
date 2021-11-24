@@ -54,7 +54,7 @@ const appList = ref([
                 date: '2021-11-24'
             }
         ],
-        author: 0
+        author: 1
     },
     {
         id: 2,
