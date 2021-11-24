@@ -50,7 +50,7 @@ const appList = ref([
             {
                 author: 0,
                 comment: 'Je suis très satisfait de cette application.',
-                note: 2.5,
+                note: 4,
                 date: '2021-11-24'
             }
         ],
