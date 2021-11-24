@@ -54,8 +54,10 @@ export const useApps = () => {
          * @param {Array<String>} categories catégories de l'application pour faciliter la recherche
          */
         createApp(version, name, repoName, logo, description, screenshots, permissions, categories) {
+            const lastApp = appList.value.reduce((r, c) => c, null);
+            
             appList.value = [...appList.value, {
-                id: (appList.value[appList.value.length - 1]?.id ?? 0),
+                id: (lastApp?.id ?? 0) + 1,
                 name,
                 nameSlug: slugify(name),
                 repoName,
