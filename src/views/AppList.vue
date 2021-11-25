@@ -2,25 +2,11 @@
     <ion-app>
         <ion-content id="app-list">
             <ion-grid>
-                <ion-row v-if="mine && _list.length === 0">
-                    <ion-col>
-                        <CreateAppRedirectButton />
-                    </ion-col>
-                </ion-row>
-
                 <template v-if="_list.length > 0">
                     <ion-row v-for="(lineApp, i) of list" :key="i">
                         <ion-col :style="{'max-width': '50%', 'margin-top': (i > 0 ? '15px' : '0'), display: 'flex', 'justify-content': 'center'}"
                                  v-for="app of lineApp" :key="app.id">
-                            <template v-if="app.type === 'add-app-button'">
-                                <div style="display: flex; height: 100%; width: 100%; justify-content: center; align-items: center;">
-                                    <CreateAppRedirectButton />
-                                </div>
-                            </template>
-
-                            <template v-else>
-                                <AppIconSelector :app="app" />
-                            </template>
+                            <AppIconSelector :app="app" />
                         </ion-col>
                     </ion-row>
                 </template>
@@ -36,6 +22,10 @@
                 </template>
             </ion-grid>
         </ion-content>
+
+        <ion-footer v-if="mine" style="height: 50px;">
+            <CreateAppRedirectButton id="footer-create-app-redirect-button" />
+        </ion-footer>
     </ion-app>
 </template>
 
@@ -61,9 +51,6 @@ const nbElementPerLine = ref(2);
 
 const _list = computed(() => props.mine ? myList.value : globalList.value);
 const list = computed(() => {
-    const tmp = props.mine ? [{ type: 'add-app-button' }] : [];
-    const cmp = props.mine ? 1 : 0;
-    
     const r = _list.value.reduce((r, c) => {
         c.type = 'app-display'
 
@@ -77,7 +64,7 @@ const list = computed(() => {
 
         r.cmp++;
         return r;
-    }, { cmp, result: [], tmp });
+    }, { cmp: 0, result: [], tmp: [] });
 
     if (r.tmp.length > 0) {
         if (r.result[r.result.length - 1].length >= nbElementPerLine.value) {
@@ -125,6 +112,17 @@ md(() => {
                 background-repeat: no-repeat;
                 background-attachment: inherit;
             }
+        }
+    }
+
+    #footer-create-app-redirect-button {
+        position: absolute;
+        bottom: 50%;
+        left: calc(50% - 28px);
+        right: calc(50% - 28px);
+
+        .fab-button {
+            border: 2px solid white;
         }
     }
 </style>
