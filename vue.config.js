@@ -1,4 +1,4 @@
-module.exports = {
+/*module.exports = {
     pwa: {
         workboxPluginMode: 'InjectManifest',
         workboxOptions: {
@@ -7,4 +7,4 @@ module.exports = {
             // ...other Workbox options...
         }
     }
-};
+};*/
