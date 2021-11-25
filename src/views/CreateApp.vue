@@ -86,10 +86,16 @@
 
 <script setup>
 import { reactive } from 'vue';
-import { useSearchbar, useApps } from '@/hooks';
+import { useSearchbar, useApps, useToast } from '@/hooks';
 
 const { hide } = useSearchbar();
 const { createApp } = useApps();
+const { setOpened, setMessage } = useToast();
+
+setTimeout(() => {
+    setMessage(`c'est un test`);
+    setOpened(true);
+}, 5000);
 
 hide();
 

@@ -20,6 +20,12 @@
       <router-view id="main"/>
 
       <Sidebar />
+
+      <ion-toast
+        :is-open="toast.opened"
+        :message="toast.message"
+        :duration="toast.duration"
+      ></ion-toast>
     </ion-content>
   </ion-app>
 </template>
@@ -27,10 +33,11 @@
 <script setup>
 import Sidebar from './components/Sidebar.vue';
 import { ref, computed } from 'vue';
-import { useResponsive, useSearchbar } from '@/hooks';
+import { useResponsive, useSearchbar, useToast } from '@/hooks';
 
 const { resize, xs, sm } = useResponsive();
 const { showed } = useSearchbar();
+const { toast } = useToast();
 
 const header = ref();
 const offsetHeight = computed(() => (header.value?.offsetHeight ?? 0) + 'px');
