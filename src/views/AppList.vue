@@ -21,7 +21,7 @@
                                             <Stars :note="app.stars" size="small" />
                                         </div>
 
-                                        <template v-if="guest !== null && guest.id === app.author">
+                                        <template v-if="isSignedIn && guest.id === app.author">
                                             <div style="display: flex; justify-content: center; align-items: center;">
                                                 <ion-icon name="person"></ion-icon>
                                             </div>
@@ -65,7 +65,7 @@ const props = defineProps({
 
 const $router = useRouter();
 const { list: globalList, myList } = useApps();
-const { guest } = useGuest();
+const { guest, isSignedIn } = useGuest();
 const { show } = useSearchbar();
 const { xs, sm, md } = useResponsive();
 
