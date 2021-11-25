@@ -25,6 +25,10 @@
                         </a>
                     </ion-item>
                 </template>
+
+                <ion-item>
+                    <PwaInstallButton />
+                </ion-item>
             </ion-list>
         </ion-content>
     </ion-menu>

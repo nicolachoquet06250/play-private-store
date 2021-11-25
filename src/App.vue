@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import Sidebar from './components/Sidebar.vue';
+import Sidebar from '@/components/Sidebar.vue';
 import { ref, computed } from 'vue';
 import { useResponsive, useSearchbar, useToast } from '@/hooks';
 
