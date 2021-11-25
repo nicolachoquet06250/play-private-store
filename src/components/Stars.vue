@@ -1,8 +1,10 @@
 <template>
+    {{ note }} {{ typeof note }}
+
     <ion-icon name="star" :size="size" 
               v-for="i of Array.from(Array(parseInt(note)).keys())" :key="i"></ion-icon>
-                            
-    <template v-if="5 - parseFloat(note) <= parseFloat(note)">
+
+    <template v-if="parseInt(note) < parseFloat(note)">
         <ion-icon name="star-half" :size="size"></ion-icon>
         
         <ion-icon name="star-outline" :size="size" 
@@ -20,7 +22,7 @@
 
     defineProps({
         note: {
-            type: String
+            type: Number
         },
         size: {
             //type: String,
