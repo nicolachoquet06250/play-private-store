@@ -30,7 +30,7 @@
                     </ion-item>
                 </template>
 
-                <ion-item>
+                <ion-item class="pwa-scope">
                     <PwaInstallButton />
                 </ion-item>
             </ion-list>
