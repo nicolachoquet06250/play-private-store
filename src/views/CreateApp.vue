@@ -75,7 +75,7 @@
 
                     <ion-row>
                         <ion-col>
-                            <ion-button @click="createApp(form.repoVersion, form.appName, form.repoName, form.appLogo, form.appDescription, [], [], [])"> Valider </ion-button>
+                            <ion-button @click="createApp"> Valider </ion-button>
                         </ion-col>
                     </ion-row>
                 </ion-grid>
@@ -86,16 +86,13 @@
 
 <script setup>
 import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
 import { useSearchbar, useApps, useToast } from '@/hooks';
 
 const { hide } = useSearchbar();
-const { createApp } = useApps();
-const { setOpened, setMessage } = useToast();
-
-setTimeout(() => {
-    setMessage(`c'est un test`);
-    setOpened(true);
-}, 5000);
+const { createApp: saveApp } = useApps();
+const { openToast } = useToast();
+const $router = useRouter();
 
 hide();
 
@@ -106,6 +103,17 @@ const form = reactive({
     repoName: '',
     repoVersion: ''
 });
+
+const createApp = () => {
+    if (Object.keys(form).reduce((r, c) => form[c] === '' ? true : r, false)) {
+        openToast(`Vous devez replire tous les champs`, 4000);
+        return;
+    }
+
+    saveApp(form.repoVersion, form.appName, form.repoName, form.appLogo, form.appDescription, [], [], []);
+
+    $router.push({ name: 'MyApps' })
+};
 
 </script>
 

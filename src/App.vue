@@ -32,6 +32,7 @@
 
 <script setup>
 import Sidebar from '@/components/Sidebar.vue';
+import { IonToast } from '@ionic/vue';
 import { ref, computed } from 'vue';
 import { useResponsive, useSearchbar, useToast } from '@/hooks';
 

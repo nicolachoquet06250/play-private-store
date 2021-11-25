@@ -1,21 +1,36 @@
 import { reactive, computed } from 'vue';
 
+
 const toast = reactive({
     opened: false,
     message: '',
     duration: 2000
 });
 
-export const useToast = () => {
-    const props = Object.keys(toast).reduce((r, c) => ({ ...r, [c]: computed(() => toast[c]) }), {});
+const setMessage = message => {
+    toast.message = message;
+};
+const setDuration = duration => {
+    toast.duration = duration;
+};
+const setOpened = opened => {
+    toast.opened = opened;
+};
 
-    const methods = Object.keys(toast).reduce((r, c) => ({ ...r, [`set${c.substr(0, 1).toUpperCase()}${c.substr(1, c.length - 1)}`]: v => {
-        toast[c] = v;
-    }}), {});
+export const useToast = () => ({
+    toast: computed(() => toast),
 
-    return {
-        toast: computed(() => toast),
-        ...props,
-        ...methods
+    setMessage,
+    setDuration,
+    setOpened,
+
+    openToast(message, duration = 2000) {
+        setMessage(message);
+        setDuration(duration);
+        setOpened(true);
+
+        setTimeout(() => {
+            setOpened(false);
+        }, duration);
     }
-}
+});
