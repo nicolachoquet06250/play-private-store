@@ -1,6 +1,4 @@
 <template>
-    {{ note }} {{ typeof note }}
-
     <ion-icon name="star" :size="size" 
               v-for="i of Array.from(Array(parseInt(note)).keys())" :key="i"></ion-icon>
 
