@@ -1,24 +1,29 @@
 <template>
-    <div v-if="deferredPrompt">
-        <ion-grid>
-            <ion-row>
-                <ion-col>
-                    <ion-button @click="install">Installer</ion-button>
-                </ion-col>
-            </ion-row>
+    <ion-card v-if="deferredPrompt">
+        <ion-card-content>
+            <ion-grid>
+                <ion-row>
+                    <ion-col>
+                        <h5> Installer l'application sur votre bureau </h5>
+                    </ion-col>
+                </ion-row>
 
-            <ion-row>
-                <ion-col>
-                    <ion-button @click="dismiss">Annuler</ion-button>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
-    </div>
+                <ion-row>
+                    <ion-col>
+                        <ion-button size="small" @click="install">Installer</ion-button>
+                    </ion-col>
+                    
+                    <ion-col>
+                        <ion-button size="small" @click="dismiss">Annuler</ion-button>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-card-content>
+    </ion-card>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import PwaInstallButton from '@/components/PwaInstallButton.vue';
 
 const deferredPrompt = ref(null);
 

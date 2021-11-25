@@ -15,14 +15,18 @@
         <ion-content>
             <ion-list>
                 <template v-for="route of routes" :key="route">
-                    <ion-item v-if="route.show">
-                        <router-link :to="route.conf" v-if="route.show && route.conf">
-                            {{ route.title }}
-                        </router-link>
+                    <ion-item class="link-item" v-if="route.show">
+                        <AnimatedLink :routeConf="route.conf" :show="route.show" @click="route.click" >
+                            <ion-icon v-if="route.icon && route.icon.position === 'before'" 
+                                      :name="route.icon.name" 
+                                      style="padding-right: 15px;"></ion-icon>
+                            
+                            <span> {{ route.title }} </span>
 
-                        <a href="#" @click.prevent.stop="route.click" v-if="route.show && !route.conf">
-                            {{ route.title }}
-                        </a>
+                            <ion-icon v-if="route.icon && route.icon.position === 'after'" 
+                                      :name="route.icon.name" 
+                                      style="padding-left: 15px;"></ion-icon>
+                        </AnimatedLink>
                     </ion-item>
                 </template>
 
@@ -35,6 +39,8 @@
 </template>
 
 <script setup>
+import PwaInstallButton from './PwaInstallButton.vue';
+import AnimatedLink from './AnimatedLink.vue';
 import { computed } from 'vue';
 import { useGuest } from '@/hooks';
 
@@ -73,6 +79,10 @@ const routes = computed(() => [
         click() {
             signOut('Home')
         },
+        icon: {
+            name: 'log-out',
+            position: 'after'
+        },
         title: 'Logout',
         show: isSignedIn.value
     },
@@ -101,3 +111,15 @@ const routes = computed(() => [
 
 const fullname = computed(() => guest.value.firstname + ' ' + guest.value.lastname);
 </script>
+
+<style lang="scss">
+.link-item {
+    .link-item.item-md {
+        padding: 0;
+
+        .item-inner {
+            padding: 0;
+        }
+    }
+}
+</style>
