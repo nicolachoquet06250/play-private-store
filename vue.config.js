@@ -5,7 +5,7 @@ module.exports = {
             // swSrc is required in InjectManifest mode.
             swSrc: 'service-worker.js',
             // ...other Workbox options...
-            exclude: [/\.htaccess/]
+            exclude: [/\.htaccess/, /\/.+\.map/]
         }
     }
 };
