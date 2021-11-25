@@ -10,17 +10,6 @@ self.addEventListener('message', (event) => {
   }
 });
 
-self.addEventListener('activate', () => {
-  self.clients.matchAll({ type: 'window' }).then(windowClients => {
-    for (const windowClient of windowClients) {
-      // Force open pages to refresh, so that they have a chance to load the
-      // fresh navigation response from the local dev server.
-      windowClient.navigate(windowClient.url)
-    }
-  })
-});
-
-
 /**
  * The workboxSW.precacheAndRoute() method efficiently caches and responds to
  * requests for URLs in the manifest.
