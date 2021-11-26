@@ -60,8 +60,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useGuest } from '@/hooks';
-import { useSearchbar } from '@/hooks';
+import { useGuest, useSearchbar } from '@/hooks';
 
 const { signIn, error } = useGuest();
 const { hide } = useSearchbar();

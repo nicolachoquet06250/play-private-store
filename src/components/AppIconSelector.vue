@@ -25,8 +25,8 @@
 </template>
 
 <script setup>
+import { Stars } from '@/components';
 import { defineProps } from 'vue';
-import Stars from '@/components/Stars.vue';
 import { useGuest } from '@/hooks';
 
 defineProps({

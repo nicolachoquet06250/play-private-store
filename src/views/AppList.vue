@@ -30,8 +30,7 @@
 </template>
 
 <script setup>
-import AppIconSelector from '@/components/AppIconSelector.vue';
-import CreateAppRedirectButton from '@/components/CreateAppRedirectButton.vue';
+import { AppIconSelector, CreateAppRedirectButton } from '@/components';
 import { defineProps, computed, ref } from 'vue';
 import { useApps, useSearchbar, useResponsive } from '@/hooks';
 

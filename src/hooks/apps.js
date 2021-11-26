@@ -1,5 +1,5 @@
 import { computed, ref } from "vue";
-import { useGuest } from './account';
+import { useGuest } from '@/hooks';
 
 const appList = ref([
     {

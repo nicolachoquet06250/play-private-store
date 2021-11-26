@@ -39,8 +39,7 @@
 </template>
 
 <script setup>
-import PwaInstallButton from './PwaInstallButton.vue';
-import AnimatedLink from './AnimatedLink.vue';
+import { PwaInstallButton, AnimatedLink } from '@/components';
 import { computed } from 'vue';
 import { useGuest } from '@/hooks';
 

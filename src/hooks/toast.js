@@ -1,6 +1,5 @@
 import { reactive, computed } from 'vue';
 
-
 const toast = reactive({
     opened: false,
     message: '',

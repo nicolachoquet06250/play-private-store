@@ -1,0 +1,21 @@
+import _About from "./About.vue";
+import _Account from "./Account.vue";
+import _AppList from "./AppList.vue";
+import _ConnectionLost from "./ConnectionLost.vue";
+import _CreateApp from "./CreateApp.vue";
+import _Home from "./Home.vue";
+import _NotFound from "./NotFound.vue";
+import _ShowApp from "./ShowApp.vue";
+import _Signin from "./Signin.vue";
+import _Signup from "./Signup.vue";
+
+export const About = _About;
+export const Account = _Account;
+export const AppList = _AppList;
+export const ConnectionLost = _ConnectionLost;
+export const CreateApp = _CreateApp;
+export const Home = _Home;
+export const NotFound = _NotFound;
+export const ShowApp = _ShowApp;
+export const Signin = _Signin;
+export const Signup = _Signup;

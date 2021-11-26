@@ -1,14 +1,9 @@
+import { 
+  About, Account, CreateApp, Home, 
+  NotFound, ShowApp, AppList, Signin, 
+  Signup, ConnectionLost
+} from '@/views';
 import { createRouter, createWebHistory } from 'vue-router';
-import About from '@/views/About.vue';
-import Account from '@/views/Account.vue';
-import CreateApp from '@/views/CreateApp.vue';
-import Home from '@/views/Home.vue';
-import NotFound from '@/views/NotFound.vue';
-import ShowApp from '@/views/ShowApp.vue';
-import AppList from '@/views/AppList.vue';
-import Signin from '@/views/Signin.vue';
-import Signup from '@/views/Signup.vue';
-import ConnectionLost from '@/views/ConnectionLost.vue';
 import { useGuest } from '@/hooks';
 
 const routes = [

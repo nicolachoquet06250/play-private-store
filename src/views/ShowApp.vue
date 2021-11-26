@@ -97,12 +97,10 @@
 </template>
 
 <script setup>
-import Stars from '@/components/Stars.vue';
-import NotFound from '@/views/NotFound.vue';
+import { Stars, NotFound } from '@/components';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { useApp, useGuest } from '@/hooks';
-import { useSearchbar } from '@/hooks';
+import { useApp, useGuest, useSearchbar } from '@/hooks';
 
 const $route = useRoute();
 const appId = computed(() => parseInt($route.params.appId));
