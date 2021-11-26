@@ -29,7 +29,7 @@
                                 </ion-col>
                             </ion-row>
 
-                            <ion-row>
+                            <!--<ion-row>
                                 <ion-col>
                                     <ion-button size="default"> Annuler </ion-button>
                                 </ion-col>
@@ -37,7 +37,7 @@
                                 <ion-col style="display: flex; justify-content: flex-end;">
                                     <ion-button size="default" @click="signIn(email, password, 'Home')"> Se connecter </ion-button>
                                 </ion-col>
-                            </ion-row>
+                            </ion-row>-->
 
                             <ion-row v-if="error">
                                 <ion-col>
@@ -52,13 +52,16 @@
             </ion-card>
         </ion-content>
 
-        <ion-footer>
+        <ion-footer style="height: 50px;">
+            <CancelButton id="footer-cancel-signin-button" @click="cancelSignin" />
 
+            <ValidateButton id="footer-validate-signin-button" @click="signIn(email, password, 'Home')" />
         </ion-footer>
     </ion-app>
 </template>
 
 <script setup>
+import { CancelButton, ValidateButton } from '@/components';
 import { ref } from 'vue';
 import { useGuest, useSearchbar } from '@/hooks';
 
@@ -69,24 +72,51 @@ hide();
 
 const email = ref('');
 const password = ref('');
+
+const cancelSignin = () => {
+    email.value = '';
+    password.value = '';
+};
 </script>
 
 <style lang="scss">
-    #signin {
-        ion-scroll {
-            .scroll-inner {
-                display: flex; 
-                justify-content: center; 
-                align-items: center;
-            }
-        }
-
-        .alert {
-            padding: 10px;
-            background-color: #AA0000;
-            color: white;
-            width: 100%;
-            border-radius: 5px;
+#signin {
+    ion-scroll {
+        .scroll-inner {
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
         }
     }
+
+    .alert {
+        padding: 10px;
+        background-color: #AA0000;
+        color: white;
+        width: 100%;
+        border-radius: 5px;
+    }
+}
+</style>
+
+<style lang="scss">
+#footer-cancel-signin-button,
+#footer-validate-signin-button {
+    position: absolute;
+    bottom: 50%;
+    left: calc(50% - 28px);
+    right: calc(50% - 28px);
+
+    .fab-button {
+        border: 2px solid white;
+    }
+}
+
+#footer-cancel-signin-button {
+    transform: translateX(-100%);
+}
+
+#footer-validate-signin-button {
+    transform: translateX(100%);
+}
 </style>

@@ -72,19 +72,18 @@
                             </ion-item>
                         </ion-col>
                     </ion-row>
-
-                    <ion-row>
-                        <ion-col>
-                            <ion-button @click="createApp"> Valider </ion-button>
-                        </ion-col>
-                    </ion-row>
                 </ion-grid>
             </form>
         </ion-content>
+
+        <ion-footer style="height: 50px;">
+            <ValidateButton id="footer-validate-app-created-button" @click="createApp" />
+        </ion-footer>
     </ion-app>
 </template>
 
 <script setup>
+import { ValidateButton } from '@/components';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useSearchbar, useApps, useToast } from '@/hooks';
@@ -118,5 +117,20 @@ const createApp = () => {
 </script>
 
 <style lang="scss" scoped>
-    
+#create-app {
+    margin-bottom: 40px!important;
+}
+</style>
+
+<style lang="scss">
+#footer-validate-app-created-button {
+    position: absolute;
+    bottom: 50%;
+    left: calc(50% - 28px);
+    right: calc(50% - 28px);
+
+    .fab-button {
+        border: 2px solid white;
+    }
+}
 </style>

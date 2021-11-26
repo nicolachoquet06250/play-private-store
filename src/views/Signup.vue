@@ -55,7 +55,7 @@
                                 </ion-col>
                             </ion-row>
 
-                            <ion-row>
+                            <!--<ion-row>
                                 <ion-col>
                                     <ion-button size="default"> Annuler </ion-button>
                                 </ion-col>
@@ -63,20 +63,23 @@
                                 <ion-col>
                                     <ion-button size="default" @click="signUp"> S'inscrire </ion-button>
                                 </ion-col>
-                            </ion-row>
+                            </ion-row>-->
                         </ion-grid>
                     </form>
                 </ion-card-content>
             </ion-card>
         </ion-content>
 
-        <ion-footer>
+        <ion-footer style="height: 50px;">
+            <CancelButton id="footer-cancel-signup-button" @click="cancelSignup" />
 
+            <ValidateButton id="footer-validate-signup-button" @click="signUp" />
         </ion-footer>
     </ion-app>
 </template>
 
 <script setup>
+import { CancelButton, ValidateButton } from '@/components';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useSearchbar } from '@/hooks';
@@ -99,6 +102,10 @@ const signUp = () => {
 
     $router.push({ name: 'Signin' });
 };
+
+const cancelSignup = () => {
+    Object.keys(createdUser).map(k => createdUser[k] = '');
+}
 </script>
 
 <style lang="scss">
@@ -111,4 +118,26 @@ const signUp = () => {
             }
         }
     }
+</style>
+
+<style lang="scss">
+#footer-cancel-signup-button,
+#footer-validate-signup-button {
+    position: absolute;
+    bottom: 50%;
+    left: calc(50% - 28px);
+    right: calc(50% - 28px);
+
+    .fab-button {
+        border: 2px solid white;
+    }
+}
+
+#footer-cancel-signup-button {
+    transform: translateX(-100%);
+}
+
+#footer-validate-signup-button {
+    transform: translateX(100%);
+}
 </style>
