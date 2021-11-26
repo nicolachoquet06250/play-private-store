@@ -1,21 +1,17 @@
 <template>
-    <router-link :to="{ name: 'ShowApp', params: { appId: app.id } }" 
-                 style="height: 100%; display: inline-block;">
-        <div class="app-icon" 
-             :style="{ '--icon': `url(${app.logo})` }"></div>
+    <router-link :to="href" :style="linkStyle">
+        <div class="app-icon" :style="appIconStyle"></div>
 
-        <div style="display: flex; flex-direction: column; justify-content: space-between; height: calc(100% - 90px);">
-            <div style="text-align: left; padding-top: 5px;"> 
-                {{ app.name }}
-            </div>
+        <div :style="appDetailsWrapperStyle">
+            <div :style="appNameStyle"> {{ app.name }} </div>
 
-            <div style="text-align: left; padding-left: 0; display: flex;">
-                <div style="display: flex; justify-content: center; align-items: center;">
+            <div :style="iconsWrapperStyle">
+                <div :style="starsWrapperStyle">
                     <Stars :note="app.stars" size="small" />
                 </div>
 
-                <template v-if="isSignedIn && guest.id === app.author">
-                    <div style="display: flex; justify-content: center; align-items: center;">
+                <template v-if="showMyAppIcon">
+                    <div :style="myAppIconWrapperStyle">
                         <ion-icon name="person"></ion-icon>
                     </div>
                 </template>
@@ -26,19 +22,88 @@
 
 <script setup>
 import { Stars } from '@/components';
-import { defineProps } from 'vue';
+import { defineProps, computed } from 'vue';
 import { useGuest } from '@/hooks';
 
-defineProps({
+/**********************************************************/
+/** APPEL DES HOOKS ***************************************/
+/**********************************************************/
+
+const { isSignedIn, guest } = useGuest();
+
+/**********************************************************/
+/** DEFINITION DES PROPS **********************************/
+/**********************************************************/
+
+const props = defineProps({
     app: {
         type: () => ({
             id: Number,
             logo: String,
             name: String,
-            stars: Number
+            stars: Number,
+            author: Number
         })
+    },
+    mine: {
+        type: Boolean
     }
 });
 
-const { isSignedIn, guest } = useGuest();
+/**********************************************************/
+/** DEFINITION DES VARIABLES REACTIVES READONLY ***********/
+/**********************************************************/
+
+const showMyAppIcon = computed(() => isSignedIn.value && guest.value.id === props.app.author);
+
+const href = computed(() => ({ 
+    name: 'ShowApp', 
+    params: { 
+        appId: props.app.id,
+        mine: showMyAppIcon.value ? 1 : 0
+    }
+}));
+
+/**********************************************************/
+/** DEFINITION DES STYLES *********************************/
+/**********************************************************/
+
+const linkStyle = computed(() => ({
+    height: '100%', 
+    display: 'inline-block'
+}));
+
+const appIconStyle = computed(() => ({
+    '--icon': `url(${props.app.logo})`
+}));
+
+const appDetailsWrapperStyle = computed(() => ({
+    display: 'flex', 
+    'flex-direction': 'column', 
+    'justify-content': 'space-between', 
+    height: 'calc(100% - 90px)'
+}));
+
+const appNameStyle = computed(() => ({
+    'text-align': 'left',
+    'padding-top': '5px'
+}));
+
+const iconsWrapperStyle = computed(() => ({
+    'text-align': 'left', 
+    'padding-left': 0, 
+    display: 'flex'
+}));
+
+const starsWrapperStyle = computed(() => ({
+    display: 'flex', 
+    'justify-content': 'center', 
+    'align-items': 'center'
+}));
+
+const myAppIconWrapperStyle = computed(() => ({
+    display: 'flex', 
+    'justify-content': 'center', 
+    'align-items': 'center'
+}));
 </script>

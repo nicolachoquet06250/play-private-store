@@ -6,7 +6,7 @@
                     <ion-row v-for="(lineApp, i) of list" :key="i">
                         <ion-col :style="{'max-width': '50%', 'margin-top': (i > 0 ? '15px' : '0'), display: 'flex', 'justify-content': 'center'}"
                                  v-for="app of lineApp" :key="app.id">
-                            <AppIconSelector :app="app" />
+                            <AppIconSelector :app="app" :mine="mine" />
                         </ion-col>
                     </ion-row>
                 </template>

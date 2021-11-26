@@ -8,17 +8,40 @@
                     </div>
 
                     <div>
-                        <h1 class="app-title"> {{ app.name }} </h1>
+                        <ion-list class="app-details">
+                            <ion-item>
+                                <h1 class="app-title"> {{ app.name }} </h1>
+                            </ion-item>
 
-                        <span class="app-author"> {{ fullname }} </span>
+                            <ion-item>
+                                <span class="app-author"> {{ fullname }} </span>
+                            </ion-item>
+
+                            <ion-item>
+                                <span class="app-version"> 
+                                    <ion-chip>
+                                        <ion-icon name="logo-github" style="background: #e5e5e5; color: black;"></ion-icon>
+                                        <ion-label> {{ app.version }} </ion-label>
+                                    </ion-chip>
+                                </span>
+                            </ion-item>
+                        </ion-list>
                     </div>
+                </ion-row>
+
+                <ion-row v-if="app.categories.length > 0">
+                    <ion-col style="height: 50px; width: max-content; display: flex; flex-wrap: nowrap; overflow-x: auto!important; overflow-y: hidden;">
+                        <ion-chip v-for="(category, i) of app.categories" :key="i" style="margin-left: 5px;">
+                            <ion-icon name="folder" style="background: #e5e5e5; color: black;"></ion-icon>
+                            <ion-label> {{ category }} </ion-label>
+                        </ion-chip>
+                    </ion-col>
                 </ion-row>
 
                 <ion-row>
                     <ion-col>
                         <ion-button color="primary" size="small" 
-                                    style="display: flex; justify-content: space-around; flex-direction: column;"
-                                    @click="openApk">
+                                    :style="installButtonStyle" @click="openApk">
                             Installer
                         </ion-button>
                     </ion-col>
@@ -38,7 +61,7 @@
 
                 <ion-row>
                     <ion-col class="app-about">
-                        <ion-title style="padding-left: 0;">A propos de l'appli</ion-title> 
+                        <ion-title :style="sectionTitleStyle">A propos de l'appli</ion-title> 
 
                         <ion-icon name="arrow-round-forward" size="small"></ion-icon>
                     </ion-col>
@@ -52,7 +75,7 @@
 
                 <ion-row>
                     <ion-col class="app-about">
-                        <ion-title style="padding-left: 0;">Notes et avis</ion-title> 
+                        <ion-title :style="sectionTitleStyle">Notes et avis</ion-title> 
 
                         <ion-icon name="arrow-round-forward" size="small"></ion-icon>
                     </ion-col>
@@ -60,17 +83,45 @@
 
                 <ion-row>
                     <ion-col>
-                        <h1 style="display: flex; justify-content: center;"> {{ app.stars }} </h1>
+                        <h1 :style="noteTitleStyle"> {{ app.stars }} </h1>
 
-                        <div style="display: flex; justify-content: center;">
+                        <div :style="noteStarsStyle">
                             <Stars :note="app.stars" />
                         </div>
                     </ion-col>
                 </ion-row>
 
+                <ion-row v-if="!mine && isSignedIn">
+                    <ion-col>
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col>
+                                    Votre note : <Stars v-model="newNote" :editable="true" @change="onNoteChange" />
+                                </ion-col>
+                            </ion-row>
+
+                            <ion-row>
+                                <ion-col>
+                                    <ion-item>
+                                        <ion-label position="floating">Commentaire...</ion-label>
+                                    
+                                        <ion-textarea></ion-textarea>
+                                    </ion-item>
+                                </ion-col>
+                            </ion-row>
+
+                            <ion-row>
+                                <ion-col>
+                                    <ion-button size="small"> Envoyer </ion-button>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </ion-col>
+                </ion-row>
+
                 <ion-row v-for="comment of app.comments" :key="comment">
                     <ion-col>
-                        <h5>{{ user(comment.author).firstname }} {{ user(comment.author).lastname }}</h5>
+                        <h5>{{ getUser(comment.author).firstname }} {{ getUser(comment.author).lastname }}</h5>
 
                         <div class="app-comment-head">
                             <div>
@@ -98,89 +149,145 @@
 
 <script setup>
 import { Stars, NotFound } from '@/components';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useApp, useGuest, useSearchbar } from '@/hooks';
 
+/**********************************************************/
+/** APPEL DES HOOKS ***************************************/
+/**********************************************************/
+
 const $route = useRoute();
 const appId = computed(() => parseInt($route.params.appId));
+
 const { app } = useApp(appId.value);
-const { user } = useGuest();
+const { user: getUser, guest, isSignedIn } = useGuest();
 const { hide } = useSearchbar();
+
+/**********************************************************/
+/** APPEL DES SOUS HOOKS **********************************/
+/**********************************************************/
 
 hide();
 
-const guest = user(app.value.author);
+/**********************************************************/
+/** DEFINITION DES VARIABLES REACTIVES READONLY ***********/
+/**********************************************************/
+
+const newNote = ref(0);
+
+const user = getUser(app.value.author);
 const icon = computed(() => `url(${app.value.logo})`);
-const fullname = computed(() => guest.firstname + ' ' + guest.lastname);
+const fullname = computed(() => user.firstname + ' ' + user.lastname);
 const description = computed(() => (app.value.description ?? '').split(' ').length > 15 
     ? (app.value.description ?? '').split(' ').reduce((r, c) => 
         ({ cmp: r.cmp + 1, result: (r.cmp > 15 ? r : [...r.result, c]) }), 
         { cmp: 0, result: [] }
     ).result.join(' ') + ' ...' 
         : (app.value.description ?? ''));
-const apkUrl = computed(() => user(app.value.author).github + '/' + app.value.repoName + '/releases/download/' + app.value.version + '/' + app.value.nameSlug + '-' + app.value.versionSlug + '.apk')
+const apkUrl = computed(() => getUser(app.value.author).github + '/' + app.value.repoName + '/releases/download/' + app.value.version + '/' + app.value.nameSlug + '-' + app.value.versionSlug + '.apk')
+
+const mine = app.value.author === guest.value?.id;
+
+/**********************************************************/
+/** DEFINITION DES STYLES *********************************/
+/**********************************************************/
+
+const installButtonStyle = computed(() => ({
+    display: 'flex', 
+    'justify-content': 'space-around', 
+    'flex-direction': 'column'
+}));
+const sectionTitleStyle = computed(() => ({
+    'padding-left': 0
+}));
+const noteTitleStyle = computed(() => ({
+    display: 'flex', 
+    'justify-content': 'center'
+}));
+const noteStarsStyle = computed(() => ({
+    display: 'flex', 
+    'justify-content': 'center'
+}));
+
+/**********************************************************/
+/** DEFINITIONS DES FONCTIONS *****************************/
+/**********************************************************/
 
 const openApk = () => {
     window.open(apkUrl.value, '_blank');
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 #show-app {
     margin-top: 15px;
+    
+    .app-details {
+        .item {
+            min-height: 30px!important;
+        }
+    }
+
+    .app-icon {
+        border: 1px solid black; 
+        width: 100px; 
+        height: 100px; 
+        border-radius: 10px;
+        background-image: v-bind(icon);
+        background-color: white;
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-attachment: inherit;
+    }
+
+    .app-title,
+    .app-author,
+    .app-version {
+        margin-left: 15px;
+    }
+
+    .app-title {
+        margin-left: 15px;
+        margin-top: 0;
+    }
+
+    ion-col ion-chip > ion-icon,
+    ion-item ion-icon {
+        border-right: 2px solid white;
+    }
+
+    .app-note {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .app-description::first-letter {
+        text-transform: capitalize;
+    }
+
+    .app-about {
+        display: flex; 
+        justify-content: space-between;
+    }
+
+    .app-comment-head {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .app-comment-head_date {
+        display: flex;
+        align-items: center;
+    }
+
+    .app-comment_text {
+        margin-top: 15px;
+        max-width: 250px;
+    }
 }
 
-.app-icon {
-    border: 1px solid black; 
-    width: 100px; 
-    height: 100px; 
-    border-radius: 10px;
-    background-image: v-bind(icon);
-    background-color: white;
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-attachment: inherit;
-}
 
-.app-title {
-    font-size: 15px;
-    margin-left: 15px;
-    margin-top: 0;
-}
-
-.app-author {
-    margin-left: 15px;
-}
-
-.app-note {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-.app-description::first-letter {
-    text-transform: capitalize;
-}
-
-.app-about {
-    display: flex; 
-    justify-content: space-between;
-}
-
-.app-comment-head {
-    display: flex;
-    justify-content: space-between;
-}
-
-.app-comment-head_date {
-    display: flex;
-    align-items: center;
-}
-
-.app-comment_text {
-    margin-top: 15px;
-    max-width: 250px;
-}
 </style>

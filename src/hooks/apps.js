@@ -17,7 +17,9 @@ const appList = ref([
         categories: [
             'budget',
             'budgetaire',
-            'monnaitaire'
+            'monnaitaire',
+            'argent',
+            'monais'
         ],
         comments: [
             {
