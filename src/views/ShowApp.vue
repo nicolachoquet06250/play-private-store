@@ -7,7 +7,7 @@
                         <div class="app-icon"></div>
                     </div>
 
-                    <div style="max-width: 250px;">
+                    <div style="max-width: 200px;">
                         <ion-list class="app-details">
                             <ion-item>
                                 <h1 class="app-title"> {{ app.name }} </h1>
