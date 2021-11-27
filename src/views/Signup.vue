@@ -54,16 +54,6 @@
                                     </ion-item>
                                 </ion-col>
                             </ion-row>
-
-                            <!--<ion-row>
-                                <ion-col>
-                                    <ion-button size="default"> Annuler </ion-button>
-                                </ion-col>
-
-                                <ion-col>
-                                    <ion-button size="default" @click="signUp"> S'inscrire </ion-button>
-                                </ion-col>
-                            </ion-row>-->
                         </ion-grid>
                     </form>
                 </ion-card-content>

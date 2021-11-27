@@ -75,9 +75,7 @@ const routes = computed(() => [
         show: isSignedIn.value
     },
     {
-        click() {
-            signOut('Home')
-        },
+        click: signOut,
         icon: {
             name: 'log-out',
             position: 'after'

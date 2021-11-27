@@ -29,16 +29,6 @@
                                 </ion-col>
                             </ion-row>
 
-                            <!--<ion-row>
-                                <ion-col>
-                                    <ion-button size="default"> Annuler </ion-button>
-                                </ion-col>
-
-                                <ion-col style="display: flex; justify-content: flex-end;">
-                                    <ion-button size="default" @click="signIn(email, password, 'Home')"> Se connecter </ion-button>
-                                </ion-col>
-                            </ion-row>-->
-
                             <ion-row v-if="error">
                                 <ion-col>
                                     <div class="alert">

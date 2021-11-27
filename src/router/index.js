@@ -66,7 +66,7 @@ const routes = [
       const { isSignedIn } = useGuest();
 
       if (!isSignedIn.value) {
-        next({ name: 'AppList' });
+        next({ name: 'AppList', params: { mine: false } });
       } else {
         next();
       }

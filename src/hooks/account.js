@@ -1,10 +1,12 @@
+// https://github.com/nicolachoquet06250/budget-management-apk/releases/download/0.1.0/budget-management-0-1-0.apk
+// https://github.com/nicolachoquet06250/{repo-name}/releases/download/{version}/{app-name-slug}-{version-with-scores}.apk
+
 import { ref, computed } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRoute } from 'vue-router';
+import { useReferer, useRedirect } from '@/hooks';
 
 const isSignedIn = ref(false);
 const guest = ref(null);
-// https://github.com/nicolachoquet06250/budget-management-apk/releases/download/0.1.0/budget-management-0-1-0.apk
-// https://github.com/nicolachoquet06250/{repo-name}/releases/download/{version}/{app-name-slug}-{version-with-scores}.apk
 
 const users = ref([
     { 
@@ -28,9 +30,9 @@ const users = ref([
 const error = ref(false);
 
 export const useGuest = () => {
-    const $router = useRouter();
     const $route = useRoute();
-
+    const { redirect } = useRedirect();
+    
     return {
         isSignedIn: computed(() => isSignedIn.value),
         guest: computed(() => 
@@ -44,29 +46,32 @@ export const useGuest = () => {
             return users.value.reduce((r, c) => 
                 c.id === id ? c : r, null);
         },
-        signIn(email, password, redirect) {
-            console.log(email, password);
+        signIn(email, password, _redirect = null) {
+            const { referer, setReferer } = useReferer();
 
             guest.value = users.value.reduce((r, c) => c.email === email && c.password === password ? c.id : r, null);
 
+            if (!referer.value) {
+                setReferer(_redirect);
+            }
+
             if (guest.value !== null) {
                 isSignedIn.value = true;
-                $router.push({ name: redirect });
                 error.value = false;
+
+                redirect();
             } else {
                 isSignedIn.value = false;
                 error.value = 'Vos identifiants ne correspondent pas !'
             }
         },
-        signOut(redirect) {
+        signOut() {
+            const { setRefererWithCurrentRoute } = useReferer();
+            
             isSignedIn.value = false;
 
-            $router.push({ 
-                name: (['Account', 'CreateApp', 'MyApps']
-                    .indexOf($route.name) === -1 ? 
-                        $route.name 
-                            : redirect)
-            });
+            setRefererWithCurrentRoute($route);
+            redirect();
         }
     };
 };
