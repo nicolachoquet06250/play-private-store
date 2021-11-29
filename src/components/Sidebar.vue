@@ -20,6 +20,8 @@
                             <ion-icon v-if="route.icon && route.icon.position === 'before'" 
                                       :name="route.icon.name" 
                                       style="padding-right: 15px;"></ion-icon>
+
+                            <div v-if="route.logo" class="app-logo" :style="{ '--background-image': `url(${route.logo})` }"></div>
                             
                             <span> {{ route.title }} </span>
 
@@ -65,6 +67,7 @@ const routes = computed(() => [
         conf: {
             path: `/app/${$route.params.appId}`,
         },
+        logo: app.value?.logo ?? '',
         title: app.value?.name ?? '',
         show: lastPageIsApps.value,
         active: lastPageIsApps.value
@@ -81,6 +84,7 @@ const routes = computed(() => [
         conf: {
             path: `/app/${$route.params.appId}`,
         },
+        logo: app.value?.logo ?? '',
         title: app.value?.name ?? '',
         show: lastPageIsMyApps.value,
         active: lastPageIsMyApps.value
@@ -154,6 +158,21 @@ watch(() => $route.params.appId, () => {
         .item-inner {
             padding: 0;
         }
+    }
+
+    .app-logo {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        border: 1px solid black;
+        border-radius: 5px;
+        background-image: var(--background-image, none);
+        background-color: white;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        margin-right: 10px;
+        background-position: center;
+        background-size: contain;
     }
 }
 </style>
