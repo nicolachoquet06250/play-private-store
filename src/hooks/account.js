@@ -18,7 +18,6 @@ const users = ref([
             github: 'nicolachoquet06250',
             gitlab: 'nicolachoquet06250'
         },
-        github: 'https://github.com/nicolachoquet06250',
         password: 'nchoquet'
     },
     {
@@ -29,7 +28,6 @@ const users = ref([
         repo_pseudo: {
             github: 'grafikart'
         },
-        github: 'https://github.com/grafikart',
         password: 'grafikart'
     }
 ]);
