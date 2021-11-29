@@ -20,7 +20,9 @@
                             <ion-item>
                                 <span class="app-version"> 
                                     <ion-chip>
-                                        <ion-icon name="logo-github" style="background: #e5e5e5; color: black;"></ion-icon>
+                                        <ion-icon :src="`https://unpkg.com/ionicons@5.5.2/dist/svg/logo-${app.repo_type}.svg`" 
+                                                   style="background: #e5e5e5; color: black;"></ion-icon>
+
                                         <ion-label> {{ app.version }} </ion-label>
                                     </ion-chip>
                                 </span>
@@ -33,6 +35,7 @@
                     <ion-col style="height: 50px; width: max-content; display: flex; flex-wrap: nowrap; overflow-x: auto!important; overflow-y: hidden;">
                         <ion-chip v-for="(category, i) of app.categories" :key="i" style="margin-left: 5px;">
                             <ion-icon name="folder" style="background: #e5e5e5; color: black;"></ion-icon>
+
                             <ion-label> {{ category }} </ion-label>
                         </ion-chip>
                     </ion-col>
@@ -151,7 +154,7 @@
 import { Stars, NotFound } from '@/components';
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useApp, useGuest, useSearchbar } from '@/hooks';
+import { useApp, useGuest, useSearchbar, useRepos } from '@/hooks';
 
 /**********************************************************/
 /** APPEL DES HOOKS ***************************************/
@@ -163,6 +166,7 @@ const appId = computed(() => parseInt($route.params.appId));
 const { app } = useApp(appId.value);
 const { user: getUser, guest, isSignedIn } = useGuest();
 const { hide } = useSearchbar();
+const $repos = useRepos();
 
 /**********************************************************/
 /** APPEL DES SOUS HOOKS **********************************/
@@ -185,7 +189,7 @@ const description = computed(() => (app.value.description ?? '').split(' ').leng
         { cmp: 0, result: [] }
     ).result.join(' ') + ' ...' 
         : (app.value.description ?? ''));
-const apkUrl = computed(() => getUser(app.value.author).github + '/' + app.value.repoName + '/releases/download/' + app.value.version + '/' + app.value.nameSlug + '-' + app.value.versionSlug + '.apk')
+const apkUrl = computed(() => $repos[app.value.repo_type] + '/' + getUser(app.value.author).repo_pseudo[app.value.repo_type] + '/' + app.value.repoName + '/releases/download/' + app.value.version + '/' + app.value.nameSlug + '-' + app.value.versionSlug + '.apk')
 
 const mine = app.value.author === guest.value?.id;
 

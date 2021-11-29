@@ -1,12 +1,12 @@
 <template>
-    <router-link :to="routeConf" v-if="show && routeConf">
+    <router-link :to="routeConf" v-if="show && routeConf" :class="{ [active ? 'router-link-active' : false]: true, [active ? 'router-link-exact-active' : false]: true }">
         <slot></slot>
 
         <div class="underline-left"></div>
         <div class="underline-right"></div>
     </router-link>
 
-    <a href="#" @click.prevent.stop="$emit('click', $event)" v-if="show && !routeConf">
+    <a href="#" @click.prevent.stop="$emit('click', $event)" v-if="show && !routeConf" :class="{ [active ? 'router-link-active' : false]: true, [active ? 'router-link-exact-active' : false]: true }">
         <slot></slot>
 
         <div class="underline-left"></div>
@@ -24,11 +24,10 @@ defineProps({
         }),
         default: undefined
     },
-    show: {
-        type: Boolean
-    },
-    click: {
-        type: Function
+    show: Boolean,
+    click: Function,
+    active: {
+        default: false
     }
 });
 

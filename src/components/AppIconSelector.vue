@@ -59,8 +59,7 @@ const showMyAppIcon = computed(() => isSignedIn.value && guest.value.id === prop
 const href = computed(() => ({ 
     name: 'ShowApp', 
     params: { 
-        appId: props.app.id,
-        mine: showMyAppIcon.value ? 1 : 0
+        appId: props.app.id
     }
 }));
 

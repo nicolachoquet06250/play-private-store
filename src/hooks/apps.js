@@ -1,10 +1,13 @@
 import { computed, ref } from "vue";
-import { useGuest } from '@/hooks';
+import { useGuest, useRepos } from '@/hooks';
+
+const { GITHUB, GITLAB } = useRepos();
 
 const appList = ref([
     {
         id: 0,
-        name: 'Budget Management',
+        repo_type: GITHUB,
+        name: 'Budget Management 1',
         nameSlug: 'budget-management',
         repoName: 'budget-management-apk',
         logo: 'https://thumbs.dreamstime.com/z/vecteur-d-ic%C3%B4ne-de-calcul-argent-budget-encaissant-le-logo-illustration-symbole-financier-paiement-152384739.jpg',
@@ -19,7 +22,7 @@ const appList = ref([
             'budgetaire',
             'monnaitaire',
             'argent',
-            'monais'
+            
         ],
         comments: [
             {
@@ -33,7 +36,8 @@ const appList = ref([
     },
     {
         id: 1,
-        name: 'Budget Management',
+        repo_type: GITHUB,
+        name: 'Budget Management 2',
         nameSlug: 'budget-management',
         repoName: 'budget-management-apk',
         logo: 'https://thumbs.dreamstime.com/z/vecteur-d-ic%C3%B4ne-de-calcul-argent-budget-encaissant-le-logo-illustration-symbole-financier-paiement-152384739.jpg',
@@ -60,7 +64,8 @@ const appList = ref([
     },
     {
         id: 2,
-        name: 'Budget Management',
+        repo_type: GITLAB,
+        name: 'Budget Management 3',
         nameSlug: 'budget-management',
         repoName: 'budget-management-apk',
         logo: 'https://thumbs.dreamstime.com/z/vecteur-d-ic%C3%B4ne-de-calcul-argent-budget-encaissant-le-logo-illustration-symbole-financier-paiement-152384739.jpg',
