@@ -16,7 +16,8 @@
                                             PRENOM
                                         </ion-label>
 
-                                        <ion-input type="text"></ion-input>
+                                        <ion-input type="text" :value="user.firstname" 
+                                                    @input="user.firstname = $event.target.value ?? ''"></ion-input>
                                     </ion-item>
                                 </ion-col>
 
@@ -26,7 +27,8 @@
                                             NOM
                                         </ion-label>
 
-                                        <ion-input type="text"></ion-input>
+                                        <ion-input type="text" :value="user.lastname" 
+                                                    @input="user.lastname = $event.target.value ?? ''"></ion-input>
                                     </ion-item>
                                 </ion-col>
                             </ion-row>
@@ -38,7 +40,8 @@
                                             EMAIL
                                         </ion-label>
 
-                                        <ion-input type="email"></ion-input>
+                                        <ion-input type="email" :value="user.email" 
+                                                    @input="user.email = $event.target.value ?? ''"></ion-input>
                                     </ion-item>
                                 </ion-col>
                             </ion-row>
@@ -64,7 +67,8 @@
                                             PSEUDO GITHUB
                                         </ion-label>
 
-                                        <ion-input type="text"></ion-input>
+                                        <ion-input type="text" :value="user.repo_pseudo[GITHUB] ?? ''" 
+                                                    @input="user.repo_pseudo[GITHUB] = $event.target.value ?? ''"></ion-input>
                                     </ion-item>
                                 </ion-col>
 
@@ -74,7 +78,8 @@
                                             PSEUDO GITLAB
                                         </ion-label>
 
-                                        <ion-input type="text"></ion-input>
+                                        <ion-input type="text" :value="user.repo_pseudo[GITLAB] ?? ''" 
+                                                    @input="user.repo_pseudo[GITLAB] = $event.target.value ?? ''"></ion-input>
                                     </ion-item>
                                 </ion-col>
                             </ion-row>
@@ -94,7 +99,7 @@
                                             NOUVEAU MOT DE PASSE
                                         </ion-label>
 
-                                        <ion-input type="password"></ion-input>
+                                        <ion-input type="password" :value="password" @input="password = $event.target.value ?? ''"></ion-input>
                                     </ion-item>
                                 </ion-col>
                             </ion-row>
@@ -106,9 +111,21 @@
                                             VERIFIER LE MOT DE PASSE
                                         </ion-label>
 
-                                        <ion-input type="password"></ion-input>
+                                        <ion-input type="password" :value="verificatedPassword" @input="verificatedPassword = $event.target.value ?? ''"></ion-input>
                                     </ion-item>
                                 </ion-col>
+                            </ion-row>
+                            
+                            <ion-row v-if="error">
+                                <div class="alert alert-error">
+                                    {{ error }}
+                                </div>
+                            </ion-row>
+                            
+                            <ion-row v-if="success">
+                                <div class="alert alert-success">
+                                    {{ success }}
+                                </div>
                             </ion-row>
                         </ion-grid>
                     </form>
@@ -126,13 +143,28 @@
 
 <script setup>
 import { CancelButton, ValidateButton } from '@/components';
-import { ref } from 'vue';
-import { useSearchbar, useRepos } from '@/hooks';
+import { ref, reactive } from 'vue';
+import { useSearchbar, useRepos, useGuest } from '@/hooks';
 
 const { hide } = useSearchbar();
 const { GITLAB, GITHUB } = useRepos();
+const { guest, update } = useGuest();
 
 const currentTab = ref(GITHUB);
+const password = ref('');
+const verificatedPassword = ref('');
+const error = ref('');
+const success = ref('');
+
+const user = reactive({
+    firstname: guest.value.firstname,
+    lastname: guest.value.lastname,
+    email: guest.value.email,
+    repo_pseudo: {
+        [GITHUB]: guest.value.repo_pseudo[GITHUB] ?? '',
+        [GITLAB]: guest.value.repo_pseudo[GITLAB] ?? ''
+    }
+});
 
 hide();
 
@@ -140,8 +172,27 @@ const segmentChanged = v => {
     currentTab.value = v;
 };
 
-const cancelAccount = () => {};
-const updateAccount = () => {};
+const cancelAccount = () => {
+    password.value = '';
+    verificatedPassword.value = '';
+};
+const updateAccount = () => {
+    if (password.value === '' && verificatedPassword.value === '') {
+        update(guest.value.id, user);
+        success.value = 'Vos données ont été modifié avec succès.';
+        error.value = '';
+    } else if (password.value !== verificatedPassword.value) {
+        success.value = '';
+        error.value = 'Les mot de passes ne correspondent pas';
+        return;
+    } else {
+        update(guest.value.id, { ...user, password: password.value });
+        success.value = 'Vos données ont été modifié avec succès.';
+        error.value = '';
+    }
+
+    cancelAccount();
+};
 </script>
 
 <style>
@@ -150,5 +201,26 @@ const updateAccount = () => {};
 }
 #account ion-scroll > .scroll-inner {
     min-height: auto;
+}
+</style>
+
+<style lang="scss" scoped>
+.alert {
+    padding: 15px;
+    border: 1px solid;
+    border-radius: 5px;
+    width: 100%;
+    margin-top: 10px;
+    color: white;
+
+    &-success {
+        border-color: green;
+        background: green;
+    }
+
+    &-error {
+        border-color: red;
+        background: red;
+    }
 }
 </style>

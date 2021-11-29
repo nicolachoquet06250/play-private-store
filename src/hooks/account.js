@@ -47,6 +47,19 @@ export const useGuest = () => {
         users: computed(() => users.value),
         error: computed(() => error.value),
 
+        update(id, accountData) {
+            users.value = users.value.reduce((r, c) => {
+                if (c.id === id) {
+                    return [...r, {
+                        ...c,
+                        ...accountData
+                    }]
+                } else {
+                    return [...r, c];
+                }
+            }, []);
+        },
+
         user(id) {
             return users.value.reduce((r, c) => 
                 c.id === id ? c : r, null);
