@@ -135,7 +135,6 @@ window.history.pushState = new Proxy(window.history.pushState, {
   apply: (target, thisArg, argArray = undefined) => {
     const r = target.apply(thisArg, argArray);
     lastPagePath.value = window.history.state.back;
-    console.log(lastPageIsApps.value, lastPageIsMyApps.value)
     return r;
   },
 });
