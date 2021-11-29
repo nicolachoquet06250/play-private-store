@@ -99,7 +99,7 @@
                                             NOUVEAU MOT DE PASSE
                                         </ion-label>
 
-                                        <ion-input type="password" :value="password" @input="password = $event.target.value ?? ''"></ion-input>
+                                        <ion-input type="password" :value="password" @input="password = $event.target.value ?? ''" @keyup="$event.target.value === '' ? (password = '') : null"></ion-input>
                                     </ion-item>
                                 </ion-col>
                             </ion-row>
@@ -111,7 +111,7 @@
                                             VERIFIER LE MOT DE PASSE
                                         </ion-label>
 
-                                        <ion-input type="password" :value="verificatedPassword" @input="verificatedPassword = $event.target.value ?? ''"></ion-input>
+                                        <ion-input type="password" :value="verificatedPassword" @input="verificatedPassword = $event.target.value ?? ''" @keyup="$event.target.value === '' ? (verificatedPassword = '') : null"></ion-input>
                                     </ion-item>
                                 </ion-col>
                             </ion-row>
@@ -181,17 +181,17 @@ const updateAccount = () => {
         update(guest.value.id, user);
         success.value = 'Vos données ont été modifié avec succès.';
         error.value = '';
+        cancelAccount();
     } else if (password.value !== verificatedPassword.value) {
         success.value = '';
         error.value = 'Les mot de passes ne correspondent pas';
-        return;
     } else {
         update(guest.value.id, { ...user, password: password.value });
         success.value = 'Vos données ont été modifié avec succès.';
         error.value = '';
+        cancelAccount();
     }
 
-    cancelAccount();
 };
 </script>
 
