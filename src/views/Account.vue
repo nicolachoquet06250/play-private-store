@@ -168,6 +168,23 @@ const user = reactive({
 
 hide();
 
+const createError = (_error, timeout) => {
+    success.value = '';
+    error.value = _error;
+
+    setTimeout(() => {
+        error.value = '';
+    }, timeout);
+};
+const createSuccess = (_success, timeout) => {
+    success.value = _success;
+    error.value = '';
+
+    setTimeout(() => {
+        success.value = '';
+    }, timeout);
+}
+
 const segmentChanged = v => {
     currentTab.value = v;
 };
@@ -179,19 +196,15 @@ const cancelAccount = () => {
 const updateAccount = () => {
     if (password.value === '' && verificatedPassword.value === '') {
         update(guest.value.id, user);
-        success.value = 'Vos données ont été modifié avec succès.';
-        error.value = '';
+        createSuccess('Vos données ont été modifié avec succès.', 2000);
         cancelAccount();
     } else if (password.value !== verificatedPassword.value) {
-        success.value = '';
-        error.value = 'Les mot de passes ne correspondent pas';
+        createError('Les mot de passes ne correspondent pas', 2000);
     } else {
         update(guest.value.id, { ...user, password: password.value });
-        success.value = 'Vos données ont été modifié avec succès.';
-        error.value = '';
+        createSuccess('Vos données ont été modifié avec succès.', 2000);
         cancelAccount();
     }
-
 };
 </script>
 
