@@ -53,7 +53,7 @@ const list = computed(() => {
     const r = _list.value.reduce((r, c) => {
         c.type = 'app-display'
 
-        if (r.cmp % nbElementPerLine.value === 0) {
+        if ((r.cmp % nbElementPerLine.value) === 0) {
             r.tmp.push(c);
         } else {
             r.tmp.push(c);
@@ -66,10 +66,18 @@ const list = computed(() => {
     }, { cmp: 0, result: [], tmp: [] });
 
     if (r.tmp.length > 0) {
+        if (r.result.length === 0) {
+            r.result.push([]);
+        }
+
         if (r.result[r.result.length - 1].length >= nbElementPerLine.value) {
             r.result.push([]);
         }
-        r.result[r.result.length - 1] = [...r.result[r.result.length - 1], ...r.tmp];
+
+        r.result[r.result.length - 1] = [
+            ...r.result[r.result.length - 1], 
+            ...r.tmp
+        ];
     }
 
     return r.result;

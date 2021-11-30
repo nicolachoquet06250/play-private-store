@@ -6,7 +6,7 @@
                 
                 <ion-title v-else>
                     <ion-button @click="$router.push({ name: 'Signin' })" tag="ion-button">
-                        Se connecter 
+                        {{ __('sidebar.Signin', 'Se connecter') }} 
                     </ion-button>
                 </ion-title>
             </ion-toolbar>

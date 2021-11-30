@@ -3,7 +3,9 @@
         <ion-content id="account">
             <ion-card>
                 <ion-card-header>
-                    <ion-card-title> Mon compte </ion-card-title>
+                    <ion-card-title>
+                        {{ __('pages.account.title', 'Mon compte') }}
+                    </ion-card-title>
                 </ion-card-header>
 
                 <ion-card-content>
@@ -13,7 +15,7 @@
                                 <ion-col>
                                     <ion-item>
                                         <ion-label position="floating">
-                                            PRENOM
+                                            {{ __('pages.account.FIRSTNAME', 'PRENOM') }}
                                         </ion-label>
 
                                         <ion-input type="text" :value="user.firstname" 
@@ -24,7 +26,7 @@
                                 <ion-col>
                                     <ion-item>
                                         <ion-label position="floating">
-                                            NOM
+                                            {{ __('pages.account.LASTNAME', 'NOM') }}
                                         </ion-label>
 
                                         <ion-input type="text" :value="user.lastname" 
@@ -37,7 +39,7 @@
                                 <ion-col>
                                     <ion-item>
                                         <ion-label position="floating">
-                                            EMAIL
+                                            {{ __('pages.account.EMAIL', 'EMAIL') }}
                                         </ion-label>
 
                                         <ion-input type="email" :value="user.email" 
@@ -64,7 +66,7 @@
                                 <ion-col :style="{ display: (currentTab === GITHUB ? 'block' : 'none') }">
                                     <ion-item>
                                         <ion-label position="floating">
-                                            PSEUDO GITHUB
+                                            {{ __('pages.account.GITHUB_PSEUDO', 'PSEUDO GITHUB') }}
                                         </ion-label>
 
                                         <ion-input type="text" :value="user.repo_pseudo[GITHUB] ?? ''" 
@@ -75,7 +77,7 @@
                                 <ion-col :style="{ display: (currentTab === GITLAB ? 'block' : 'none') }">
                                     <ion-item>
                                         <ion-label position="floating">
-                                            PSEUDO GITLAB
+                                            {{ __('pages.account.GITLAB_PSEUDO', 'PSEUDO GITLAB') }}
                                         </ion-label>
 
                                         <ion-input type="text" :value="user.repo_pseudo[GITLAB] ?? ''" 
@@ -87,7 +89,7 @@
                             <ion-row>
                                 <ion-col>
                                     <ion-title>
-                                        Modifier mon mot de passe
+                                        {{ __('pages.account.update_title_password', 'Modifier mon mot de passe') }}
                                     </ion-title>
                                 </ion-col>
                             </ion-row>
@@ -96,7 +98,7 @@
                                 <ion-col>
                                     <ion-item>
                                         <ion-label position="floating">
-                                            NOUVEAU MOT DE PASSE
+                                            {{ __('pages.account.NEW_PASSWORD', 'NOUVEAU MOT DE PASSE') }}
                                         </ion-label>
 
                                         <ion-input type="password" 
@@ -111,7 +113,7 @@
                                 <ion-col>
                                     <ion-item>
                                         <ion-label position="floating">
-                                            VERIFIER LE MOT DE PASSE
+                                            {{ __('pages.account.VERIFICATED_PASSWORD', 'VERIFIER LE MOT DE PASSE') }}
                                         </ion-label>
 
                                         <ion-input type="password" 
@@ -152,11 +154,12 @@
 <script setup>
 import { CancelButton, ValidateButton } from '@/components';
 import { ref, reactive } from 'vue';
-import { useSearchbar, useRepos, useGuest } from '@/hooks';
+import { useSearchbar, useRepos, useGuest, useTranslate } from '@/hooks';
 
 const { hide } = useSearchbar();
 const { GITLAB, GITHUB } = useRepos();
 const { guest, update } = useGuest();
+const { __ } = useTranslate();
 
 const currentTab = ref(GITHUB);
 const password = ref('');
@@ -204,13 +207,13 @@ const cancelAccount = () => {
 const updateAccount = () => {
     if (password.value === '' && verificatedPassword.value === '') {
         update(guest.value.id, user);
-        createSuccess('Vos données ont été modifié avec succès.', 2000);
+        createSuccess(__('pages.account.success_message', 'Vos données ont été modifié avec succès.'), 2000);
         cancelAccount();
     } else if (password.value !== verificatedPassword.value) {
-        createError('Les mot de passes ne correspondent pas', 2000);
+        createError(__('pages.account.error_message', 'Les mot de passes ne correspondent pas.'), 2000);
     } else {
         update(guest.value.id, { ...user, password: password.value });
-        createSuccess('Vos données ont été modifié avec succès.', 2000);
+        createSuccess(__('pages.account.success_message', 'Vos données ont été modifié avec succès.'), 2000);
         cancelAccount();
     }
 };

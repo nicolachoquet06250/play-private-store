@@ -7,5 +7,29 @@
         "Signup": "S'inscrire",
         "Logout": "Se déconnecter",
         "About": "A propos"
+    },
+    "pwaInstallationCard": {
+        "text": "Installer l'application sur votre bureau",
+        "installButton": "Installer",
+        "cancelButton": "Annuler"
+    },
+    "refreshCard": {
+        "text": "Des modifications ont été apportés à l'application",
+        "button": "Recharger"
+    },
+    "pages": {
+        "account": {
+            "title": "Mon compte",
+            "FIRSTNAME": "PRENOM",
+            "LASTNAME": "NOM",
+            "EMAIL": "EMAIL",
+            "GITLAB_PSEUDO": "PSEUDO GITLAB",
+            "GITHUB_PSEUDO": "PSEUDO GITHUB",
+            "update_title_password": "Modifier mon mot de passe",
+            "NEW_PASSWORD": "NOUVEAU MOT DE PASSE",
+            "VERIFICATED_PASSWORD": "VERIFIER LE MOT DE PASSE",
+            "error_message": "Les mot de passes ne correspondent pas.",
+            "success_message": "Vos données ont été modifié avec succès."
+        }
     }
 }

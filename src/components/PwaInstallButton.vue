@@ -7,17 +7,21 @@
                         <ion-grid>
                             <ion-row>
                                 <ion-col>
-                                    <h5> Installer l'application sur votre bureau </h5>
+                                    <h5> {{ __('pwaInstallationCard.text', `Installer l'application sur votre bureau`) }} </h5>
                                 </ion-col>
                             </ion-row>
 
                             <ion-row>
                                 <ion-col>
-                                    <ion-button size="small" @click="install">Installer</ion-button>
+                                    <ion-button size="small" @click="install">
+                                        {{ __('pwaInstallationCard.installButton', `Installer`) }}
+                                    </ion-button>
                                 </ion-col>
                                 
                                 <ion-col>
-                                    <ion-button size="small" @click="dismiss">Annuler</ion-button>
+                                    <ion-button size="small" @click="dismiss">
+                                        {{ __('pwaInstallationCard.cancelButton', `Annuler`) }}
+                                    </ion-button>
                                 </ion-col>
                             </ion-row>
                         </ion-grid>
@@ -34,14 +38,16 @@
                             <ion-row>
                                 <ion-col style="display: flex; justify-content: center;">
                                     <span>
-                                        Des modifications ont été apportés à l'application
+                                        {{ __('refreshCard.text', `Des modifications ont été apportés à l'application`) }}
                                     </span>
                                 </ion-col>
                             </ion-row>
 
                             <ion-row>
                                 <ion-col style="display: flex; justify-content: center;">
-                                    <ion-button size="small" @click="refresh">Recharger</ion-button>
+                                    <ion-button size="small" @click="refresh">
+                                        {{ __('refreshCard.button', `Recharger`) }}
+                                    </ion-button>
                                 </ion-col>
                             </ion-row>
                         </ion-grid>
@@ -54,9 +60,10 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useContentUpdate } from '@/hooks';
+import { useContentUpdate, useTranslate } from '@/hooks';
 
 const { hasNewContent, setNewContent } = useContentUpdate();
+const { __ } = useTranslate();
 
 const deferredPrompt = ref(null);
 
