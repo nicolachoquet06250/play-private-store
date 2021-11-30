@@ -12,7 +12,9 @@
                             <ion-row>
                                 <ion-col>
                                     <ion-item>
-                                        <ion-label position="floating"> Email </ion-label>
+                                        <ion-label position="floating">
+                                            {{ __('pages.account.EMAIL', 'Email') }}
+                                        </ion-label>
 
                                         <ion-input type="email" :value="email" @input="email = $event.target.value ?? ''"></ion-input>
                                     </ion-item>
@@ -22,7 +24,9 @@
                             <ion-row>
                                 <ion-col>
                                     <ion-item>
-                                        <ion-label position="floating"> Mot de passe </ion-label>
+                                        <ion-label position="floating">
+                                            {{ __('pages.signin.password', 'Mot de passe') }}
+                                        </ion-label>
 
                                         <ion-input type="password" :value="password" @input="password = $event.target.value ?? ''"></ion-input>
                                     </ion-item>
@@ -53,10 +57,11 @@
 <script setup>
 import { CancelButton, ValidateButton } from '@/components';
 import { ref } from 'vue';
-import { useGuest, useSearchbar } from '@/hooks';
+import { useGuest, useSearchbar, useTranslate } from '@/hooks';
 
 const { signIn, error } = useGuest();
 const { hide } = useSearchbar();
+const { __ } = useTranslate();
 
 hide();
 

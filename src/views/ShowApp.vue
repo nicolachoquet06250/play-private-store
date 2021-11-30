@@ -45,7 +45,7 @@
                     <ion-col>
                         <ion-button color="primary" size="small" 
                                     :style="installButtonStyle" @click="openApk">
-                            Installer
+                            {{ __('pages.showApp.installButton', 'Installer') }}
                         </ion-button>
                     </ion-col>
                 </ion-row>
@@ -57,14 +57,16 @@
 
                     <template v-if="app.screenshots.length === 0">
                         <ion-col>
-                            <span> Aucune captures d'écrans pour cette application </span>
+                            <span> {{ __('pages.showApp.notScreenshotMessage', `Aucune captures d'écrans pour cette application`) }} </span>
                         </ion-col>
                     </template>
                 </ion-row>
 
                 <ion-row>
                     <ion-col class="app-about">
-                        <ion-title :style="sectionTitleStyle">A propos de l'appli</ion-title> 
+                        <ion-title :style="sectionTitleStyle">
+                            {{ __('pages.showApp.aboutAppTitle', `A propos de l'appli`) }}
+                        </ion-title> 
 
                         <ion-icon name="arrow-round-forward" size="small"></ion-icon>
                     </ion-col>
@@ -78,7 +80,9 @@
 
                 <ion-row>
                     <ion-col class="app-about">
-                        <ion-title :style="sectionTitleStyle">Notes et avis</ion-title> 
+                        <ion-title :style="sectionTitleStyle">
+                            {{ __('pages.showApp.notesTitle', 'Notes et avis') }}
+                        </ion-title> 
 
                         <ion-icon name="arrow-round-forward" size="small"></ion-icon>
                     </ion-col>
@@ -99,14 +103,16 @@
                         <ion-grid>
                             <ion-row>
                                 <ion-col>
-                                    Votre note : <Stars v-model="newNote" :editable="true" @change="onNoteChange" />
+                                    {{ __('pages.showApp.form.yourNote', 'Votre note') }} : <Stars v-model="newNote" :editable="true" @change="onNoteChange" />
                                 </ion-col>
                             </ion-row>
 
                             <ion-row>
                                 <ion-col>
                                     <ion-item>
-                                        <ion-label position="floating">Commentaire...</ion-label>
+                                        <ion-label position="floating">
+                                            {{ __('pages.showApp.form.comment', 'Commentaire') }}...
+                                        </ion-label>
                                     
                                         <ion-textarea></ion-textarea>
                                     </ion-item>
@@ -115,7 +121,9 @@
 
                             <ion-row>
                                 <ion-col>
-                                    <ion-button size="small"> Envoyer </ion-button>
+                                    <ion-button size="small"> 
+                                        {{ __('pages.showApp.form.send', 'Envoyer') }}
+                                    </ion-button>
                                 </ion-col>
                             </ion-row>
                         </ion-grid>
@@ -146,7 +154,7 @@
     </ion-app>
 
     <ion-app v-else>
-        <NotFound message="Application not found" />
+        <NotFound :message="__('pages.showApp.appNotFound', `Cette application n'extiste pas`)" />
     </ion-app>
 </template>
 
@@ -154,7 +162,7 @@
 import { Stars, NotFound } from '@/components';
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useApp, useGuest, useSearchbar, useRepos } from '@/hooks';
+import { useApp, useGuest, useSearchbar, useRepos, useTranslate } from '@/hooks';
 
 /**********************************************************/
 /** APPEL DES HOOKS ***************************************/
@@ -167,6 +175,7 @@ const { app } = useApp(appId.value);
 const { user: getUser, guest, isSignedIn } = useGuest();
 const { hide } = useSearchbar();
 const $repos = useRepos();
+const { __ } = useTranslate();
 
 /**********************************************************/
 /** APPEL DES SOUS HOOKS **********************************/

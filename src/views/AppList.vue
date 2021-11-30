@@ -15,7 +15,7 @@
                     <ion-row>
                         <ion-col>
                             <ion-text style="font-size: 20px;">
-                                Vous n'avez enregistré encore aucune application.
+                                {{ __('pages.appList.notApp', `Vous n'avez enregistré encore aucune application.`) }}
                             </ion-text>
                         </ion-col>
                     </ion-row>
@@ -32,7 +32,7 @@
 <script setup>
 import { AppIconSelector, CreateAppRedirectButton } from '@/components';
 import { defineProps, computed, ref } from 'vue';
-import { useApps, useSearchbar, useResponsive } from '@/hooks';
+import { useApps, useSearchbar, useResponsive, useTranslate } from '@/hooks';
 
 const props = defineProps({
     mine: {
@@ -43,6 +43,7 @@ const props = defineProps({
 const { list: globalList, myList } = useApps();
 const { show } = useSearchbar();
 const { xs, sm, md } = useResponsive();
+const { __ } = useTranslate();
 
 show();
 

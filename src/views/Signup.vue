@@ -12,27 +12,23 @@
                             <ion-row>
                                 <ion-col>
                                     <ion-item>
-                                        <ion-label position="floating"> Prénom </ion-label>
+                                        <ion-label position="floating">
+                                            {{ __('pages.account.FIRSTNAME', 'Prénom') }}
+                                        </ion-label>
 
-                                        <ion-input :value="createdUser.firstname" @input="createdUser.firstname = $event.target.value ?? ''"></ion-input>
+                                        <ion-input :value="createdUser.firstname" 
+                                                    @input="createdUser.firstname = $event.target.value ?? ''"></ion-input>
                                     </ion-item>
                                 </ion-col>
 
                                 <ion-col>
                                     <ion-item>
-                                        <ion-label position="floating"> Nom </ion-label>
+                                        <ion-label position="floating">
+                                            {{ __('pages.account.LASTNAME', 'Nom') }}
+                                        </ion-label>
 
-                                        <ion-input :value="createdUser.lastname" @input="createdUser.lastname = $event.target.value ?? ''"></ion-input>
-                                    </ion-item>
-                                </ion-col>
-                            </ion-row>
-
-                            <ion-row>
-                                <ion-col>
-                                    <ion-item>
-                                        <ion-label position="floating"> Email </ion-label>
-
-                                        <ion-input type="email" :value="createdUser.email" @input="createdUser.email = $event.target.value ?? ''"></ion-input>
+                                        <ion-input :value="createdUser.lastname" 
+                                                    @input="createdUser.lastname = $event.target.value ?? ''"></ion-input>
                                     </ion-item>
                                 </ion-col>
                             </ion-row>
@@ -40,15 +36,33 @@
                             <ion-row>
                                 <ion-col>
                                     <ion-item>
-                                        <ion-label position="floating"> Mot de passe </ion-label>
+                                        <ion-label position="floating">
+                                            {{ __('pages.account.EMAIL', 'Email') }}
+                                        </ion-label>
 
-                                        <ion-input type="password" :value="createdUser.password" @input="createdUser.password = $event.target.value ?? ''"></ion-input>
+                                        <ion-input type="email" :value="createdUser.email" 
+                                                    @input="createdUser.email = $event.target.value ?? ''"></ion-input>
+                                    </ion-item>
+                                </ion-col>
+                            </ion-row>
+
+                            <ion-row>
+                                <ion-col>
+                                    <ion-item>
+                                        <ion-label position="floating">
+                                            {{ __('pages.account.NEW_PASSWORD', 'Mot de passe') }}
+                                        </ion-label>
+
+                                        <ion-input type="password" :value="createdUser.password" 
+                                                    @input="createdUser.password = $event.target.value ?? ''"></ion-input>
                                     </ion-item>
                                 </ion-col>
 
                                 <ion-col>
                                     <ion-item>
-                                        <ion-label position="floating"> Validation du mot de passe </ion-label>
+                                        <ion-label position="floating">
+                                            {{ __('pages.account.VERIFICATED_PASSWORD', 'Validation du mot de passe') }}
+                                        </ion-label>
 
                                         <ion-input type="password" :value="createdUser.validatedPassword" @input="createdUser.validatedPassword = $event.target.value ?? ''"></ion-input>
                                     </ion-item>

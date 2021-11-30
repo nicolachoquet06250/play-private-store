@@ -30,6 +30,33 @@
             "VERIFICATED_PASSWORD": "VERIFIER LE MOT DE PASSE",
             "error_message": "Les mot de passes ne correspondent pas.",
             "success_message": "Vos données ont été modifié avec succès."
+        },
+        "appList": {
+            "notApp": "Vous n'avez enregistré encore aucune application."
+        },
+        "createApp": {
+            "appBlocTitle": "Informations sur l'application",
+            "appName": "Nom de l'appli",
+            "logo": "Logo",
+            "description": "Description",
+            "gitRepoBlocTitle": "Informations sur le repository git",
+            "repoName": "Nom du repository",
+            "repoVersion": "version du repository"
+        },
+        "showApp": {
+            "installButton": "Installer",
+            "notScreenshotMessage": "Aucune captures d'écrans pour cette application",
+            "aboutAppTitle": "A propos de l'appli",
+            "notesTitle": "Notes et avis",
+            "form": {
+                "yourNote": "Votre note",
+                "comment": "Commentaire",
+                "send": "Envoyer"
+            },
+            "appNotFound": "Cette application n'extiste pas"
+        },
+        "signin": {
+            "password": "Mot de passe"
         }
     }
 }
