@@ -44,11 +44,12 @@
 import { PwaInstallButton, AnimatedLink } from '@/components';
 import { computed, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { useGuest, useApp } from '@/hooks';
+import { useGuest, useApp, useTranslate } from '@/hooks';
 
 const { guest, isSignedIn, signOut } = useGuest();
 const $route = useRoute();
 let { app } = useApp(parseInt($route.params.appId ?? -1));
+const { __ } = useTranslate();
 
 const lastPagePath = ref(window.history.state.back);
 const lastPageIsApps = computed(() => lastPagePath.value === '/apps' && $route.name === 'ShowApp');
@@ -59,7 +60,7 @@ const routes = computed(() => [
         conf: {
             path: '/apps'
         },
-        title: 'App List',
+        title: __('sidebar.AppList', 'Applications'),
         show: true,
         active: lastPageIsApps.value
     },
@@ -76,7 +77,7 @@ const routes = computed(() => [
         conf: {
             path: '/my-apps'
         },
-        title: 'My Apps',
+        title: __('sidebar.MyApps', 'Mes applications'),
         show: isSignedIn.value,
         active: lastPageIsMyApps.value
     },
@@ -93,7 +94,7 @@ const routes = computed(() => [
         conf: {
             path: '/account'
         },
-        title: 'Account',
+        title: __('sidebar.Account', 'Mon compte'),
         show: isSignedIn.value,
         active: false
     },
@@ -103,7 +104,7 @@ const routes = computed(() => [
             name: 'log-out',
             position: 'after'
         },
-        title: 'Logout',
+        title: __('sidebar.Logout', 'Se déconnecter'),
         show: isSignedIn.value,
         active: false
     },
@@ -111,7 +112,7 @@ const routes = computed(() => [
         conf: {
             path: '/signin'
         },
-        title: 'Signin',
+        title: __('sidebar.Signin', `Se connecter`),
         show: !isSignedIn.value,
         active: false
     },
@@ -119,7 +120,7 @@ const routes = computed(() => [
         conf: {
             path: '/signup'
         },
-        title: 'Signup',
+        title: __('sidebar.Signup', `S'inscrire`),
         show: !isSignedIn.value,
         active: false
     },
@@ -127,7 +128,7 @@ const routes = computed(() => [
         conf: {
             path: '/about'
         },
-        title: 'About',
+        title: __('sidebar.About', 'A propos'),
         show: true,
         active: false
     },

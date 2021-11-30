@@ -1,0 +1,11 @@
+{
+    "sidebar": {
+        "AppList": "Applications",
+        "MyApps": "Mes applications",
+        "Account": "Mon compte",
+        "Signin": "Se connecter",
+        "Signup": "S'inscrire",
+        "Logout": "Se déconnecter",
+        "About": "A propos"
+    }
+}

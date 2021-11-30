@@ -1,0 +1,1 @@
+export * as fr from './fr.json';

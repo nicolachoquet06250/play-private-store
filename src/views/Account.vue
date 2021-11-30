@@ -99,7 +99,10 @@
                                             NOUVEAU MOT DE PASSE
                                         </ion-label>
 
-                                        <ion-input type="password" :value="password" @input="password = $event.target.value ?? ''" @keyup="$event.target.value === '' ? (password = '') : null"></ion-input>
+                                        <ion-input type="password" 
+                                                    :value="password" 
+                                                    @input="password = $event.target.value ?? ''" 
+                                                    @keyup="$event.target.value === '' ? (password = '') : null"></ion-input>
                                     </ion-item>
                                 </ion-col>
                             </ion-row>
@@ -111,7 +114,10 @@
                                             VERIFIER LE MOT DE PASSE
                                         </ion-label>
 
-                                        <ion-input type="password" :value="verificatedPassword" @input="verificatedPassword = $event.target.value ?? ''" @keyup="$event.target.value === '' ? (verificatedPassword = '') : null"></ion-input>
+                                        <ion-input type="password" 
+                                                    :value="verificatedPassword" 
+                                                    @input="verificatedPassword = $event.target.value ?? ''" 
+                                                    @keyup="$event.target.value === '' ? (verificatedPassword = '') : null"></ion-input>
                                     </ion-item>
                                 </ion-col>
                             </ion-row>
@@ -134,9 +140,11 @@
         </ion-content>
 
         <ion-footer style="height: 50px;">
-            <CancelButton id="footer-cancel-signin-button" @click="cancelAccount" />
+            <CancelButton id="footer-cancel-signin-button" 
+                            @click="cancelAccount" />
 
-            <ValidateButton id="footer-validate-signin-button" @click="updateAccount" />
+            <ValidateButton id="footer-validate-signin-button" 
+                            @click="updateAccount" />
         </ion-footer>
     </ion-app>
 </template>

@@ -1,7 +1,7 @@
 {
     "name": "Play Private Store",
     "short_name": "PPS",
-    "background_color": "#000000",
+    "background_color": "#ffffff",
     "theme_color": "#ffffff",
     "description": "store d'applications privé pour applications de tests",
     "display": "standalone",
