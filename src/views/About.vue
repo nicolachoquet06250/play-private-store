@@ -152,7 +152,10 @@ hide();
     margin: 0;
   }
 
-  p, ul li {
+  p, 
+  ul li, 
+  .label.label-md, 
+  a {
     white-space: break-spaces;
   }
 </style>
