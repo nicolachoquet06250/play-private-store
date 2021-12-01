@@ -137,6 +137,13 @@ hide();
 #main {
     padding-top: 65px!important;
 }
+
+.label > .icon {
+  margin-left: 10px;
+  display: inline-flex;
+  justify-content: center;
+  align-content: flex-end;
+}
 </style>
 
 <style scoped>
