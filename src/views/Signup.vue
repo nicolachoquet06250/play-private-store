@@ -86,10 +86,11 @@
 import { CancelButton, ValidateButton } from '@/components';
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import { useSearchbar } from '@/hooks';
+import { useSearchbar, useTranslate } from '@/hooks';
 
 const $router = useRouter();
 const { hide } = useSearchbar();
+const { __ } = useTranslate();
 
 hide();
 
