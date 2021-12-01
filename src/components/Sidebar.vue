@@ -69,6 +69,14 @@ const lastPageIsMyApps = computed(() => lastPagePath.value === '/my-apps' && $ro
 const routes = computed(() => [
     {
         conf: {
+            path: '/account'
+        },
+        title: __('sidebar.Account', 'Mon compte'),
+        show: isSignedIn.value,
+        active: false
+    },
+    {
+        conf: {
             path: '/apps'
         },
         title: __('sidebar.AppList', 'Applications'),
@@ -100,14 +108,6 @@ const routes = computed(() => [
         title: app.value?.name ?? '',
         show: lastPageIsMyApps.value,
         active: lastPageIsMyApps.value
-    },
-    {
-        conf: {
-            path: '/account'
-        },
-        title: __('sidebar.Account', 'Mon compte'),
-        show: isSignedIn.value,
-        active: false
     },
     {
         click: signOut,
