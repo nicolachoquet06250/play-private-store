@@ -25,25 +25,16 @@
 
               <ion-item>
                 <ion-label>
-                  <p>
-                    Cette application à été créée dans le but de simplifier le partage des applications de tests entre équipe et d'élargire le domaine de test au bon vouloir du dévelopeur.
-                  </p>
+                  <p style="margin-bottom: 15px;">Cette application à été créée dans le but de simplifier le partage des applications de tests entre équipe et d'élargire le domaine de test au bon vouloir du dévelopeur.</p>
 
-                  <p>
-                    Vous n'avez qu'à :
+                  <p>Vous n'avez qu'à :
 
                     <ul>
-                      <li>
-                        Créer une application
-                      </li>
+                      <li>Créer une application</li>
 
-                      <li>
-                        remplire le formulaire
-                      </li>
+                      <li>Remplire le formulaire</li>
 
-                      <li>
-                        laisser les testeurs mettre leur avis et leur note
-                      </li>
+                      <li>Laisser les testeurs mettre leur avis et leur note</li>
                     </ul>
                   </p>
                 </ion-label>
