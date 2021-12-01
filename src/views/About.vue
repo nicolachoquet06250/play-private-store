@@ -160,4 +160,8 @@ hide();
   .segment .label {
     margin: 0;
   }
+
+  p, ul li {
+    white-space: break-spaces;
+  }
 </style>
