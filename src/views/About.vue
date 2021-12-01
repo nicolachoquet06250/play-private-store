@@ -1,15 +1,15 @@
 <template>
   <ion-app>
     <ion-content>
-      <ion-title> A propos </ion-title>
+      <ion-title> {{ __('pages.about.title', 'A propos') }} </ion-title>
 
       <ion-segment :value="tab">
         <ion-segment-button value="description" @click="tab = 'description'">
-          <ion-label> Description </ion-label>
+          <ion-label> {{ __('pages.about.descriptionTabTitle', 'Description') }} </ion-label>
         </ion-segment-button>
 
         <ion-segment-button value="process" @click="tab = 'process'">
-          <ion-label> Processus </ion-label>
+          <ion-label> {{ __('pages.about.processTabTitle', 'Processus') }} </ion-label>
         </ion-segment-button>
       </ion-segment>
 
@@ -19,22 +19,22 @@
             <ion-list>
               <ion-list-header>
                 <ion-label>
-                  Description
+                  {{ __('pages.about.descriptionTabTitle', 'Description') }}
                 </ion-label>
               </ion-list-header>
 
               <ion-item>
                 <ion-label>
-                  <p style="margin-bottom: 15px;">Cette application à été créée dans le but de simplifier le partage des applications de tests entre équipe et d'élargire le domaine de test au bon vouloir du dévelopeur.</p>
+                  <p style="margin-bottom: 15px;">{{ __('pages.about.descriptionTabFirstParagraph', `Cette application à été créée dans le but de simplifier le partage des applications de tests entre équipe et d'élargire le domaine de test au bon vouloir du dévelopeur.`) }}</p>
 
-                  <p>Vous n'avez qu'à :
+                  <p>{{ __('pages.about.descriptionTabListHeader', `Vous n'avez qu'à`) }} :
 
                     <ul>
-                      <li>Créer une application</li>
+                      <li>{{ __('pages.about.descriptionTabListFirstElement', `Créer une application`) }}</li>
 
-                      <li>Remplire le formulaire</li>
+                      <li>{{ __('pages.about.descriptionTabListSecondElement', `Remplire le formulaire`) }}</li>
 
-                      <li>Laisser les testeurs mettre leur avis et leur note</li>
+                      <li>{{ __('pages.about.descriptionTabListThirdElement', `Laisser les testeurs mettre leur avis et leur note`) }}</li>
                     </ul>
                   </p>
                 </ion-label>
@@ -48,13 +48,13 @@
         <ion-row>
           <ion-list>
             <ion-list-header>
-              <ion-label> Prérequis </ion-label>
+              <ion-label> {{ __('pages.about.processTabRequestedTitle', 'Prerequis') }} </ion-label>
             </ion-list-header>
 
             <ion-item>
               <ion-label>
                 <a href="https://www.frandroid.com/comment-faire/tutoriaux/184906_comment-acceder-au-mode-developpeur-sur-android" target="_blank">
-                  Passer votre mobile en mode développeur
+                  {{ __('pages.about.modeDeveloperLink', 'Passer votre mobile en mode développeur') }}
                 </a>
 
                 <ion-icon src="https://unpkg.com/ionicons@5.5.2/dist/svg/arrow-redo-circle.svg"></ion-icon>
@@ -64,7 +64,7 @@
             <ion-item>
               <ion-label>
                 <a href="https://www.frandroid.com/comment-faire/tutoriaux/231266_autoriserlessourcesinconnues" target="_blank">
-                  Autoriser les sources inconnues
+                  {{ __('pages.about.unknownSource', 'Autoriser les sources inconnues') }}
                 </a>
 
                 <ion-icon src="https://unpkg.com/ionicons@5.5.2/dist/svg/arrow-redo-circle.svg"></ion-icon>
@@ -74,7 +74,7 @@
             <ion-item>
               <ion-label>
                 <a href="https://support.mobile-tracker-free.com/hc/fr/articles/360005346953-Comment-d%C3%A9sactiver-Google-Play-Protect-" target="_blank">
-                  Desactiver "Google Play Protect"
+                  {{ __('pages.about.disableProtect', 'Desactiver "Google Play Protect"') }}
                 </a>
 
                 <ion-icon src="https://unpkg.com/ionicons@5.5.2/dist/svg/arrow-redo-circle.svg"></ion-icon>
@@ -87,30 +87,30 @@
           <ion-col>
             <ion-list>
               <ion-list-header>
-                <ion-label> Installation </ion-label>
+                <ion-label> {{ __('pages.about.processTabInstallationTitle', 'Installation') }} </ion-label>
               </ion-list-header>
 
               <ion-item>
                 <ion-label>
-                  Cliquer sur l'application qui vous intéresse
+                  {{ __('pages.about.processTabInstallationFirstStep', `Cliquer sur l'application qui vous intéresse`) }}
                 </ion-label>
               </ion-item>
 
               <ion-item>
                 <ion-label>
-                  Cliquer sur "Installer"
+                  {{ __('pages.about.processTabInstallationSecondStep', `Cliquer sur "Installer"`) }}
                 </ion-label>
               </ion-item>
 
               <ion-item>
                 <ion-label>
-                  Sélectionner le fichier téléchargé
+                  {{ __('pages.about.processTabInstallationThirdStep', `Sélectionner le fichier téléchargé`) }}
                 </ion-label>
               </ion-item>
 
               <ion-item>
                 <ion-label>
-                  Cliquer sur "Installer"
+                  {{ __('pages.about.processTabInstallationFourthStep', `Cliquer sur "Installer"`) }}
                 </ion-label>
               </ion-item>
             </ion-list>
@@ -123,9 +123,10 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useSearchbar } from '@/hooks';
+import { useSearchbar, useTranslate } from '@/hooks';
 
 const { hide } = useSearchbar();
+const { __ } = useTranslate();
 
 const tab = ref('description');
 
