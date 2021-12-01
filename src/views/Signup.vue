@@ -3,7 +3,9 @@
         <ion-content id="signup">
             <ion-card>
                 <ion-card-header>
-                    <ion-card-title>Inscription</ion-card-title>
+                    <ion-card-title>
+                        {{ __('pages.signup.title', 'Inscription') }}
+                    </ion-card-title>
                 </ion-card-header>
 
                 <ion-card-content>

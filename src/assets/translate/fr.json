@@ -59,6 +59,9 @@
         "signin": {
             "title": "Connexion",
             "password": "Mot de passe"
+        },
+        "signup": {
+            "title": "Inscription"
         }
     }
 }
