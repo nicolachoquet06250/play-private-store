@@ -34,7 +34,8 @@
 
                 <ion-item>
                     <ion-label>
-                        {{ __('sidebar.languagesSelectLabel', 'Langue') }}
+                        <!--{{ __('sidebar.languagesSelectLabel', 'Langue') }}-->
+                        <ion-icon src="https://unpkg.com/ionicons@5.5.2/dist/svg/language.svg"></ion-icon>
                     </ion-label>
 
                     <select :value="lang" @change="updateLang($event.target.value)">
