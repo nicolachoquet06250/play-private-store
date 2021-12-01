@@ -6,7 +6,8 @@
         "Signin": "Se connecter",
         "Signup": "S'inscrire",
         "Logout": "Se déconnecter",
-        "About": "A propos"
+        "About": "A propos",
+        "languagesSelectLabel": "Langue"
     },
     "pwaInstallationCard": {
         "text": "Installer l'application sur votre bureau",
@@ -56,6 +57,7 @@
             "appNotFound": "Cette application n'extiste pas"
         },
         "signin": {
+            "title": "Connexion",
             "password": "Mot de passe"
         }
     }

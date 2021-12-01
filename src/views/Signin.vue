@@ -3,7 +3,9 @@
         <ion-content id="signin">
             <ion-card>
                 <ion-card-header>
-                    <ion-card-title>Connexion</ion-card-title>
+                    <ion-card-title>
+                        {{ __('pages.signin.title', 'Connexion') }}
+                    </ion-card-title>
                 </ion-card-header>
 
                 <ion-card-content>

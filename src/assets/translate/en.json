@@ -1,0 +1,64 @@
+{
+    "sidebar": {
+        "AppList": "Applications",
+        "MyApps": "My applications",
+        "Account": "My account",
+        "Signin": "Login",
+        "Signup": "Signup",
+        "Logout": "Logout",
+        "About": "About",
+        "languagesSelectLabel": "Language"
+    },
+    "pwaInstallationCard": {
+        "text": "Install application on your device",
+        "installButton": "Install",
+        "cancelButton": "Cancel"
+    },
+    "refreshCard": {
+        "text": "The application has been updated",
+        "button": "Reload"
+    },
+    "pages": {
+        "account": {
+            "title": "My account",
+            "FIRSTNAME": "FIRSTNAME",
+            "LASTNAME": "LASTNAME",
+            "EMAIL": "EMAIL",
+            "GITLAB_PSEUDO": "GITLAB PSEUDO",
+            "GITHUB_PSEUDO": "GITHUB PSEUDO",
+            "update_title_password": "Update password",
+            "NEW_PASSWORD": "NEW PASSWORD",
+            "VERIFICATED_PASSWORD": "VERIFICATE PASSWORD",
+            "error_message": "The passwords do not match.",
+            "success_message": "Your data has been modified successfully."
+        },
+        "appList": {
+            "notApp": "You haven't registered any apps yet."
+        },
+        "createApp": {
+            "appBlocTitle": "Application Information",
+            "appName": "Application name",
+            "logo": "Logo",
+            "description": "Description",
+            "gitRepoBlocTitle": "Git repo informations",
+            "repoName": "repo name",
+            "repoVersion": "repo version"
+        },
+        "showApp": {
+            "installButton": "Install",
+            "notScreenshotMessage": "No screenshots for this app",
+            "aboutAppTitle": "About the app",
+            "notesTitle": "Ratings and Reviews",
+            "form": {
+                "yourNote": "Your rating",
+                "comment": "Comment",
+                "send": "Send"
+            },
+            "appNotFound": "Application not found"
+        },
+        "signin": {
+            "title": "Login",
+            "password": "Password"
+        }
+    }
+}

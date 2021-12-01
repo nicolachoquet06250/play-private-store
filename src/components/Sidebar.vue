@@ -32,6 +32,16 @@
                     </ion-item>
                 </template>
 
+                <ion-item>
+                    <ion-label>
+                        {{ __('sidebar.languagesSelectLabel', 'Langue') }}
+                    </ion-label>
+
+                    <select :value="lang" @change="updateLang($event.target.value)">
+                        <option v-for="_lang of Object.keys(AVAILABLE_LANGS)" :key="_lang" :value="AVAILABLE_LANGS[_lang]">{{ _lang }}</option>
+                    </select>
+                </ion-item>
+
                 <ion-item class="pwa-scope">
                     <PwaInstallButton />
                 </ion-item>
@@ -49,7 +59,7 @@ import { useGuest, useApp, useTranslate } from '@/hooks';
 const { guest, isSignedIn, signOut } = useGuest();
 const $route = useRoute();
 let { app } = useApp(parseInt($route.params.appId ?? -1));
-const { __ } = useTranslate();
+const { __, updateLang, lang, AVAILABLE_LANGS } = useTranslate();
 
 const lastPagePath = ref(window.history.state.back);
 const lastPageIsApps = computed(() => lastPagePath.value === '/apps' && $route.name === 'ShowApp');
@@ -148,7 +158,7 @@ watch(() => $route.params.appId, () => {
     if ($route.params.appId) {
         app = useApp(parseInt($route.params.appId ?? -1)).app;
     }
-})
+});
 </script>
 
 <style lang="scss">
