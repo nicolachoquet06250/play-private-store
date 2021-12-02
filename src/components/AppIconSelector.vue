@@ -69,18 +69,22 @@ const href = computed(() => ({
 
 const linkStyle = computed(() => ({
     height: '100%', 
-    display: 'inline-block'
+    display: 'flex',
+    'flex-direction': 'column'
 }));
 
 const appIconStyle = computed(() => ({
-    '--icon': `url(${props.app.logo})`
+    '--icon': `url(${props.app.logo})`,
+    display: 'flex',
+    'align-self': 'center'
 }));
 
 const appDetailsWrapperStyle = computed(() => ({
     display: 'flex', 
     'flex-direction': 'column', 
     'justify-content': 'space-between', 
-    height: 'calc(100% - 90px)'
+    height: 'calc(100% - 90px)',
+    'padding-left': (props.app.name.length >= 17 ? '35px' : '5px')
 }));
 
 const appNameStyle = computed(() => ({

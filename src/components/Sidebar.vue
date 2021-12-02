@@ -17,7 +17,7 @@
                 </ion-title>
                 
                 <ion-title v-else>
-                    <ion-button @click="$router.push({ name: 'Signin' })" tag="ion-button">
+                    <ion-button @click="$router.push({ name: 'Signin' })">
                         {{ __('sidebar.Signin', 'Se connecter') }} 
                     </ion-button>
                 </ion-title>
@@ -28,31 +28,34 @@
             <ion-list>
                 <template v-for="route of routes" :key="route">
                     <ion-item class="link-item" v-if="route.show">
-                        <AnimatedLink :routeConf="route.conf" :show="route.show" @click="route.click" :active="route.active" >
-                            <ion-icon v-if="route.icon && route.icon.position === 'before'" 
-                                      :name="route.icon.name" 
-                                      style="padding-right: 15px;"></ion-icon>
-
-                            <div v-if="route.logo" class="app-logo" :style="{ '--background-image': `url(${route.logo})` }"></div>
+                        <AnimatedLink :routeConf="route.conf" 
+                                      :show="route.show" 
+                                      :active="route.active" >
+                            <div v-if="route.logo" 
+                                 class="app-logo" 
+                                 :style="{ 
+                                     '--background-image': `url(${route.logo})`
+                                 }"></div>
                             
-                            <span> {{ route.title }} </span>
-
-                            <ion-icon v-if="route.icon && route.icon.position === 'after'" 
-                                      :name="route.icon.name" 
-                                      style="padding-left: 15px;"></ion-icon>
+                            <span>
+                                {{ route.title }}
+                            </span>
                         </AnimatedLink>
                     </ion-item>
                 </template>
 
                 <ion-item>
                     <ion-label>
-                        <!--{{ __('sidebar.languagesSelectLabel', 'Langue') }}-->
                         <ion-icon src="https://unpkg.com/ionicons@5.5.2/dist/svg/language.svg"></ion-icon>
                     </ion-label>
 
-                    <select :value="lang" @change="updateLang($event.target.value)">
-                        <option v-for="_lang of Object.keys(AVAILABLE_LANGS)" :key="_lang" :value="AVAILABLE_LANGS[_lang]">{{ _lang }}</option>
-                    </select>
+                    <div class="select" style="border: none; background: none; border-bottom: 1px solid black; width: max-content; flex: 5;">
+                        <select :value="lang" @change="updateLang($event.target.value)" style="width: 100%;">
+                            <option v-for="_lang of Object.keys(AVAILABLE_LANGS)" :key="_lang" :value="AVAILABLE_LANGS[_lang]">{{ _lang }}</option>
+                        </select>
+
+                        <span class="focus"></span>
+                    </div>
                 </ion-item>
 
                 <ion-item class="pwa-scope">
@@ -114,22 +117,20 @@ const routes = computed(() => [
     },
     {
         conf: {
+            path: '/create-app'
+        },
+        title: __('sidebar.CreateApp', 'Créer une application'),
+        show: lastPagePath.value === '/my-apps' && $route.name === 'CreateApp',
+        active: lastPagePath.value === '/my-apps' && $route.name === 'CreateApp'
+    },
+    {
+        conf: {
             path: `/app/${$route.params.appId}`,
         },
         logo: app.value?.logo ?? '',
         title: app.value?.name ?? '',
         show: lastPageIsMyApps.value,
         active: lastPageIsMyApps.value
-    },
-    {
-        click: signOut,
-        icon: {
-            name: 'log-out',
-            position: 'after'
-        },
-        title: __('sidebar.Logout', 'Se déconnecter'),
-        show: isSignedIn.value,
-        active: false
     },
     {
         conf: {
@@ -198,5 +199,87 @@ watch(() => $route.params.appId, () => {
         background-position: center;
         background-size: contain;
     }
+}
+</style>
+
+<style lang="scss" scoped>
+select {
+  --select-border: #777;
+  --select-focus: blue;
+  --select-arrow: var(--select-border);
+
+  // A reset of styles, including removing the default dropdown arrow
+  appearance: none;
+  // Additional resets for further consistency
+  background-color: transparent;
+  border: none;
+  padding: 0 1em 0 0;
+  margin: 0;
+  // width: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: inherit;
+  line-height: inherit;
+  outline: none;
+  
+  // width: 100%;
+  // min-width: 15ch;
+  // max-width: 30ch;
+  // border: 1px solid var(--select-border);
+  // border-radius: 0.25em;
+  padding: 0.25em 0.5em;
+  font-size: 1.25rem;
+  cursor: pointer;
+  // line-height: 1.1;
+  // background-color: #fff;
+  // background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
+
+  display: grid;
+  grid-template-areas: "select";
+  align-items: center;
+  position: relative;
+}
+
+.select::after {
+  content: "";
+  width: 0.8em;
+  height: 0.5em;
+  background-color: var(--select-arrow);
+  clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+  justify-self: end;
+}
+
+select,
+.select:after {
+  grid-area: select;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+select:focus + .focus {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  border: 2px solid var(--select-focus);
+  border-radius: inherit;
+}
+
+select[multiple] {
+  padding-right: 0;
+  height: 6rem;
+}
+
+select[multiple] option {
+  white-space: normal;
+}
+
+.select--disabled {
+  cursor: not-allowed;
+  background-color: #eee;
+  background-image: linear-gradient(to top, #ddd, #eee 33%);
 }
 </style>

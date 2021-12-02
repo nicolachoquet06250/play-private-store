@@ -92,7 +92,9 @@ const appList = ref([
     },
 ]);
 
-const slugify = value => value.replace(/\./g, '-').replace(/ /g, '-');
+const slugify = value => value.replace(/\./g, '-')
+    .replace(/ /g, '-')
+    .replace(/'/g, '-');
 
 export const useApps = () => {
     const { guest } = useGuest();
@@ -106,6 +108,7 @@ export const useApps = () => {
     
         /**
          * @param {String} version version de l'application
+         * @param {'github'|'gitlab'} repo_type de répository utilisé
          * @param {String} name nom de l'application
          * @param {String} repoName nom du répo git
          * @param {String} logo vers le logo de l'application
@@ -114,12 +117,13 @@ export const useApps = () => {
          * @param {Array<String>} permissions permissions demandées à l'utilisateur par l'application pour qu'il soit au courrent avant de l'installée
          * @param {Array<String>} categories catégories de l'application pour faciliter la recherche
          */
-        createApp(version, name, repoName, logo, description, screenshots, permissions, categories) {
+        createApp(version, repo_type, name, repoName, logo, description, screenshots, permissions, categories) {
             const lastApp = appList.value.reduce((r, c) => c, null);
             
             appList.value = [...appList.value, {
                 id: (lastApp?.id ?? 0) + 1,
                 name,
+                repo_type,
                 nameSlug: slugify(name),
                 repoName,
                 logo,

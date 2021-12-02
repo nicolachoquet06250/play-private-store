@@ -10,7 +10,7 @@
                             </ion-title>
                         </ion-col>
                     </ion-row>
-
+                    
                     <ion-row>
                         <ion-col>
                             <ion-item>
@@ -61,6 +61,22 @@
 
                     <ion-row>
                         <ion-col>
+                            <ion-segment :value="repoType">
+                                <ion-segment-button v-if="userUsedRepos.indexOf(GITHUB) !== -1" 
+                                                    :value="GITHUB" @click="repoType = GITHUB">
+                                    <ion-icon src="https://unpkg.com/ionicons@5.5.2/dist/svg/logo-github.svg"></ion-icon>
+                                </ion-segment-button>
+
+                                <ion-segment-button v-if="userUsedRepos.indexOf(GITLAB) !== -1" 
+                                                    :value="GITLAB" @click="repoType = GITLAB">
+                                    <ion-icon src="https://unpkg.com/ionicons@5.5.2/dist/svg/logo-gitlab.svg"></ion-icon>
+                                </ion-segment-button>
+                            </ion-segment>
+                        </ion-col>
+                    </ion-row>
+
+                    <ion-row>
+                        <ion-col>
                             <ion-item>
                                 <ion-label position="floating"> 
                                     {{ __('pages.createApp.repoName', 'Nom du repository') }}
@@ -94,18 +110,25 @@
 
 <script setup>
 import { ValidateButton } from '@/components';
-import { reactive } from 'vue';
+import { reactive, computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useSearchbar, useApps, useToast, useTranslate } from '@/hooks';
+import { useSearchbar, useApps, useToast, useTranslate, useGuest, useRepos } from '@/hooks';
 
 const { hide } = useSearchbar();
 const { createApp: saveApp } = useApps();
 const { openToast } = useToast();
+const { guest, isSignedIn } = useGuest();
+const { GITHUB, GITLAB } = useRepos();
 const $router = useRouter();
 const { __ } = useTranslate();
 
 hide();
 
+const repoType = ref(GITHUB);
+const userUsedRepos = computed(() => isSignedIn.value ? 
+    Object.keys(guest.value.repo_pseudo).reduce((r, c) => 
+        guest.value.repo_pseudo[c] !== '' ? [...r, c] : r, []) 
+    : []);
 const form = reactive({
     appName: '',
     appLogo: '',
@@ -120,7 +143,7 @@ const createApp = () => {
         return;
     }
 
-    saveApp(form.repoVersion, form.appName, form.repoName, form.appLogo, form.appDescription, [], [], []);
+    saveApp(form.repoVersion, repoType.value, form.appName, form.repoName, form.appLogo, form.appDescription, [], [], []);
 
     $router.push({ name: 'MyApps' })
 };
