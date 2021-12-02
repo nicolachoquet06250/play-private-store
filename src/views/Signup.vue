@@ -108,6 +108,12 @@
                                     </ion-item>
                                 </ion-col>
                             </ion-row>
+                            
+                            <ion-row v-if="error">
+                                <div class="alert alert-error">
+                                    {{ error }}
+                                </div>
+                            </ion-row>
                         </ion-grid>
                     </form>
                 </ion-card-content>
@@ -126,16 +132,18 @@
 import { CancelButton, ValidateButton } from '@/components';
 import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useSearchbar, useTranslate, useRepos } from '@/hooks';
+import { useSearchbar, useTranslate, useRepos, useGuest } from '@/hooks';
 
 const $router = useRouter();
 const { hide } = useSearchbar();
+const { createAccount } = useGuest();
 const { __ } = useTranslate();
 const { GITLAB, GITHUB } = useRepos();
 
 hide();
 
 const currentTab = ref(GITHUB);
+const error = ref('');
 const createdUser = reactive({
     firstname: '',
     lastname: '',
@@ -148,10 +156,26 @@ const createdUser = reactive({
     validatedPassword: ''
 });
 
-const signUp = () => {
-    console.log(createdUser);
+const createError = (_error, timeout = 2000) => {
+    error.value = _error;
 
-    $router.push({ name: 'Signin' });
+    setTimeout(() => {
+        error.value = '';
+    }, timeout);
+};
+
+const signUp = () => {
+    /** Récupère l'objet "createdUser" en excluant la propriété "validatedPassword" */
+    const user = Object.keys(createdUser).reduce((r, c) => c !== 'validatedPassword' ? {...r, [c]: createdUser[c]} : r, {});
+
+    try {
+        createAccount(user);
+
+        $router.push({ name: 'Signin' });
+    }
+    catch (e) {
+        createError(e.message);
+    }
 };
 
 const cancelSignup = () => {
@@ -194,5 +218,21 @@ const segmentChanged = v => {
 
 #footer-validate-signup-button {
     transform: translateX(100%);
+}
+</style>
+
+<style lang="scss" scoped>
+.alert {
+    padding: 15px;
+    border: 1px solid;
+    border-radius: 5px;
+    width: 100%;
+    margin-top: 10px;
+    color: white;
+
+    &-error {
+        border-color: red;
+        background: red;
+    }
 }
 </style>

@@ -73,7 +73,7 @@ const routes = computed(() => [
         },
         title: __('sidebar.Account', 'Mon compte'),
         show: isSignedIn.value,
-        active: false
+        active: $route.name === 'Account'
     },
     {
         conf: {
@@ -81,7 +81,7 @@ const routes = computed(() => [
         },
         title: __('sidebar.AppList', 'Applications'),
         show: true,
-        active: lastPageIsApps.value
+        active: lastPageIsApps.value || $route.path === '/apps'
     },
     {
         conf: {
@@ -98,7 +98,7 @@ const routes = computed(() => [
         },
         title: __('sidebar.MyApps', 'Mes applications'),
         show: isSignedIn.value,
-        active: lastPageIsMyApps.value
+        active: lastPageIsMyApps.value || $route.path === '/my-apps'
     },
     {
         conf: {
@@ -125,7 +125,7 @@ const routes = computed(() => [
         },
         title: __('sidebar.Signin', `Se connecter`),
         show: !isSignedIn.value,
-        active: false
+        active: $route.name === 'Signin'
     },
     {
         conf: {
@@ -133,7 +133,7 @@ const routes = computed(() => [
         },
         title: __('sidebar.Signup', `S'inscrire`),
         show: !isSignedIn.value,
-        active: false
+        active: $route.name === 'Signup'
     },
     {
         conf: {
@@ -141,7 +141,7 @@ const routes = computed(() => [
         },
         title: __('sidebar.About', 'A propos'),
         show: true,
-        active: false
+        active: $route.name === 'About'
     },
 ]);
 
