@@ -46,12 +46,15 @@
 
                 <ion-item>
                     <ion-label>
-                        <ion-icon src="https://unpkg.com/ionicons@5.5.2/dist/svg/language.svg"></ion-icon>
+                        <ion-icon size="large" src="https://unpkg.com/ionicons@5.5.2/dist/svg/language.svg"></ion-icon>
                     </ion-label>
 
-                    <div class="select" style="border: none; background: none; border-bottom: 1px solid black; width: max-content; flex: 5;">
-                        <select :value="lang" @change="updateLang($event.target.value)" style="width: 100%;">
-                            <option v-for="_lang of Object.keys(AVAILABLE_LANGS)" :key="_lang" :value="AVAILABLE_LANGS[_lang]">{{ _lang }}</option>
+                    <div class="select">
+                        <select :value="lang" @change="updateLang($event.target.value)">
+                            <option v-for="_lang of Object.keys(AVAILABLE_LANGS)" :key="_lang" 
+                                    :value="AVAILABLE_LANGS[_lang]">
+                                {{ _lang }}
+                            </option>
                         </select>
 
                         <span class="focus"></span>
@@ -204,77 +207,69 @@ watch(() => $route.params.appId, () => {
 
 <style lang="scss" scoped>
 select {
-  --select-border: #777;
-  --select-focus: blue;
-  --select-arrow: var(--select-border);
+    --select-border: #777;
+    --select-focus: blue;
+    --select-arrow: var(--select-border);
 
-  // A reset of styles, including removing the default dropdown arrow
-  appearance: none;
-  // Additional resets for further consistency
-  background-color: transparent;
-  border: none;
-  padding: 0 1em 0 0;
-  margin: 0;
-  // width: 100%;
-  font-family: inherit;
-  font-size: inherit;
-  cursor: inherit;
-  line-height: inherit;
-  outline: none;
-  
-  // width: 100%;
-  // min-width: 15ch;
-  // max-width: 30ch;
-  // border: 1px solid var(--select-border);
-  // border-radius: 0.25em;
-  padding: 0.25em 0.5em;
-  font-size: 1.25rem;
-  cursor: pointer;
-  // line-height: 1.1;
-  // background-color: #fff;
-  // background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
+    width: 100%;
+    // A reset of styles, including removing the default dropdown arrow
+    appearance: none;
+    // Additional resets for further consistency
+    background-color: transparent;
+    border: none;
+    margin: 0;
+    font-family: inherit;
+    line-height: inherit;
+    outline: none;
+    padding: 0.25em 0.5em;
+    font-size: 1.25rem;
+    cursor: pointer;
+    display: grid;
+    grid-template-areas: "select";
+    align-items: center;
+    position: relative;
+    grid-area: select;
 
-  display: grid;
-  grid-template-areas: "select";
-  align-items: center;
-  position: relative;
+    &::-ms-expand {
+        display: none;
+    }
+
+    &::after {
+        content: "";
+        width: 0.8em;
+        height: 0.5em;
+        background-color: var(--select-arrow);
+        clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+        justify-self: end;
+        grid-area: select;
+    }
+
+    &:focus + .focus {
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        right: -1px;
+        bottom: -1px;
+        border: 2px solid var(--select-focus);
+        border-radius: inherit;
+    }
+
+    &[multiple] {
+        padding-right: 0;
+        height: 6rem;
+
+        option {
+            white-space: normal;
+        }
+    }
 }
 
-.select::after {
-  content: "";
-  width: 0.8em;
-  height: 0.5em;
-  background-color: var(--select-arrow);
-  clip-path: polygon(100% 0%, 0 0%, 50% 100%);
-  justify-self: end;
-}
-
-select,
-.select:after {
-  grid-area: select;
-}
-
-select::-ms-expand {
-  display: none;
-}
-
-select:focus + .focus {
-  position: absolute;
-  top: -1px;
-  left: -1px;
-  right: -1px;
-  bottom: -1px;
-  border: 2px solid var(--select-focus);
-  border-radius: inherit;
-}
-
-select[multiple] {
-  padding-right: 0;
-  height: 6rem;
-}
-
-select[multiple] option {
-  white-space: normal;
+.select {
+    border: none; 
+    background: none; 
+    border-bottom: 1px solid black; 
+    width: max-content;
+    flex: 5;
 }
 
 .select--disabled {
