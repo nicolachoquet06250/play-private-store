@@ -116,7 +116,7 @@ const form = reactive({
 
 const createApp = () => {
     if (Object.keys(form).reduce((r, c) => form[c] === '' ? true : r, false)) {
-        openToast(`Vous devez replire tous les champs`, 4000);
+        openToast(__('pages.createApp.errorNotAllFieldsFilled', `Vous devez replire tous les champs`), 4000);
         return;
     }
 

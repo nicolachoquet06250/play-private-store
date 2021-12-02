@@ -3,7 +3,9 @@
 
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { useReferer, useRedirect } from '@/hooks';
+import { useReferer, useRedirect, useTranslate } from '@/hooks';
+
+const { __ } = useTranslate();
 
 const isSignedIn = ref(false);
 const guest = ref(null);
@@ -80,7 +82,7 @@ export const useGuest = () => {
                 redirect();
             } else {
                 isSignedIn.value = false;
-                error.value = 'Vos identifiants ne correspondent pas !'
+                error.value = __('hooks.account.errorIdentsNotMatch', 'Vos identifiants ne correspondent pas !')
             }
         },
         signOut() {
@@ -92,23 +94,20 @@ export const useGuest = () => {
             redirect();
         },
         /**
-         * 
          * @param {{ firstname: String, lastname: String, email: String, repo_pseudo: { github: String, gitlab: String }, password: String }} user 
          */
         createAccount(user) {
             if (user) {
                 //eslint-disable-next-line
                 if (!user.email.match(/[a-z0-9\.\-\_]+\@[a-z\-\_]+\.[a-z]+$/)) {
-                    throw new Error(`L'email renseigné n'est pas au bon format`);
+                    throw new Error(__('hooks.account.errorBadEmailFormat', `L'email renseigné n'est pas au bon format`));
                 }
 
                 if (users.value.reduce((r, c) => c.email === user.email ? true : r, false)) {
-                    throw new Error(`L'email renseigné existe déjà, veuillez en saisir un autre ou vous connecter avec celui-ci.`);
+                    throw new Error(__('hooks.account.errorEmailAlreadyExists', `L'email renseigné existe déjà, veuillez en saisir un autre ou vous connecter avec celui-ci`));
                 }
 
                 users.value = [...users.value, user];
-
-                console.log(users.value);
             }
         }
     };

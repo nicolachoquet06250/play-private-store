@@ -42,7 +42,8 @@
             "description": "Description",
             "gitRepoBlocTitle": "Informations sur le repository git",
             "repoName": "Nom du repository",
-            "repoVersion": "version du repository"
+            "repoVersion": "version du repository",
+            "errorNotAllFieldsFilled": "Vous devez replire tous les champs"
         },
         "showApp": {
             "installButton": "Installer",
@@ -61,7 +62,8 @@
             "password": "Mot de passe"
         },
         "signup": {
-            "title": "Inscription"
+            "title": "Inscription",
+            "errorPasswordMessage": "Les mots de passe ne correspondent pas !"
         },
         "about": {
             "title": "A propos",
@@ -84,6 +86,13 @@
             "processTabInstallationSecondStep": "Cliquer sur \"Installer\"",
             "processTabInstallationThirdStep": "Sélectionner le fichier téléchargé",
             "processTabInstallationFourthStep": "Cliquer sur \"Installer\""
+        }
+    },
+    "hooks": {
+        "account": {
+            "errorBadEmailFormat": "L'email renseigné n'est pas au bon format",
+            "errorEmailAlreadyExists": "L'email renseigné existe déjà, veuillez en saisir un autre ou vous connecter avec celui-ci",
+            "errorIdentsNotMatch": "Vos identifiants ne correspondent pas !"
         }
     }
 }

@@ -169,6 +169,10 @@ const signUp = () => {
     const user = Object.keys(createdUser).reduce((r, c) => c !== 'validatedPassword' ? {...r, [c]: createdUser[c]} : r, {});
 
     try {
+        if (createdUser.validatedPassword !== createdUser.password) {
+            throw new Error(__('pages.signup.errorPasswordMessage', 'Les mots de passe ne correspondent pas !'));
+        }
+
         createAccount(user);
 
         $router.push({ name: 'Signin' });
