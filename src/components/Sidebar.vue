@@ -2,7 +2,19 @@
     <ion-menu side="start" type="overlay" menu-id="menu" content-id="main">
         <ion-header>
             <ion-toolbar>
-                <ion-title v-if="isSignedIn"> {{ fullname }} </ion-title>
+                <ion-title v-if="isSignedIn">
+                    <div style="display: flex; justify-content: flex-end; align-items: center;">
+                        <router-link :to="{ name: 'Account' }" style="width: 100%; display: flex; justify-content: space-between; align-items: center; color: black; text-decoration: none;">
+                            {{ fullname }}
+
+                            <ion-icon src="https://unpkg.com/ionicons@5.5.2/dist/svg/person-circle-outline.svg"></ion-icon>
+                        </router-link>
+
+                        <a href="/#" @click.prevent.stop="signOut" style="color: black; text-decoration: none;display: flex; justify-content: center; align-content: center; margin-left: 15px;">
+                            <ion-icon name="log-out"></ion-icon>
+                        </a>
+                    </div>
+                </ion-title>
                 
                 <ion-title v-else>
                     <ion-button @click="$router.push({ name: 'Signin' })" tag="ion-button">
@@ -72,7 +84,7 @@ const routes = computed(() => [
             path: '/account'
         },
         title: __('sidebar.Account', 'Mon compte'),
-        show: isSignedIn.value,
+        show: isSignedIn.value && $route.name === 'Account',
         active: $route.name === 'Account'
     },
     {
