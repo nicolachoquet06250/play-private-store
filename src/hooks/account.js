@@ -5,7 +5,6 @@ import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useReferer, useRedirect, useTranslate } from '@/hooks';
 
-const { __ } = useTranslate();
 
 const isSignedIn = ref(false);
 const guest = ref(null);
@@ -39,6 +38,7 @@ const error = ref(false);
 export const useGuest = () => {
     const $route = useRoute();
     const { redirect } = useRedirect();
+    const { __ } = useTranslate();
     
     return {
         isSignedIn: computed(() => isSignedIn.value),
