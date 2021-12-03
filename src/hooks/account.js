@@ -49,6 +49,9 @@ export const useGuest = () => {
         }, */
         fetchOptions: {
             mode: 'cors',
+            headers: {
+                Origin: 'https://play-private-store.nicolaschoquet.fr'
+            }
         },
     })
       
