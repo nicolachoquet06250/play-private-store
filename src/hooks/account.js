@@ -3,6 +3,7 @@
 
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
+import { createFetch } from '@vueuse/core';
 import { useReferer, useRedirect, useTranslate } from '@/hooks';
 
 
@@ -36,6 +37,26 @@ const users = ref([
 const error = ref(false);
 
 export const useGuest = () => {
+    const useMyFetch = createFetch({ 
+        baseUrl: 'https://play-private-store.api.nicolaschoquet.fr', 
+        /*options: {
+            async beforeFetch({ options }) {
+                const myToken = await getMyToken()
+                options.headers.Authorization = `Bearer ${myToken}`
+        
+                return { options }
+            },
+        }, */
+        fetchOptions: {
+            mode: 'cors',
+        },
+    })
+      
+    const { isFetching, error: _error, data } = useMyFetch('users');
+
+    console.log(isFetching, _error, data);
+      
+
     const $route = useRoute();
     const { redirect } = useRedirect();
     const { __ } = useTranslate();
