@@ -8,3 +8,4 @@ export * from './content-update';
 export * from './redirect';
 export * from './referer';
 export * from './translate';
+export * from './websocket';

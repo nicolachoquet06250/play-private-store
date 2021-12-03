@@ -29,15 +29,27 @@
 <script setup>
 import { Sidebar, Toast } from '@/components';
 import { ref, computed } from 'vue';
-import { useResponsive, useSearchbar } from '@/hooks';
+import { useResponsive, useSearchbar/*, useWebsocket*/ } from '@/hooks';
 
 const { resize, xs, sm } = useResponsive();
 const { showed } = useSearchbar();
+//const { connect, addWsEventListener } = useWebsocket('localhost:8000/ws');
 
 const header = ref();
 const offsetHeight = computed(() => (header.value?.offsetHeight ?? 0) + 'px');
 const marginTop = ref('50px');
 const searchBarWidth = ref('calc(100% - 60px)');
+
+/*connect();
+
+addWsEventListener('open', ws => {
+    console.log('la connection à été ouverte');
+    ws.send('Coucou le serveur !');
+});
+
+addWsEventListener('message', (_, event) => {
+    console.log('Voici un message du serveur', event.data);
+});*/
 
 resize(() => {
   marginTop.value = offsetHeight.value;
