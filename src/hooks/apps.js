@@ -1,10 +1,9 @@
 import { computed, ref } from "vue";
-import { useGuest, useRepos } from '@/hooks';
-
-const { GITHUB, GITLAB } = useRepos();
+import { useGuest, useLoader } from '@/hooks';
+import env from '../../env.json';
 
 const appList = ref([
-    {
+    /*{
         id: 0,
         repo_type: GITHUB,
         name: 'Budget Management 1',
@@ -89,7 +88,7 @@ const appList = ref([
             }
         ],
         author: 0
-    },
+    },*/
 ]);
 
 const slugify = value => value.replace(/\./g, '-')
@@ -98,6 +97,16 @@ const slugify = value => value.replace(/\./g, '-')
 
 export const useApps = () => {
     const { guest } = useGuest();
+    const { showLoader, hideLoader } = useLoader();
+
+    showLoader();
+
+    fetch(`${env.WEBSERVICE_URL}/apps`)
+        .then(r => r.json())
+        .then(json => {
+            appList.value = json;
+            hideLoader();
+        });
 
     return {
         list: computed(() => appList.value),
@@ -117,13 +126,13 @@ export const useApps = () => {
          * @param {Array<String>} permissions permissions demandées à l'utilisateur par l'application pour qu'il soit au courrent avant de l'installée
          * @param {Array<String>} categories catégories de l'application pour faciliter la recherche
          */
-        createApp(version, repo_type, name, repoName, logo, description, screenshots, permissions, categories) {
-            const lastApp = appList.value.reduce((r, c) => c, null);
+        createApp(version, repoType, name, repoName, logo, description, screenshots, permissions, categories) {
+            const lastApp = appList.value.reduce((_r, c) => c, null);
             
             appList.value = [...appList.value, {
                 id: (lastApp?.id ?? 0) + 1,
                 name,
-                repo_type,
+                repo_type: repoType,
                 nameSlug: slugify(name),
                 repoName,
                 logo,

@@ -9,3 +9,4 @@ export * from './redirect';
 export * from './referer';
 export * from './translate';
 export * from './websocket';
+export * from './loader';

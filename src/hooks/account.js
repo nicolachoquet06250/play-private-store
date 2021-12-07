@@ -3,15 +3,14 @@
 
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { createFetch } from '@vueuse/core';
-import { useReferer, useRedirect, useTranslate } from '@/hooks';
-
+import { useReferer, useRedirect, useTranslate, useLoader } from '@/hooks';
+import env from '../../env.json';
 
 const isSignedIn = ref(false);
 const guest = ref(null);
 
 const users = ref([
-    { 
+    /*{ 
         id: 0,
         firstname: 'Nicolas',
         lastname: 'Choquet',
@@ -31,39 +30,26 @@ const users = ref([
             github: 'grafikart'
         },
         password: 'grafikart'
-    }
+    }*/
 ]);
 
 const error = ref(false);
 
 export const useGuest = () => {
-    const useMyFetch = createFetch({ 
-        baseUrl: 'https://play-private-store.api.nicolaschoquet.fr', 
-        /*options: {
-            async beforeFetch({ options }) {
-                const myToken = await getMyToken()
-                options.headers.Authorization = `Bearer ${myToken}`
-        
-                return { options }
-            },
-        }, */
-        fetchOptions: {
-            mode: 'cors',
-            headers: {
-                Origin: 'https://play-private-store.nicolaschoquet.fr'
-            }
-        },
-    })
-      
-    const { isFetching, error: _error, data } = useMyFetch('users');
-
-    console.log(isFetching, _error, data);
-      
-
     const $route = useRoute();
     const { redirect } = useRedirect();
     const { __ } = useTranslate();
+    const { showLoader, hideLoader } = useLoader();
+
+    showLoader();
     
+    fetch(`${env.WEBSERVICE_URL}/users`)
+        .then(r => r.json())
+        .then(json => {
+            users.value = json;
+            hideLoader();
+        });
+
     return {
         isSignedIn: computed(() => isSignedIn.value),
         guest: computed(() => 
