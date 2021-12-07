@@ -43,7 +43,11 @@ export const useGuest = () => {
 
     showLoader();
     
-    fetch(`${env.WEBSERVICE_URL}/users`)
+    fetch(`${env.WEBSERVICE_URL}/users`, {
+        headers: {
+            Origin: window.location.href
+        }
+    })
         .then(r => r.json())
         .then(json => {
             users.value = json;

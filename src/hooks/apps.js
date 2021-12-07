@@ -101,7 +101,11 @@ export const useApps = () => {
 
     showLoader();
 
-    fetch(`${env.WEBSERVICE_URL}/apps`)
+    fetch(`${env.WEBSERVICE_URL}/apps`, {
+        headers: {
+            Origin: window.location.href
+        }
+    })
         .then(r => r.json())
         .then(json => {
             appList.value = json;
