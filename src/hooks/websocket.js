@@ -6,7 +6,8 @@ const callbacks = reactive({});
 export const useWebsocket = url => ({
     connect() {
         if (!ws.value) {
-            ws.value = new WebSocket(`ws://${url}`);
+            const protocol = window.location.protocol.indexOf('https') !== -1 ? 'wss' : 'ws';
+            ws.value = new WebSocket(`${protocol}://${url}`);
         }
 
         return ws.value;
