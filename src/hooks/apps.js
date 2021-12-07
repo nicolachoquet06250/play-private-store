@@ -1,5 +1,5 @@
 import { computed, ref } from "vue";
-import { useGuest, useLoader } from '@/hooks';
+import { useGuest, useLoader, createFetch } from '@/hooks';
 import env from '../../env.json';
 
 const appList = ref([
@@ -98,19 +98,17 @@ const slugify = value => value.replace(/\./g, '-')
 export const useApps = () => {
     const { guest } = useGuest();
     const { showLoader, hideLoader } = useLoader();
+    const { useFetch } = createFetch(env.WEBSERVICE_URL, {
+        headers: { Origin: window.location.href }
+    }, { before: showLoader, after: hideLoader });
 
-    showLoader();
-
-    fetch(`${env.WEBSERVICE_URL}/apps`, {
-        headers: {
-            Origin: window.location.href
+    (async () => {
+        const { error, data } = await useFetch('apps');
+        
+        if (!error.value) {
+            appList.value = data.value;
         }
-    })
-        .then(r => r.json())
-        .then(json => {
-            appList.value = json;
-            hideLoader();
-        });
+    })();
 
     return {
         list: computed(() => appList.value),

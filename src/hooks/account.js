@@ -3,7 +3,7 @@
 
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { useReferer, useRedirect, useTranslate, useLoader } from '@/hooks';
+import { useReferer, useRedirect, useTranslate, useLoader, createFetch } from '@/hooks';
 import env from '../../env.json';
 
 const isSignedIn = ref(false);
@@ -40,20 +40,18 @@ export const useGuest = () => {
     const { redirect } = useRedirect();
     const { __ } = useTranslate();
     const { showLoader, hideLoader } = useLoader();
+    const { useFetch } = createFetch(env.WEBSERVICE_URL, {
+        headers: { Origin: window.location.href }
+    }, { before: showLoader, after: hideLoader });
 
-    showLoader();
-    
-    fetch(`${env.WEBSERVICE_URL}/users`, {
-        headers: {
-            Origin: window.location.href
+    (async () => {
+        const { error, data } = await useFetch('users');
+        
+        if (!error.value) {
+            users.value = data.value;
         }
-    })
-        .then(r => r.json())
-        .then(json => {
-            users.value = json;
-            hideLoader();
-        });
-
+    })();
+    
     return {
         isSignedIn: computed(() => isSignedIn.value),
         guest: computed(() => 
