@@ -58,7 +58,7 @@ export const useFetchSync = (url, options = {}, actions = {}) => {
 };
 
 /**
- * @param {String} url
+ * @param {String|Function} url
  * @param {Record<string, any>} options
  * @param {Record<'before'|'after', () => void>} actions
  * @returns {(uri: String) => Promise<Record<String, any>>}
@@ -69,11 +69,43 @@ export const createFetch = (url, options = {}, actions = {}) => {
          * @param {String} uri 
          * @returns {Promise<Record<'data'|'error', { value: Record<string, any>|string|null }>>}
          */
-        useFetch: async (uri) => await useFetch(`${url}${uri !== '' ? `/${uri}` : ''}`, options, actions),
+        useFetch: async (uri, complementarOptions) => await useFetch(`${typeof url === 'string' ? url : url()}${uri !== '' ? `/${uri}` : ''}`, { 
+            ...options, 
+            ...complementarOptions,
+            body: (() => {
+                let _options = {};
+
+                if (options.body) {
+                    _options = { ..._options, ...(typeof options.body === 'string' ? JSON.parse(options.body) : options.body) };
+                }
+
+                if (complementarOptions.body) {
+                    _options = { ..._options, ...(typeof complementarOptions.body === 'string' ? JSON.parse(complementarOptions.body) : complementarOptions.body) };
+                }
+
+                return _options;
+            })() 
+        }, actions),
         /**
          * @param {String} uri 
          * @returns {Record<'data'|'error', { value: Record<string, any>|string|null }>}
          */
-        useFetchSync: (uri) => useFetchSync(`${url}${uri !== '' ? `/${uri}` : ''}`, options, actions)
+        useFetchSync: (uri, complementarOptions) => useFetchSync(`${typeof url === 'string' ? url : url()}${uri !== '' ? `/${uri}` : ''}`, { 
+            ...options, 
+            ...complementarOptions,
+            body: (() => {
+                let _options = {};
+
+                if (options.body) {
+                    _options = { ..._options, ...(typeof options.body === 'string' ? JSON.parse(options.body) : options.body) };
+                }
+
+                if (complementarOptions.body) {
+                    _options = { ..._options, ...(typeof complementarOptions.body === 'string' ? JSON.parse(complementarOptions.body) : complementarOptions.body) };
+                }
+
+                return _options;
+            })() 
+        }, actions)
     };
 };
