@@ -104,8 +104,8 @@ export function useApps() {
         getApps('', {}, {
             before: showLoader,
             after(apps, error) {
-                if (error === null) {
-                    appList.value = apps;
+                if (error.value === null) {
+                    appList.value = apps.value;
                     initialized.value = true;
                 }
                 hideLoader();
@@ -136,9 +136,9 @@ export function useApps() {
                 body: { author: guest.value.id }
             }, {
                 before: showLoader,
-                after({ app }, error) {
-                    if (error === null) {
-                        appList.value = [...appList.value, app]
+                after(data, error) {
+                    if (error.value === null) {
+                        appList.value = [...appList.value, data.value.app]
                     }
                 }
             })
@@ -151,8 +151,8 @@ export function useApps() {
             deleteApp(id, {}, {
                 before: showLoader,
                 after(apps, error) {
-                    if (error === null) {
-                        appList.value = apps;
+                    if (error.value === null) {
+                        appList.value = apps.value;
                     }
                     hideLoader();
                 }
@@ -174,19 +174,15 @@ export const useApp = id => {
         ),
     
         createComment(message, note) {
-            console.log(id);
-
             createComment(id, message, note)('', {
                 body: {
                     author: guest.value.id
                 }
             }, {
                 before: showLoader,
-                after({ app }, error) {
-                    if (error === null) {
-                        console.log(appList.value);
-                        appList.value = appList.value.reduce((r, c) => c.id === id ? app : r, []);
-                        console.log(appList.value);
+                after(data, error) {
+                    if (error.value === null && Object.keys(data.value).length > 0) {
+                        appList.value = appList.value.reduce((r, c) => c.id === id ? [...r, data.value.app] : [...r, c], []);
                     }
                     hideLoader();
                 }

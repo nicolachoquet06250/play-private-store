@@ -45,8 +45,8 @@ export function useGuest() {
         getUsers('', {}, {
             before: showLoader,
             after(_users, error) {
-                if (error === null) {
-                    users.value = _users;
+                if (error.value === null) {
+                    users.value = _users.value;
                     initialized.value = true;
                 }
                 hideLoader();

@@ -144,9 +144,7 @@
                             </div>
                         </div>
 
-                        <div class="app-comment_text">
-                            {{ comment.comment }}
-                        </div>
+                        <div class="app-comment_text" v-html="comment.comment.replace(/\n/g, '<br />')"></div>
                     </ion-col>
                 </ion-row>
             </ion-grid>

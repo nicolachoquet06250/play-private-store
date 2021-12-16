@@ -114,7 +114,11 @@ const createComment = (appId, message, note) =>
         body: {
             comment: message,
             note,
-            date: new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDate() + ' ' + new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds()
+            date: {
+                date: new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDate() + ' ' + new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds() + '.000000',
+                timezon: "Europe/Berlin",
+                timezon_type: 3
+            }
         }
     }).useFetch
 

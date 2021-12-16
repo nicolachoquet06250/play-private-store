@@ -13,24 +13,26 @@ export async function useFetch(url, options = {}, actions = {}) {
 
     try {
         const response = await fetch(url, options);
-        data.value = await response.json();
+        data.value = await response.text();
+        error.value = null;
 
-        //console.log(url, actions.after);
-        actions.after?.(data.value, error.value, url);
+        try {
+            data.value = JSON.parse(data.value);
+        } catch(err) {
+            console.log(data.value);
+        }
 
-        return { 
-            data: computed(() => data.value), 
-            error: computed(() => error.value) 
-        };
+        actions.after?.(data, error, url);
     } catch (err) {
-        //console.log(url, actions.after);
-        actions.after?.(data.value, error.value, url);
+        error.value = err.message;
+        data.value = {};
 
-        return { 
-            data: computed(() => data.value), 
-            error: computed(() => error.value)
-        };
+        console.log(error.value);
+
+        actions.after?.(data, error, url);
     }
+
+    return { data: computed(() => data.value), error: computed(() => error.value) };
 }
 
 /**
@@ -85,6 +87,8 @@ export function createFetch(url, options = {}, actions = {}) {
                 if (typeof complementarOptions === 'object' && 'body' in complementarOptions) {
                     _options = { ..._options, ...(typeof complementarOptions.body === 'string' ? JSON.parse(complementarOptions.body) : complementarOptions.body) };
                 }
+
+                _options = JSON.stringify(_options);
 
                 return _options;
             })() 
