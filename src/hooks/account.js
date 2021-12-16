@@ -3,8 +3,7 @@
 
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { useReferer, useRedirect, useTranslate, useLoader, createFetch } from '@/hooks';
-import env from '../../env.json';
+import { useReferer, useRedirect, useTranslate, useLoader, usePPS } from '@/hooks';
 
 const isSignedIn = ref(false);
 const guest = ref(null);
@@ -32,25 +31,28 @@ const users = ref([
         password: 'grafikart'
     }*/
 ]);
-
 const error = ref(false);
+const initialized = ref(false);
 
-export const useGuest = () => {
+export function useGuest() {
     const $route = useRoute();
     const { redirect } = useRedirect();
     const { __ } = useTranslate();
     const { showLoader, hideLoader } = useLoader();
-    const { useFetch } = createFetch(env.WEBSERVICE_URL, {
-        headers: { Origin: window.location.href }
-    }, { before: showLoader, after: hideLoader });
+    const { getUsers } = usePPS();
 
-    (async () => {
-        const { error, data } = await useFetch('users');
-        
-        if (!error.value) {
-            users.value = data.value;
-        }
-    })();
+    if (!initialized.value) {
+        getUsers('', {}, {
+            before: showLoader,
+            after(_users, error) {
+                if (error === null) {
+                    users.value = _users;
+                    initialized.value = true;
+                }
+                hideLoader();
+            }
+        });
+    }
     
     return {
         isSignedIn: computed(() => isSignedIn.value),
@@ -123,4 +125,4 @@ export const useGuest = () => {
             }
         }
     };
-};
+}

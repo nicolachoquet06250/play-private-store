@@ -103,7 +103,7 @@
                         <ion-grid>
                             <ion-row>
                                 <ion-col>
-                                    {{ __('pages.showApp.form.yourNote', 'Votre note') }} : <Stars v-model="newNote" :editable="true" @change="onNoteChange" />
+                                    {{ __('pages.showApp.form.yourNote', 'Votre note') }} : <Stars v-model="newNote" :editable="true" />
                                 </ion-col>
                             </ion-row>
 
@@ -114,14 +114,14 @@
                                             {{ __('pages.showApp.form.comment', 'Commentaire') }}...
                                         </ion-label>
                                     
-                                        <ion-textarea></ion-textarea>
+                                        <ion-textarea :value="comment" @input="comment = $event.target.value ?? ''"></ion-textarea>
                                     </ion-item>
                                 </ion-col>
                             </ion-row>
 
                             <ion-row>
                                 <ion-col>
-                                    <ion-button size="small"> 
+                                    <ion-button size="small" @click="createComment(comment, newNote)"> 
                                         {{ __('pages.showApp.form.send', 'Envoyer') }}
                                     </ion-button>
                                 </ion-col>
@@ -140,7 +140,7 @@
                             </div>
 
                             <div class="app-comment-head_date">
-                                {{ comment.date }}
+                                {{ new Date(comment.date.date).toLocaleDateString() }}
                             </div>
                         </div>
 
@@ -171,7 +171,7 @@ import { useApp, useGuest, useSearchbar, useRepos, useTranslate } from '@/hooks'
 const $route = useRoute();
 const appId = computed(() => parseInt($route.params.appId));
 
-const { app } = useApp(appId.value);
+const { app, createComment } = useApp(appId.value);
 const { user: getUser, guest, isSignedIn } = useGuest();
 const { hide } = useSearchbar();
 const $repos = useRepos();
@@ -188,6 +188,7 @@ hide();
 /**********************************************************/
 
 const newNote = ref(0);
+const comment = ref('');
 
 const user = getUser(app.value.author);
 const icon = computed(() => `url(${app.value.logo})`);

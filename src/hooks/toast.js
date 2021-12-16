@@ -16,20 +16,22 @@ const setOpened = opened => {
     toast.opened = opened;
 };
 
-export const useToast = () => ({
-    toast: computed(() => toast),
-
-    setMessage,
-    setDuration,
-    setOpened,
-
-    openToast(message, duration = 2000) {
-        setMessage(message);
-        setDuration(duration);
-        setOpened(true);
-
-        setTimeout(() => {
-            setOpened(false);
-        }, duration);
+export function useToast() {
+    return {
+        toast: computed(() => toast),
+    
+        setMessage,
+        setDuration,
+        setOpened,
+    
+        openToast(message, duration = 2000) {
+            setMessage(message);
+            setDuration(duration);
+            setOpened(true);
+    
+            setTimeout(() => {
+                setOpened(false);
+            }, duration);
+        }
     }
-});
+}

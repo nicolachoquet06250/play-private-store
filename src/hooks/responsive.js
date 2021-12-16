@@ -34,20 +34,22 @@ const addCallback = size => cb => {
     }
 }
 
-export const useResponsive = () => ({
-    xs: addCallback(XS),
-    sm: addCallback(SM),
-    md: addCallback(MD),
-    lg: addCallback(LG),
-    resize(cb) {
-        handleResizeGlobal.value = [
-            ...handleResizeGlobal.value,
-            cb
-        ];
-
-        cb(window.innerWidth, window.innerHeight);
+export function useResponsive() {
+    return {
+        xs: addCallback(XS),
+        sm: addCallback(SM),
+        md: addCallback(MD),
+        lg: addCallback(LG),
+        resize(cb) {
+            handleResizeGlobal.value = [
+                ...handleResizeGlobal.value,
+                cb
+            ];
+    
+            cb(window.innerWidth, window.innerHeight);
+        }
     }
-});
+}
 
 const handleResize = () => {
     for (const size of Object.keys(responsiveCallbacks)) {

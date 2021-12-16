@@ -20,7 +20,7 @@ const setReferer = (referer, options = {}) => {
     refererOptions.options = { ...options };
 };
 
-export const useReferer = () => {
+export function useReferer() {
     return {
         referer: computed(() => refererUrl.value),
         options: computed(() => refererOptions.options),
@@ -37,4 +37,4 @@ export const useReferer = () => {
             });
         }
     }
-};
+}

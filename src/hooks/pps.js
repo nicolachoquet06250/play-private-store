@@ -1,3 +1,4 @@
+//import { watch } from 'vue';
 import { createFetch } from '@/hooks';
 import env from '../../env.json';
 
@@ -16,11 +17,15 @@ const urls = {
     postApp: () => `${env.WEBSERVICE_URL}/app`,
     putApp: (id = '') => `${env.WEBSERVICE_URL}/app/${id}`,
     deleteApp: (id = '') => `${env.WEBSERVICE_URL}/app/${id}`,
+
+    getComments: () => `/comments`,
+    addComment: () => `/comment`,
+    deleteComment: (id = '') => `/comment/${id}`
 };
 
 // APPLICATIONS
-
 const { useFetch: getApps } = createFetch(urls.getApps, {
+    method: 'get',
     headers: {
         'Content-Type': 'application/json',
         Origin: window.location.href
@@ -32,6 +37,7 @@ const { useFetch: getApps } = createFetch(urls.getApps, {
  * @returns {Promise<any>}
  */
 const { useFetch: getAppFromId } = createFetch(urls.getAppFromId, {
+    method: 'get',
     headers: {
         'Content-Type': 'application/json',
         Origin: window.location.href
@@ -48,11 +54,15 @@ const { useFetch: getAppFromId } = createFetch(urls.getAppFromId, {
  * @param {Array<String>} screenshots screenshots de l'application afin d'avoir un apercu
  * @param {Array<String>} permissions permissions demandées à l'utilisateur par l'application pour qu'il soit au courrent avant de l'installée
  * @param {Array<String>} categories catégories de l'application pour faciliter la recherche
+ * @returns {Function}
  */
-const createApp = async (version, repoType, name, repoName, logo, description, screenshots, permissions, categories) => {
-    const { useFetch } = createFetch(urls.postApp, {
-        'Content-Type': 'application/json',
-        Origin: window.location.href,
+const createApp = (version, repoType, name, repoName, logo, description, screenshots, permissions, categories) => 
+    createFetch(urls.postApp, {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            Origin: window.location.href,
+        },
         body: {
             name,
             repo_type: repoType,
@@ -66,25 +76,57 @@ const createApp = async (version, repoType, name, repoName, logo, description, s
             screenshots,
             permissions,
             categories,
-            comments: [],
-            author: guest.value.id
+            comments: []
         }
-    });
-
-    return await useFetch();
-};
+    }).useFetch;
 
 const { useFetch: updateApp } = createFetch(urls.putApp, {
-    'Content-Type': 'application/json',
-    Origin: window.location.href
+    method: 'put',
+    headers: {
+        'Content-Type': 'application/json',
+        Origin: window.location.href
+    }
 });
 
 const { useFetch: deleteApp } = createFetch(urls.deleteApp, {
-    'Content-Type': 'application/json',
-    Origin: window.location.href
+    method: 'delete',
+    headers: {
+        'Content-Type': 'application/json',
+        Origin: window.location.href
+    }
 });
 
+// COMMENTS
+
+/**
+ * @param {Number} appId 
+ * @param {String} message 
+ * @param {Number} note 
+ * @returns {Function}
+ */
+const createComment = (appId, message, note) => 
+    createFetch(urls.putApp(appId) + urls.addComment(), {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            Origin: window.location.href
+        },
+        body: {
+            comment: message,
+            note,
+            date: new Date().getFullYear() + '-' + new Date().getMonth() + '-' + new Date().getDate() + ' ' + new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds()
+        }
+    }).useFetch
+
 // USERS
+
+const { useFetch: getUsers } = createFetch(urls.getUsers, {
+    method: 'get',
+    headers: {
+        'Content-Type': 'application/json',
+        Origin: window.location.href
+    }
+});
 
 /**
  * @param {String} email 
@@ -93,8 +135,11 @@ const { useFetch: deleteApp } = createFetch(urls.deleteApp, {
  */
 const userLogin = async (email, password) => {
     const { useFetch } = createFetch(urls.login, {
-        'Content-Type': 'application/json',
-        Origin: window.location.href,
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            Origin: window.location.href
+        },
         body: { email, password }
     });
 
@@ -110,8 +155,11 @@ const userLogin = async (email, password) => {
  */
 const userCreateAccount = async (firstname, lastname, email, password, repo_pseudo = {}) => {
     const { useFetch } = createFetch(urls.postUser, {
-        'Content-Type': 'application/json',
-        Origin: window.location.href,
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            Origin: window.location.href
+        },
         body: {
             firstname,
             lastname,
@@ -129,20 +177,30 @@ const userCreateAccount = async (firstname, lastname, email, password, repo_pseu
 };
 
 const { useFetch: userUpdateAccount } = createFetch(urls.putUser, {
-    'Content-Type': 'application/json',
-    Origin: window.location.href
+    method: 'put',
+    headers: {
+        'Content-Type': 'application/json',
+        Origin: window.location.href
+    }
 });
 
-export const usePPS = () => ({
-    // APPLICATIONS
-    getApps,
-    getAppFromId,
-    createApp,
-    updateApp,
-    deleteApp,
+export function usePPS() {
+    return {
+        // APPLICATIONS
+        getApps,
+        getAppFromId,
+        createApp,
+        updateApp,
+        deleteApp,
 
-    // USERS
-    userLogin,
-    userCreateAccount,
-    userUpdateAccount
-});
+        // COMMENTS
+
+        createComment,
+
+        // USERS
+        getUsers,
+        userLogin,
+        userCreateAccount,
+        userUpdateAccount
+    }
+}

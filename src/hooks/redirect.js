@@ -6,7 +6,7 @@ import { useReferer } from '@/hooks';
  * @param {Record<String, String>} options 
  * @returns 
  */
-export const useRedirect = (defaultUrl, options = {}) => {
+export function useRedirect (defaultUrl, options = {}) {
     const { referer, options: refererOptions } = useReferer();
     const $router = useRouter();
 
@@ -25,4 +25,4 @@ export const useRedirect = (defaultUrl, options = {}) => {
             }
         }
     };
-};
+}

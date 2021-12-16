@@ -6,10 +6,10 @@ const setNewContent = v => {
     hasNewContent.value = v;
 }
 
-export const useContentUpdate = () => {
+export function useContentUpdate() {
     return {
         hasNewContent: computed(() => hasNewContent.value),
 
         setNewContent
     };
-};
+}

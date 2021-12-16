@@ -72,17 +72,19 @@
 <script setup>
 import { PwaInstallButton, AnimatedLink } from '@/components';
 import { computed, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useGuest, useApp, useTranslate } from '@/hooks';
 
 const { guest, isSignedIn, signOut } = useGuest();
 const $route = useRoute();
+const $router = useRouter();
 let { app } = useApp(parseInt($route.params.appId ?? -1));
 const { __, updateLang, lang, AVAILABLE_LANGS } = useTranslate();
 
-const lastPagePath = ref(window.history.state.back);
-const lastPageIsApps = computed(() => lastPagePath.value === '/apps' && $route.name === 'ShowApp');
-const lastPageIsMyApps = computed(() => lastPagePath.value === '/my-apps' && $route.name === 'ShowApp');
+const lastAppId = ref(null);
+const lastPagePath = ref((window.history.state.back === null ? $router.currentRoute.value.fullPath : window.history.state.back));
+const lastPageIsApps = computed(() => lastPagePath.value === '/apps' && $router.currentRoute.value.name === 'ShowApp');
+const lastPageIsMyApps = computed(() => lastPagePath.value === '/my-apps' && $router.currentRoute.value.name === 'ShowApp');
 
 const routes = computed(() => [
     {
@@ -91,7 +93,7 @@ const routes = computed(() => [
         },
         title: __('sidebar.Account', 'Mon compte'),
         show: isSignedIn.value && $route.name === 'Account',
-        active: $route.name === 'Account'
+        active: $router.currentRoute.value.name === 'Account'
     },
     {
         conf: {
@@ -99,7 +101,7 @@ const routes = computed(() => [
         },
         title: __('sidebar.AppList', 'Applications'),
         show: true,
-        active: lastPageIsApps.value || $route.path === '/apps'
+        active: lastPageIsApps.value || $router.currentRoute.value.path === '/apps'
     },
     {
         conf: {
@@ -164,17 +166,18 @@ const routes = computed(() => [
 const fullname = computed(() => guest.value.firstname + ' ' + guest.value.lastname);
 
 window.history.pushState = new Proxy(window.history.pushState, {
-  apply: (target, thisArg, argArray = undefined) => {
-    const r = target.apply(thisArg, argArray);
-    lastPagePath.value = window.history.state.back;
-    return r;
-  },
+    apply: (target, thisArg, argArray = undefined) => {
+        const r = target.apply(thisArg, argArray);
+        lastPagePath.value = window.history.state.back;
+        return r;
+    },
 });
 
 watch(() => $route.params.appId, () => {
     if ($route.params.appId) {
-        app = useApp(parseInt($route.params.appId ?? -1)).app;
+        lastAppId.value = parseInt($route.params.appId ?? -1);
     }
+    app = useApp(lastAppId.value).app;
 });
 </script>
 

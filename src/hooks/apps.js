@@ -1,6 +1,5 @@
 import { computed, ref } from "vue";
-import { useGuest, useLoader, createFetch } from '@/hooks';
-import env from '../../env.json';
+import { useGuest, useLoader, usePPS } from '@/hooks';
 
 const appList = ref([
     /*{
@@ -90,25 +89,29 @@ const appList = ref([
         author: 0
     },*/
 ]);
+const initialized = ref(false);
 
-const slugify = value => value.replace(/\./g, '-')
+/*const slugify = value => value.replace(/\./g, '-')
     .replace(/ /g, '-')
-    .replace(/'/g, '-');
+    .replace(/'/g, '-');*/
 
-export const useApps = () => {
+export function useApps() {
     const { guest } = useGuest();
     const { showLoader, hideLoader } = useLoader();
-    const { useFetch } = createFetch(env.WEBSERVICE_URL, {
-        headers: { Origin: window.location.href }
-    }, { before: showLoader, after: hideLoader });
+    const { getApps, createApp, deleteApp } = usePPS();
 
-    (async () => {
-        const { error, data } = await useFetch('apps');
-        
-        if (!error.value) {
-            appList.value = data.value;
-        }
-    })();
+    if (!initialized.value) {
+        getApps('', {}, {
+            before: showLoader,
+            after(apps, error) {
+                if (error === null) {
+                    appList.value = apps;
+                    initialized.value = true;
+                }
+                hideLoader();
+            }
+        });
+    }
 
     return {
         list: computed(() => appList.value),
@@ -129,39 +132,65 @@ export const useApps = () => {
          * @param {Array<String>} categories catégories de l'application pour faciliter la recherche
          */
         createApp(version, repoType, name, repoName, logo, description, screenshots, permissions, categories) {
-            const lastApp = appList.value.reduce((_r, c) => c, null);
-            
-            appList.value = [...appList.value, {
-                id: (lastApp?.id ?? 0) + 1,
-                name,
-                repo_type: repoType,
-                nameSlug: slugify(name),
-                repoName,
-                logo,
-                version,
-                versionSlug: slugify(version),
-                stars: 0,
-                description,
-                screenshots,
-                permissions,
-                categories,
-                comments: [],
-                author: guest.value.id
-            }]
+            createApp(version, repoType, name, repoName, logo, description, screenshots, permissions, categories)('', {
+                body: { author: guest.value.id }
+            }, {
+                before: showLoader,
+                after({ app }, error) {
+                    if (error === null) {
+                        appList.value = [...appList.value, app]
+                    }
+                }
+            })
         },
     
         /**
          * @param {Number} id 
          */
         deleteApp(id) {
-            appList.value = appList.value.reduce((r, c) => c.id !== id ? [...r, c] : r);
+            deleteApp(id, {}, {
+                before: showLoader,
+                after(apps, error) {
+                    if (error === null) {
+                        appList.value = apps;
+                    }
+                    hideLoader();
+                }
+            })
+            //appList.value = appList.value.reduce((r, c) => c.id !== id ? [...r, c] : r);
         }
     }
-};
+}
 
-export const useApp = id => ({
-    app: computed(() => 
-        appList.value.reduce((r, c) => 
-            c.id === id ? c : r, null)
-    )
-});
+export const useApp = id => {
+    const { guest } = useGuest();
+    const { showLoader, hideLoader } = useLoader();
+    const { createComment } = usePPS();
+    
+    return {
+        app: computed(() => 
+            appList.value.reduce((r, c) => 
+                c.id === id ? c : r, null)
+        ),
+    
+        createComment(message, note) {
+            console.log(id);
+
+            createComment(id, message, note)('', {
+                body: {
+                    author: guest.value.id
+                }
+            }, {
+                before: showLoader,
+                after({ app }, error) {
+                    if (error === null) {
+                        console.log(appList.value);
+                        appList.value = appList.value.reduce((r, c) => c.id === id ? app : r, []);
+                        console.log(appList.value);
+                    }
+                    hideLoader();
+                }
+            })
+        }
+    }
+}

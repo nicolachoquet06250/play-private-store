@@ -10,7 +10,7 @@ const AVAILABLE_LANGS = {
     English: 'en'
 };
 
-export const useTranslate = () => {
+export function useTranslate() {
     const trads = computed(() => tradObject[(language.value in tradObject ? language.value : defaultLang)]);
 
     return {
@@ -42,7 +42,7 @@ export const useTranslate = () => {
                 );
         }
     }
-};
+}
 
 useMutationObserver(el, mutations => {
     if (mutations[0]) {
