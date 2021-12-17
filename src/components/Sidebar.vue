@@ -82,7 +82,9 @@ let { app } = useApp(parseInt($route.params.appId ?? -1));
 const { __, updateLang, lang, AVAILABLE_LANGS } = useTranslate();
 
 const lastAppId = ref(null);
-const lastPagePath = ref((window.history.state.back === null ? $router.currentRoute.value.fullPath : window.history.state.back));
+const pagesHistory = ref([$router.currentRoute.value.fullPath]);
+const lastPagePath = computed(() => pagesHistory.value[(pagesHistory.value.length === 1 ? 0 : pagesHistory.value.length - 2)]);
+const currentPagePath = computed(() => pagesHistory.value[pagesHistory.value.length - 1]);
 const lastPageIsApps = computed(() => lastPagePath.value === '/apps' && $router.currentRoute.value.name === 'ShowApp');
 const lastPageIsMyApps = computed(() => lastPagePath.value === '/my-apps' && $router.currentRoute.value.name === 'ShowApp');
 
@@ -92,8 +94,8 @@ const routes = computed(() => [
             path: '/account'
         },
         title: __('sidebar.Account', 'Mon compte'),
-        show: isSignedIn.value && $route.name === 'Account',
-        active: $router.currentRoute.value.name === 'Account'
+        show: isSignedIn.value && currentPagePath.value === '/account',
+        active: currentPagePath.value === '/account'
     },
     {
         conf: {
@@ -101,7 +103,7 @@ const routes = computed(() => [
         },
         title: __('sidebar.AppList', 'Applications'),
         show: true,
-        active: lastPageIsApps.value || $router.currentRoute.value.path === '/apps'
+        active: lastPageIsApps.value || currentPagePath.value === '/apps'
     },
     {
         conf: {
@@ -118,15 +120,15 @@ const routes = computed(() => [
         },
         title: __('sidebar.MyApps', 'Mes applications'),
         show: isSignedIn.value,
-        active: lastPageIsMyApps.value || $route.path === '/my-apps'
+        active: lastPageIsMyApps.value || currentPagePath.value === '/my-apps'
     },
     {
         conf: {
             path: '/create-app'
         },
         title: __('sidebar.CreateApp', 'Créer une application'),
-        show: lastPagePath.value === '/my-apps' && $route.name === 'CreateApp',
-        active: lastPagePath.value === '/my-apps' && $route.name === 'CreateApp'
+        show: lastPagePath.value === '/my-apps' && currentPagePath.value === '/create-app',
+        active: lastPagePath.value === '/my-apps' && currentPagePath.value === '/create-app'
     },
     {
         conf: {
@@ -143,7 +145,7 @@ const routes = computed(() => [
         },
         title: __('sidebar.Signin', `Se connecter`),
         show: !isSignedIn.value,
-        active: $route.name === 'Signin'
+        active: currentPagePath.value === '/signin'
     },
     {
         conf: {
@@ -151,7 +153,7 @@ const routes = computed(() => [
         },
         title: __('sidebar.Signup', `S'inscrire`),
         show: !isSignedIn.value,
-        active: $route.name === 'Signup'
+        active: currentPagePath.value === '/signup'
     },
     {
         conf: {
@@ -159,25 +161,23 @@ const routes = computed(() => [
         },
         title: __('sidebar.About', 'A propos'),
         show: true,
-        active: $route.name === 'About'
+        active: currentPagePath.value === '/about'
     },
 ]);
 
 const fullname = computed(() => guest.value.firstname + ' ' + guest.value.lastname);
 
-window.history.pushState = new Proxy(window.history.pushState, {
-    apply: (target, thisArg, argArray = undefined) => {
-        const r = target.apply(thisArg, argArray);
-        lastPagePath.value = window.history.state.back;
-        return r;
-    },
-});
+watch($router.currentRoute, () => {
+    pagesHistory.value.push($router.currentRoute.value.fullPath);
+    console.log(currentPagePath.value);
+    console.log(lastPagePath.value);
+})
 
 watch(() => $route.params.appId, () => {
     if ($route.params.appId) {
         lastAppId.value = parseInt($route.params.appId ?? -1);
+        app = useApp(lastAppId.value).app;
     }
-    app = useApp(lastAppId.value).app;
 });
 </script>
 

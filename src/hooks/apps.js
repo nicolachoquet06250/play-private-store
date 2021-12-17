@@ -12,7 +12,6 @@ const appList = ref([
         version: '0.1.0',
         versionSlug: '0-1-0',
         description: `apks signés générés pour l'application budget-management`,
-        stars: 3.5,
         screenshots: [],
         permissions: [],
         categories: [
@@ -42,7 +41,6 @@ const appList = ref([
         version: '0.1.0',
         versionSlug: '0-1-0',
         description: `apks signés générés pour l'application budget-management`,
-        stars: 4,
         screenshots: [],
         permissions: [],
         categories: [
@@ -70,7 +68,6 @@ const appList = ref([
         version: '0.1.0',
         versionSlug: '0-1-0',
         description: `apks signés générés pour l'application budget-management`,
-        stars: 2.5,
         screenshots: [],
         permissions: [],
         categories: [
@@ -140,6 +137,7 @@ export function useApps() {
                     if (error.value === null) {
                         appList.value = [...appList.value, data.value.app]
                     }
+                    hideLoader();
                 }
             })
         },

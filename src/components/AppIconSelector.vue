@@ -7,7 +7,7 @@
 
             <div :style="iconsWrapperStyle">
                 <div :style="starsWrapperStyle">
-                    <Stars :note="app.stars" size="small" />
+                    <Stars :note="moyenne" size="small" />
                 </div>
 
                 <template v-if="showMyAppIcon">
@@ -41,7 +41,7 @@ const props = defineProps({
             id: Number,
             logo: String,
             name: String,
-            stars: Number,
+            comments: Array,
             author: Number
         })
     },
@@ -57,11 +57,17 @@ const props = defineProps({
 const showMyAppIcon = computed(() => isSignedIn.value && guest.value.id === props.app.author);
 
 const href = computed(() => ({ 
-    name: 'ShowApp', 
+    path: `/app/${props.app.id}`,
+    /*name: 'ShowApp', 
     params: { 
         appId: props.app.id
-    }
+    }*/
 }));
+
+const moyenne = computed(() => {
+    const nbComments = props.app.comments.length === 0 ? 1 : props.app.comments.length;
+    return props.app.comments.reduce((r, c) => r + c.note, 0) / nbComments;
+});
 
 /**********************************************************/
 /** DEFINITION DES STYLES *********************************/

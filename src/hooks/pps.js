@@ -71,7 +71,6 @@ const createApp = (version, repoType, name, repoName, logo, description, screens
             logo,
             version,
             versionSlug: slugify(version),
-            stars: 0,
             description,
             screenshots,
             permissions,

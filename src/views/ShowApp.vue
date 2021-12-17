@@ -90,10 +90,10 @@
 
                 <ion-row>
                     <ion-col>
-                        <h1 :style="noteTitleStyle"> {{ app.stars }} </h1>
+                        <h1 :style="noteTitleStyle"> {{ moyenne }} </h1>
 
                         <div :style="noteStarsStyle">
-                            <Stars :note="app.stars" />
+                            <Stars :note="moyenne" />
                         </div>
                     </ion-col>
                 </ion-row>
@@ -187,6 +187,11 @@ hide();
 
 const newNote = ref(0);
 const comment = ref('');
+
+const moyenne = computed(() => {
+    const nbComments = app.comments.length === 0 ? 1 : app.comments.length;
+    return app.comments.reduce((r, c) => r + c.note, 0) / nbComments;
+});
 
 const user = getUser(app.value.author);
 const icon = computed(() => `url(${app.value.logo})`);
