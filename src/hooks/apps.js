@@ -173,20 +173,29 @@ export const useApp = id => {
                 c.id === id ? c : r, null)
         ),
     
+        /**
+         * @param {String} message 
+         * @param {Number} note 
+         * @returns {Promise<any>}
+         */
         createComment(message, note) {
-            createComment(id, message, note)('', {
-                body: {
-                    author: guest.value.id
-                }
-            }, {
-                before: showLoader,
-                after(data, error) {
-                    if (error.value === null && Object.keys(data.value).length > 0) {
-                        appList.value = appList.value.reduce((r, c) => c.id === id ? [...r, data.value.app] : [...r, c], []);
+            return new Promise(resolve => {
+                createComment(id, message, note)('', {
+                    body: {
+                        author: guest.value.id
                     }
-                    hideLoader();
-                }
-            })
+                }, {
+                    before: showLoader,
+                    after(data, error) {
+                        if (error.value === null && Object.keys(data.value).length > 0) {
+                            appList.value = appList.value.reduce((r, c) => c.id === id ? [...r, data.value.app] : [...r, c], []);
+                        }
+                        hideLoader();
+                        resolve();
+                    }
+                })
+            });
+            
         }
     }
 }

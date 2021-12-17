@@ -121,7 +121,7 @@
 
                             <ion-row>
                                 <ion-col>
-                                    <ion-button size="small" @click="createComment(comment, newNote)"> 
+                                    <ion-button size="small" @click="createComment()"> 
                                         {{ __('pages.showApp.form.send', 'Envoyer') }}
                                     </ion-button>
                                 </ion-col>
@@ -169,7 +169,7 @@ import { useApp, useGuest, useSearchbar, useRepos, useTranslate } from '@/hooks'
 const $route = useRoute();
 const appId = computed(() => parseInt($route.params.appId));
 
-const { app, createComment } = useApp(appId.value);
+const { app, createComment: _createComment } = useApp(appId.value);
 const { user: getUser, guest, isSignedIn } = useGuest();
 const { hide } = useSearchbar();
 const $repos = useRepos();
@@ -228,6 +228,13 @@ const noteStarsStyle = computed(() => ({
 
 const openApk = () => {
     window.open(apkUrl.value, '_blank');
+};
+
+const createComment = () => {
+    _createComment(comment.value, newNote.value).then(() => {
+        comment.value = '';
+        newNote.value = 0;
+    });
 };
 </script>
 

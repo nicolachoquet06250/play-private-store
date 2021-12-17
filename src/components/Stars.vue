@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-    import { defineProps, defineEmits, ref, getCurrentInstance } from 'vue';
+    import { defineProps, defineEmits, ref, getCurrentInstance, watch } from 'vue';
 
     const props = defineProps({
         modelValue: Number,
@@ -83,4 +83,8 @@
 
         emit('update:modelValue', $note.value);
     };
+
+    watch(() => props.modelValue, () => {
+        $note.value = props.modelValue;
+    });
 </script>
