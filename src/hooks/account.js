@@ -77,8 +77,12 @@ export function useGuest() {
         },
 
         user(id) {
-            return users.value.reduce((r, c) => 
-                c.id === id ? c : r, null);
+            return computed(
+                () => users.value.reduce(
+                    (r, c) => (c.id === id ? c : r), 
+                    null
+                )
+            );
         },
         signIn(email, password, _redirect = null) {
             const { referer, setReferer } = useReferer();

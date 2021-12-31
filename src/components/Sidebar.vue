@@ -77,15 +77,24 @@ import { useGuest, useApp, useTranslate } from '@/hooks';
 
 const { guest, isSignedIn, signOut } = useGuest();
 const $route = useRoute();
+
+const appId = computed(() => {
+    if ($route.params.appid && !localStorage.getItem('last_appid')) {
+        localStorage.setItem('last_appid', $route.params.appid);
+    }
+
+    return parseInt(localStorage.getItem('last_appid'));
+})
+
 const $router = useRouter();
-let { app } = useApp(parseInt($route.params.appid ?? -1));
+let { app } = useApp(appId.value);
 const { __, updateLang, lang, AVAILABLE_LANGS } = useTranslate();
 
-const lastAppId = ref(null);
+//const lastAppId = ref(null);
 const pagesHistory = ref([$router.currentRoute.value.fullPath]);
 const lastPagePath = computed(() => pagesHistory.value[(pagesHistory.value.length === 1 ? 0 : pagesHistory.value.length - 2)]);
 const currentPagePath = computed(() => pagesHistory.value[pagesHistory.value.length - 1]);
-const lastPageIsApps = computed(() => lastPagePath.value === '/apps' && $router.currentRoute.value.name === 'ShowApp');
+const lastPageIsApps = computed(() => (lastPagePath.value === '/apps' || lastPagePath.value === '/') && $router.currentRoute.value.name === 'ShowApp');
 const lastPageIsMyApps = computed(() => lastPagePath.value === '/my-apps' && $router.currentRoute.value.name === 'ShowApp');
 
 const routes = computed(() => [
@@ -109,7 +118,7 @@ const routes = computed(() => [
         conf: {
             name: 'ShowApp',
             params: {
-                appid: $route.params.appid
+                appid: appId.value
             }
         },
         logo: app.value?.logo ?? '',
@@ -137,7 +146,7 @@ const routes = computed(() => [
         conf: {
             name: 'ShowApp',
             params: {
-                appid: $route.params.appid
+                appid: appId.value
             }
         },
         logo: app.value?.logo ?? '',
@@ -179,12 +188,12 @@ watch($router.currentRoute, () => {
     console.log(lastPagePath.value);
 })
 
-watch(() => $route.params.appid, () => {
+/*watch(() => $route.params.appid, () => {
     if ($route.params.appid) {
         lastAppId.value = parseInt($route.params.appid ?? -1);
         app = useApp(lastAppId.value).app;
     }
-});
+});**/
 </script>
 
 <style lang="scss">

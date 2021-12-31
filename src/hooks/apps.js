@@ -164,6 +164,30 @@ export const useApp = id => {
     const { guest } = useGuest();
     const { showLoader, hideLoader } = useLoader();
     const { createComment } = usePPS();
+    const { getApps } = usePPS();
+
+    (() => {
+        console.log(appList.value.length);
+
+        if (appList.value.length === 0) {
+            console.log('ça passe');
+
+            getApps('', {}, {
+                before: showLoader,
+                after(apps, error) {
+                    if (error.value === null) {
+                        console.log('la réponse est ok');
+                        
+                        appList.value = apps.value;
+                        initialized.value = true;
+                    }
+                    hideLoader();
+                }
+            });
+        }
+
+        console.log(appList.value);
+    })();
     
     return {
         app: computed(() => 

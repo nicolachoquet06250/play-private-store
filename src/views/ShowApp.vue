@@ -158,7 +158,7 @@
 
 <script setup>
 import { Stars, NotFound } from '@/components';
-import { computed, ref } from 'vue';
+import { computed, ref, reactive, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useApp, useGuest, useSearchbar, useRepos, useTranslate } from '@/hooks';
 
@@ -167,9 +167,17 @@ import { useApp, useGuest, useSearchbar, useRepos, useTranslate } from '@/hooks'
 /**********************************************************/
 
 const $route = useRoute();
-const appId = computed(() => parseInt($route.params.appid));
+
+const appId = computed(() => {
+    if ($route.params.appid) {
+        localStorage.setItem('last_appid', $route.params.appid);
+    }
+    
+    return parseInt(localStorage.getItem('last_appid'));
+});
 
 const { app, createComment: _createComment } = useApp(appId.value);
+
 const { user: getUser, guest, isSignedIn } = useGuest();
 const { hide } = useSearchbar();
 const $repos = useRepos();
@@ -193,9 +201,9 @@ const moyenne = computed(() => {
     return app.value.comments.reduce((r, c) => r + c.note, 0) / nbComments;
 });
 
-const user = getUser(app.value.author);
-const icon = computed(() => `url(${app.value.logo})`);
-const fullname = computed(() => user.firstname + ' ' + user.lastname);
+const user = reactive(getUser(app.value?.author ?? 0).value ?? {});
+const icon = computed(() => `url(${app.value?.logo})`);
+const fullname = computed(() => user?.firstname + ' ' + user?.lastname);
 const description = computed(() => (app.value.description ?? '').split(' ').length > 15 
     ? (app.value.description ?? '').split(' ').reduce((r, c) => 
         ({ cmp: r.cmp + 1, result: (r.cmp > 15 ? r : [...r.result, c]) }), 
@@ -204,7 +212,7 @@ const description = computed(() => (app.value.description ?? '').split(' ').leng
         : (app.value.description ?? ''));
 const apkUrl = computed(() => $repos[app.value.repo_type] + '/' + getUser(app.value.author).repo_pseudo[app.value.repo_type] + '/' + app.value.repoName + '/releases/download/' + app.value.version + '/' + app.value.nameSlug + '-' + app.value.versionSlug + '.apk')
 
-const mine = app.value.author === guest.value?.id;
+const mine = app.value?.author === guest.value?.id;
 
 /**********************************************************/
 /** DEFINITION DES STYLES *********************************/
@@ -241,6 +249,14 @@ const createComment = () => {
         newNote.value = 0;
     });
 };
+
+watch(app, () => {
+    const _user = getUser(app.value.author);
+    
+    if (_user.value !== null) for (const key of Object.keys(_user.value)) user[key] = _user.value[key];
+
+    hide();
+});
 </script>
 
 <style lang="scss">
