@@ -78,13 +78,13 @@ import { useGuest, useApp, useTranslate } from '@/hooks';
 const { guest, isSignedIn, signOut } = useGuest();
 const $route = useRoute();
 
-const appId = computed(() => {
-    if ($route.params.appid && !localStorage.getItem('last_appid')) {
+const appId = ref((() => {
+    if ($route.params.appid) {
         localStorage.setItem('last_appid', $route.params.appid);
     }
-
+    
     return parseInt(localStorage.getItem('last_appid'));
-})
+})());
 
 const $router = useRouter();
 let { app } = useApp(appId.value);
@@ -186,7 +186,17 @@ watch($router.currentRoute, () => {
     pagesHistory.value.push($router.currentRoute.value.fullPath);
     console.log(currentPagePath.value);
     console.log(lastPagePath.value);
-})
+    
+    if ($route.params.appid) {
+        localStorage.setItem('last_appid', $route.params.appid);
+    }
+    
+    appId.value = parseInt(localStorage.getItem('last_appid'));
+});
+
+watch(appId, () => {
+    app = useApp(appId.value).app;
+});
 
 /*watch(() => $route.params.appid, () => {
     if ($route.params.appid) {
