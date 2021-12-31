@@ -75,22 +75,24 @@ import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useGuest, useApp, useTranslate } from '@/hooks';
 
+/**********************************************************/
+/** APPEL DES HOOKS ***************************************/
+/**********************************************************/
+
 const { guest, isSignedIn, signOut } = useGuest();
 const $route = useRoute();
 
-const appId = ref((() => {
-    if ($route.params.appid) {
-        localStorage.setItem('last_appid', $route.params.appid);
-    }
-    
-    return parseInt(localStorage.getItem('last_appid'));
-})());
+// dependence du hook "useApp"
+const appId = ref(update_last_appid());
 
 const $router = useRouter();
 let { app } = useApp(appId.value);
 const { __, updateLang, lang, AVAILABLE_LANGS } = useTranslate();
 
-//const lastAppId = ref(null);
+/**********************************************************/
+/** DEFINITION DES VARIABLES REACTIVES ********************/
+/**********************************************************/
+
 const pagesHistory = ref([$router.currentRoute.value.fullPath]);
 const lastPagePath = computed(() => pagesHistory.value[(pagesHistory.value.length === 1 ? 0 : pagesHistory.value.length - 2)]);
 const currentPagePath = computed(() => pagesHistory.value[pagesHistory.value.length - 1]);
@@ -182,28 +184,33 @@ const routes = computed(() => [
 
 const fullname = computed(() => guest.value.firstname + ' ' + guest.value.lastname);
 
+/**********************************************************/
+/** DEFINITIONS DES FONCTIONS *****************************/
+/**********************************************************/
+
+function update_last_appid() {
+    if ($route.params.appid) {
+        localStorage.setItem('last_appid', $route.params.appid);
+    }
+    
+    return parseInt(localStorage.getItem('last_appid'));
+}
+
+/**********************************************************/
+/** MISE EN PLACE DES WATCHERS ****************************/
+/**********************************************************/
+
 watch($router.currentRoute, () => {
     pagesHistory.value.push($router.currentRoute.value.fullPath);
     console.log(currentPagePath.value);
     console.log(lastPagePath.value);
     
-    if ($route.params.appid) {
-        localStorage.setItem('last_appid', $route.params.appid);
-    }
-    
-    appId.value = parseInt(localStorage.getItem('last_appid'));
+    appId.value = update_last_appid();
 });
 
 watch(appId, () => {
     app = useApp(appId.value).app;
 });
-
-/*watch(() => $route.params.appid, () => {
-    if ($route.params.appid) {
-        lastAppId.value = parseInt($route.params.appid ?? -1);
-        app = useApp(lastAppId.value).app;
-    }
-});**/
 </script>
 
 <style lang="scss">

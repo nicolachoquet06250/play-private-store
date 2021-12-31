@@ -156,10 +156,24 @@ import { CancelButton, ValidateButton } from '@/components';
 import { ref, reactive } from 'vue';
 import { useSearchbar, useRepos, useGuest, useTranslate } from '@/hooks';
 
+/**********************************************************/
+/** APPEL DES HOOKS ***************************************/
+/**********************************************************/
+
 const { hide } = useSearchbar();
 const { GITLAB, GITHUB } = useRepos();
 const { guest, update } = useGuest();
 const { __ } = useTranslate();
+
+/**********************************************************/
+/** APPEL DES SOUS HOOKS **********************************/
+/**********************************************************/
+
+hide();
+
+/**********************************************************/
+/** DEFINITION DES VARIABLES REACTIVES ********************/
+/**********************************************************/
 
 const currentTab = ref(GITHUB);
 const password = ref('');
@@ -177,7 +191,9 @@ const user = reactive({
     }
 });
 
-hide();
+/**********************************************************/
+/** DEFINITIONS DES FONCTIONS *****************************/
+/**********************************************************/
 
 const createError = (_error, timeout) => {
     success.value = '';

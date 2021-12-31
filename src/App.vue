@@ -34,21 +34,24 @@ import { ref, computed, watch } from 'vue';
 import { useResponsive, useSearchbar, useWebsocket, useGuest, useToast, useApp } from '@/hooks';
 import env from '../env.json';
 
+/**********************************************************/
+/** APPEL DES SOUS HOOKS **********************************/
+/**********************************************************/
+
 const { resize, xs, sm } = useResponsive();
 const { showed } = useSearchbar();
 const { connect, disconnect, addWsEventListener } = useWebsocket(env.SOCKET_URL);
 const { openToast } = useToast();
 const { isSignedIn } = useGuest();
 
+/**********************************************************/
+/** DEFINITION DES VARIABLES REACTIVES ********************/
+/**********************************************************/
+
 const header = ref();
 const offsetHeight = computed(() => (header.value?.offsetHeight ?? 0) + 'px');
 const marginTop = ref('50px');
 const searchBarWidth = ref('calc(100% - 60px)');
-
-watch(isSignedIn, () => {
-  isSignedIn.value ? connect() : disconnect();
-});
-
 const actions = {
     ask_identity(ws, channel, _type, data) {
         const { guest } = useGuest();
@@ -84,6 +87,10 @@ const actions = {
     }
 };
 
+/**********************************************************/
+/** DEFINITION DES LISTENERS ******************************/
+/**********************************************************/
+
 addWsEventListener('message', (ws, event) => {
     const { channel, type, data } = JSON.parse(event.data);
     
@@ -97,6 +104,10 @@ addWsEventListener('message', (ws, event) => {
 addEventListener('close', () => {
   console.log('le socket à été fermé proprement');
 })
+
+/**********************************************************/
+/** DEFINITION DES LISTENERS DE RESPONSIVE ****************/
+/**********************************************************/
 
 resize(() => {
   marginTop.value = offsetHeight.value;
@@ -112,6 +123,14 @@ xs(() => {
 
 sm(() => {
   searchBarWidth.value = 'auto';
+});
+
+/**********************************************************/
+/** MISE EN PLACE DES WATCHERS ****************************/
+/**********************************************************/
+
+watch(isSignedIn, () => {
+  isSignedIn.value ? connect() : disconnect();
 });
 </script>
 

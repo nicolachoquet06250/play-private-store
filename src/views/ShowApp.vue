@@ -168,6 +168,7 @@ import { useApp, useGuest, useSearchbar, useRepos, useTranslate } from '@/hooks'
 
 const $route = useRoute();
 
+// dependence du hook "useApp"
 const appId = computed(() => {
     if ($route.params.appid) {
         localStorage.setItem('last_appid', $route.params.appid);
@@ -249,6 +250,10 @@ const createComment = () => {
         newNote.value = 0;
     });
 };
+
+/**********************************************************/
+/** MISE EN PLACE DES WATCHERS ****************************/
+/**********************************************************/
 
 watch(app, () => {
     const _user = getUser(app.value.author);

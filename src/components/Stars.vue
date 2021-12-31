@@ -21,9 +21,13 @@
 </template>
 
 <script setup>
-    import { defineProps, defineEmits, ref, getCurrentInstance, watch } from 'vue';
+import { defineProps, defineEmits, ref, getCurrentInstance, watch } from 'vue';
 
-    const props = defineProps({
+/**********************************************************/
+/** DEFINITION DES PROPS **********************************/
+/**********************************************************/
+
+const props = defineProps({
         modelValue: Number,
         note: Number,
         size: {
@@ -34,57 +38,77 @@
         }
     });
 
-    defineEmits(['update:modelValue']);
+/**********************************************************/
+/** DEFINITION DES EVENEMENTS *****************************/
+/**********************************************************/
 
-    const { emit } = getCurrentInstance();
+defineEmits(['update:modelValue']);
 
-    const $note = ref(props.editable ? props.modelValue : props.note);
+/**********************************************************/
+/** APPEL DES HOOKS ***************************************/
+/**********************************************************/
 
-    const getNoteFromStarIcon = icon => {
-        let getRecursive;
-        return (getRecursive = (icon, note) => {
-            if (icon.previousElementSibling === null) {
-                return note + 1;
-            }
+const { emit } = getCurrentInstance();
 
-            return getRecursive(icon.previousElementSibling, note + 1);
-        })(icon, 0);
-    };
+/**********************************************************/
+/** DEFINITION DES VARIABLES REACTIVES ********************/
+/**********************************************************/
 
-    const nbClicks = ref(0);
-    const timeout = ref(null);
-    
-    const edition = e => {
-        if (!props.editable) return;
+const $note = ref(props.editable ? props.modelValue : props.note);
 
-        let target = e.target;
-        if (target.tagName === 'path') {
-            target = target.parentElement.parentElement.parentElement;
-        } else if (target.tagName === 'svg') {
-            target = target.parentElement.parentElement;
+const nbClicks = ref(0);
+const timeout = ref(null);
+
+/**********************************************************/
+/** DEFINITIONS DES FONCTIONS *****************************/
+/**********************************************************/
+
+const getNoteFromStarIcon = icon => {
+    let getRecursive;
+    return (getRecursive = (icon, note) => {
+        if (icon.previousElementSibling === null) {
+            return note + 1;
         }
 
-        $note.value = getNoteFromStarIcon(target);
+        return getRecursive(icon.previousElementSibling, note + 1);
+    })(icon, 0);
+};
 
-        // check double or simple click
-        nbClicks.value++ 
-        if(nbClicks.value === 1) {
-            timeout.value = setTimeout(function() {
-                // simple click
-                // $note.value += 1;
-                nbClicks.value = 0
-            }, 500);
-        } else {
-            clearTimeout(timeout.value); 
-            // double click
-            $note.value -= .5;
-            nbClicks.value = 0;
-        }
+const edition = e => {
+    if (!props.editable) return;
 
-        emit('update:modelValue', $note.value);
-    };
+    let target = e.target;
+    if (target.tagName === 'path') {
+        target = target.parentElement.parentElement.parentElement;
+    } else if (target.tagName === 'svg') {
+        target = target.parentElement.parentElement;
+    }
 
-    watch(() => props.modelValue, () => {
-        $note.value = props.modelValue;
-    });
+    $note.value = getNoteFromStarIcon(target);
+
+    // check double or simple click
+    nbClicks.value++ 
+    if(nbClicks.value === 1) {
+        timeout.value = setTimeout(function() {
+            // simple click
+            // $note.value += 1;
+            nbClicks.value = 0
+        }, 500);
+    } else {
+        clearTimeout(timeout.value); 
+        // double click
+        $note.value -= .5;
+        nbClicks.value = 0;
+    }
+
+    emit('update:modelValue', $note.value);
+};
+
+/**********************************************************/
+/** MISE EN PLACE DES WATCHERS ****************************/
+/**********************************************************/
+
+watch(() => props.modelValue, () => {
+    $note.value = props.modelValue;
+});
 </script>

@@ -114,6 +114,10 @@ import { reactive, computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useSearchbar, useApps, useToast, useTranslate, useGuest, useRepos } from '@/hooks';
 
+/**********************************************************/
+/** APPEL DES SOUS HOOKS **********************************/
+/**********************************************************/
+
 const { hide } = useSearchbar();
 const { createApp: saveApp } = useApps();
 const { openToast } = useToast();
@@ -122,7 +126,15 @@ const { GITHUB, GITLAB } = useRepos();
 const $router = useRouter();
 const { __ } = useTranslate();
 
+/**********************************************************/
+/** APPEL DES SOUS HOOKS **********************************/
+/**********************************************************/
+
 hide();
+
+/**********************************************************/
+/** DEFINITION DES VARIABLES REACTIVES ********************/
+/**********************************************************/
 
 const repoType = ref(GITHUB);
 const userUsedRepos = computed(() => isSignedIn.value ? 
@@ -136,6 +148,10 @@ const form = reactive({
     repoName: '',
     repoVersion: ''
 });
+
+/**********************************************************/
+/** DEFINITION DES FONCTIONS *****************************/
+/**********************************************************/
 
 const createApp = () => {
     if (Object.keys(form).reduce((r, c) => form[c] === '' ? true : r, false)) {

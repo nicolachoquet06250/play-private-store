@@ -62,10 +62,22 @@
 import { ref } from 'vue';
 import { useContentUpdate, useTranslate } from '@/hooks';
 
+/**********************************************************/
+/** APPEL DES HOOKS ***************************************/
+/**********************************************************/
+
 const { hasNewContent, setNewContent } = useContentUpdate();
 const { __ } = useTranslate();
 
+/**********************************************************/
+/** DEFINITION DES VARIABLES REACTIVES ********************/
+/**********************************************************/
+
 const deferredPrompt = ref(null);
+
+/**********************************************************/
+/** DEFINITION DES LISTENERS ******************************/
+/**********************************************************/
 
 window.addEventListener("beforeinstallprompt", e => {
     e.preventDefault();
@@ -84,6 +96,10 @@ navigator.serviceWorker.addEventListener('controllerchange', () => {
     console.log('CONTENT CHANGE !!');
     setNewContent(true);
 });
+
+/**********************************************************/
+/** DEFINITION DES FONCTIONS ******************************/
+/**********************************************************/
 
 const dismiss = async () => {
     deferredPrompt.value = null;

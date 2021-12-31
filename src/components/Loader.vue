@@ -7,7 +7,11 @@
 </template>
 
 <script setup>
-    import { useLoader } from '@/hooks';
+import { useLoader } from '@/hooks';
 
-    const { show } = useLoader();
+/**********************************************************/
+/** APPEL DES HOOKS ***************************************/
+/**********************************************************/
+
+const { show } = useLoader();
 </script>

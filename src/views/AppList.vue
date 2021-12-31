@@ -34,18 +34,34 @@ import { AppIconSelector, CreateAppRedirectButton } from '@/components';
 import { defineProps, computed, ref } from 'vue';
 import { useApps, useSearchbar, useResponsive, useTranslate } from '@/hooks';
 
-const props = defineProps({
-    mine: {
-        default: false
-    }
-});
+/**********************************************************/
+/** APPEL DES SOUS HOOKS **********************************/
+/**********************************************************/
 
 const { list: globalList, myList } = useApps();
 const { show } = useSearchbar();
 const { xs, sm, md } = useResponsive();
 const { __ } = useTranslate();
 
+/**********************************************************/
+/** APPEL DES SOUS HOOKS **********************************/
+/**********************************************************/
+
 show();
+
+/**********************************************************/
+/** DEFINITION DES PROPS **********************************/
+/**********************************************************/
+
+const props = defineProps({
+    mine: {
+        default: false
+    }
+});
+
+/**********************************************************/
+/** DEFINITION DES VARIABLES REACTIVES ********************/
+/**********************************************************/
 
 const nbElementPerLine = ref(2);
 
@@ -83,6 +99,10 @@ const list = computed(() => {
 
     return r.result;
 });
+
+/**********************************************************/
+/** DEFINITION DES LISTENERS DE RESPONSIVE ****************/
+/**********************************************************/
 
 xs(() => {
     nbElementPerLine.value = 2;

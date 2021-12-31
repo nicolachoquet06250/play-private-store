@@ -61,14 +61,30 @@ import { CancelButton, ValidateButton } from '@/components';
 import { ref } from 'vue';
 import { useGuest, useSearchbar, useTranslate } from '@/hooks';
 
+/**********************************************************/
+/** APPEL DES SOUS HOOKS **********************************/
+/**********************************************************/
+
 const { signIn, error } = useGuest();
 const { hide } = useSearchbar();
 const { __ } = useTranslate();
 
+/**********************************************************/
+/** APPEL DES SOUS HOOKS **********************************/
+/**********************************************************/
+
 hide();
+
+/**********************************************************/
+/** DEFINITION DES VARIABLES REACTIVES ********************/
+/**********************************************************/
 
 const email = ref('');
 const password = ref('');
+
+/**********************************************************/
+/** DEFINITION DES FONCTIONS *****************************/
+/**********************************************************/
 
 const cancelSignin = () => {
     email.value = '';

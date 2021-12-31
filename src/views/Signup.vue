@@ -134,13 +134,25 @@ import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useSearchbar, useTranslate, useRepos, useGuest } from '@/hooks';
 
+/**********************************************************/
+/** APPEL DES SOUS HOOKS **********************************/
+/**********************************************************/
+
 const $router = useRouter();
 const { hide } = useSearchbar();
 const { createAccount } = useGuest();
 const { __ } = useTranslate();
 const { GITLAB, GITHUB } = useRepos();
 
+/**********************************************************/
+/** APPEL DES SOUS HOOKS **********************************/
+/**********************************************************/
+
 hide();
+
+/**********************************************************/
+/** DEFINITION DES VARIABLES REACTIVES ********************/
+/**********************************************************/
 
 const currentTab = ref(GITHUB);
 const error = ref('');
@@ -155,6 +167,10 @@ const createdUser = reactive({
     password: '',
     validatedPassword: ''
 });
+
+/**********************************************************/
+/** DEFINITION DES FONCTIONS *****************************/
+/**********************************************************/
 
 const createError = (_error, timeout = 2000) => {
     error.value = _error;
