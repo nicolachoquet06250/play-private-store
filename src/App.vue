@@ -31,8 +31,7 @@
 <script setup>
 import { Sidebar, Toast, Loader } from '@/components';
 import { ref, computed, watch } from 'vue';
-import { useResponsive, useSearchbar, useWebsocket, useGuest } from '@/hooks';
-import { useNotif } from '@/hooks/notifications';
+import { useResponsive, useSearchbar, useWebsocket, useGuest, useNotif } from '@/hooks';
 import onMessage, * as actions from '@/websockets/actions';
 import env from '../env.json';
 

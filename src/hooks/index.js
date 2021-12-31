@@ -12,3 +12,4 @@ export * from './websocket';
 export * from './loader';
 export * from './fetch';
 export * from './pps';
+export * from './notifications';
