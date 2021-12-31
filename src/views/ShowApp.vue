@@ -252,7 +252,7 @@ const createComment = () => {
 };
 const getFullNameFromAuthorId = id => {
     const user = getUser(id);
-    return computed(() => user.value.firstname + ' ' + user.value.lastname);
+    return user.value.firstname + ' ' + user.value.lastname;
 }
 
 /**********************************************************/
