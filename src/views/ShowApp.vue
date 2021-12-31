@@ -132,7 +132,7 @@
 
                 <ion-row v-for="comment of app.comments" :key="comment">
                     <ion-col>
-                        <h5>{{ getUser(comment.author).firstname }} {{ getUser(comment.author).lastname }}</h5>
+                        <h5>{{ getFullNameFromAuthorId(comment.author) }}</h5>
 
                         <div class="app-comment-head">
                             <div>
@@ -250,6 +250,10 @@ const createComment = () => {
         newNote.value = 0;
     });
 };
+const getFullNameFromAuthorId = id => {
+    const user = getUser(id);
+    return computed(() => user.value.firstname + ' ' + user.value.lastname);
+}
 
 /**********************************************************/
 /** MISE EN PLACE DES WATCHERS ****************************/
