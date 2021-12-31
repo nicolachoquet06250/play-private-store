@@ -30,5 +30,19 @@ export const useNotif = () => ({
                 return new Notification('Liste de trucs à faire', { body: text, icon: img });
             }
         });
+    },
+    createFromServiceWorker(titre, cb) {
+        document.addEventListener('service-worker-ready', ({ detail: { registration } }) => {
+            askNotificationPermission().then(r => {
+                if (r === 'granted') {
+                    const img = '/img/icons/favicon-32x32.png';
+                    const text = 'Coucou ! Votre tâche "' + titre + '" arrive maintenant à échéance.';
+                    const run = () => {
+                         registration.showNotification('Liste de trucs à faire', { body: text, icon: img });
+                    };
+                    cb ? cb({ run }) : run();
+                }
+            });
+        });
     }
 });

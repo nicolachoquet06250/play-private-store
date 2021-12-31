@@ -44,13 +44,15 @@ const { resize, xs, sm } = useResponsive();
 const { showed } = useSearchbar();
 const { connect, disconnect, addWsEventListener } = useWebsocket(env.SOCKET_URL);
 const { isSignedIn } = useGuest();
-const { create: createNotif } = useNotif();
+const { createFromServiceWorker: createNotif } = useNotif();
 
 createNotif('Ma tâche');
 
-setTimeout(() => {
-  createNotif('Ma tâche 2');
-}, 5000);
+createNotif('Ma tâche 2', ({ run }) => {
+    setTimeout(() => {
+        run();
+    }, 5000);
+});
 
 /**********************************************************/
 /** DEFINITION DES VARIABLES REACTIVES ********************/
