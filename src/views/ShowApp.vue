@@ -167,7 +167,7 @@ import { useApp, useGuest, useSearchbar, useRepos, useTranslate } from '@/hooks'
 /**********************************************************/
 
 const $route = useRoute();
-const appId = computed(() => parseInt($route.params.appId));
+const appId = computed(() => parseInt($route.params.appid));
 
 const { app, createComment: _createComment } = useApp(appId.value);
 const { user: getUser, guest, isSignedIn } = useGuest();
@@ -189,8 +189,8 @@ const newNote = ref(0);
 const comment = ref('');
 
 const moyenne = computed(() => {
-    const nbComments = app.comments.length === 0 ? 1 : app.comments.length;
-    return app.comments.reduce((r, c) => r + c.note, 0) / nbComments;
+    const nbComments = app.value.comments.length === 0 ? 1 : app.value.comments.length;
+    return app.value.comments.reduce((r, c) => r + c.note, 0) / nbComments;
 });
 
 const user = getUser(app.value.author);

@@ -78,12 +78,10 @@ const routes = [
     component: AppList
   },
   {
-    path: '/app/:appId([0-9]+)',
+    path: '/app/:appid',
     name: 'ShowApp',
     component: ShowApp,
-    params: {
-      appId: 0
-    }
+    params: true
   },
   {
     path: '/create-app',

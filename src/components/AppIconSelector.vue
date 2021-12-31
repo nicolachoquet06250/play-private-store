@@ -57,11 +57,10 @@ const props = defineProps({
 const showMyAppIcon = computed(() => isSignedIn.value && guest.value.id === props.app.author);
 
 const href = computed(() => ({ 
-    path: `/app/${props.app.id}`,
-    /*name: 'ShowApp', 
+    name: 'ShowApp', 
     params: { 
-        appId: props.app.id
-    }*/
+        appid: props.app.id
+    }
 }));
 
 const moyenne = computed(() => {

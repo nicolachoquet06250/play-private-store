@@ -78,7 +78,7 @@ import { useGuest, useApp, useTranslate } from '@/hooks';
 const { guest, isSignedIn, signOut } = useGuest();
 const $route = useRoute();
 const $router = useRouter();
-let { app } = useApp(parseInt($route.params.appId ?? -1));
+let { app } = useApp(parseInt($route.params.appid ?? -1));
 const { __, updateLang, lang, AVAILABLE_LANGS } = useTranslate();
 
 const lastAppId = ref(null);
@@ -107,7 +107,10 @@ const routes = computed(() => [
     },
     {
         conf: {
-            path: `/app/${$route.params.appId}`,
+            name: 'ShowApp',
+            params: {
+                appid: $route.params.appid
+            }
         },
         logo: app.value?.logo ?? '',
         title: app.value?.name ?? '',
@@ -132,7 +135,10 @@ const routes = computed(() => [
     },
     {
         conf: {
-            path: `/app/${$route.params.appId}`,
+            name: 'ShowApp',
+            params: {
+                appid: $route.params.appid
+            }
         },
         logo: app.value?.logo ?? '',
         title: app.value?.name ?? '',
@@ -173,9 +179,9 @@ watch($router.currentRoute, () => {
     console.log(lastPagePath.value);
 })
 
-watch(() => $route.params.appId, () => {
-    if ($route.params.appId) {
-        lastAppId.value = parseInt($route.params.appId ?? -1);
+watch(() => $route.params.appid, () => {
+    if ($route.params.appid) {
+        lastAppId.value = parseInt($route.params.appid ?? -1);
         app = useApp(lastAppId.value).app;
     }
 });
