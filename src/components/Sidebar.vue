@@ -202,8 +202,8 @@ function update_last_appid() {
 
 watch($router.currentRoute, () => {
     pagesHistory.value.push($router.currentRoute.value.fullPath);
-    console.log(currentPagePath.value);
-    console.log(lastPagePath.value);
+    // console.log(currentPagePath.value);
+    // console.log(lastPagePath.value);
     
     appId.value = update_last_appid();
 });

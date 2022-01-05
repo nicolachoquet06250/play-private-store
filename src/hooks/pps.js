@@ -2,6 +2,7 @@
 import { createFetch } from '@/hooks';
 import env from '../../env.json';
 
+const wsProtocol = window.location.protocol.indexOf('https') !== -1 ? 'wss' : 'ws';
 const slugify = value => value.replace(/\./g, '-').replace(/ /g, '-').replace(/'/g, '-');
 
 const urls = {
@@ -57,7 +58,7 @@ const { useFetch: getAppFromId } = createFetch(urls.getAppFromId, {
  * @returns {Function}
  */
 const createApp = (version, repoType, name, repoName, logo, description, screenshots, permissions, categories) => 
-    createFetch(urls.postApp, {
+    createFetch(urls.postApp() + `?socket=${wsProtocol}://${env.SOCKET_URL}`, {
         method: 'post',
         headers: {
             'Content-Type': 'application/json',

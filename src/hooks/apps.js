@@ -97,7 +97,7 @@ export function useApps() {
     const { showLoader, hideLoader } = useLoader();
     const { getApps, createApp, deleteApp } = usePPS();
 
-    if (!initialized.value) {
+    const loadApps = (resolve = () => {}) => {
         getApps('', {}, {
             before: showLoader,
             after(apps, error) {
@@ -106,8 +106,13 @@ export function useApps() {
                     initialized.value = true;
                 }
                 hideLoader();
+                resolve(apps);
             }
         });
+    }
+
+    if (!initialized.value) {
+        loadApps();
     }
 
     return {
@@ -116,6 +121,12 @@ export function useApps() {
             return appList.value.reduce((r, c) => 
                 c.author === guest.value?.id ? [...r, c] : r, [])
         }),
+
+        reloadApps() {
+            return new Promise(resolve => {
+                return loadApps(resolve);
+            });
+        },
     
         /**
          * @param {String} version version de l'application
@@ -167,17 +178,11 @@ export const useApp = id => {
     const { getApps } = usePPS();
 
     (() => {
-        console.log(appList.value.length);
-
         if (appList.value.length === 0) {
-            console.log('ça passe');
-
             getApps('', {}, {
                 before: showLoader,
                 after(apps, error) {
                     if (error.value === null) {
-                        console.log('la réponse est ok');
-                        
                         appList.value = apps.value;
                         initialized.value = true;
                     }
@@ -185,8 +190,6 @@ export const useApp = id => {
                 }
             });
         }
-
-        console.log(appList.value);
     })();
     
     return {

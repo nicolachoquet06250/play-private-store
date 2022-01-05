@@ -31,7 +31,7 @@
 <script setup>
 import { Sidebar, Toast, Loader } from '@/components';
 import { ref, computed, watch } from 'vue';
-import { useResponsive, useSearchbar, useWebsocket, useGuest, useNotif } from '@/hooks';
+import { useResponsive, useSearchbar, useWebsocket, useGuest/*, useNotif*/ } from '@/hooks';
 import onMessage, * as actions from '@/websockets/actions';
 import env from '../env.json';
 
@@ -43,15 +43,21 @@ const { resize, xs, sm } = useResponsive();
 const { showed } = useSearchbar();
 const { connect, disconnect, addWsEventListener } = useWebsocket(env.SOCKET_URL);
 const { isSignedIn } = useGuest();
-const { createFromServiceWorker: createNotif } = useNotif();
+//const { createFromServiceWorker: createNotif } = useNotif();
 
-createNotif('Ma tâche');
+/*createNotif({
+  title: 'Liste de trucs à faire',
+  text: 'Ma tâche'
+});
 
-createNotif('Ma tâche 2', ({ run }) => {
+createNotif({
+  title: 'Liste de trucs à faire',
+  text: 'Ma tâche 2'
+}, ({ run }) => {
     setTimeout(() => {
         run();
     }, 5000);
-});
+});*/
 
 /**********************************************************/
 /** DEFINITION DES VARIABLES REACTIVES ********************/

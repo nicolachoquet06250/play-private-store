@@ -1,3 +1,17 @@
+import { ref, watch } from 'vue';
+
+const serviceWorkerIsReady = ref(false);
+const serviceWorkerRegistration = ref(null);
+const notifications = ref([]);
+
+export const setServiceWorkerReady = () => {
+    serviceWorkerIsReady.value = true;
+};
+
+export const setServiceWorkerRegistration = registration => {
+    serviceWorkerRegistration.value = registration;
+}
+
 const checkNotificationPromise = () => {
     try {
         Notification.requestPermission().then();
@@ -31,18 +45,41 @@ export const useNotif = () => ({
             }
         });
     },
-    createFromServiceWorker(titre, cb) {
-        document.addEventListener('service-worker-ready', ({ detail: { registration } }) => {
-            askNotificationPermission().then(r => {
-                if (r === 'granted') {
-                    const img = '/img/icons/favicon-32x32.png';
-                    const text = 'Coucou ! Votre tâche "' + titre + '" arrive maintenant à échéance.';
-                    const run = () => {
-                         registration.showNotification('Liste de trucs à faire', { body: text, icon: img });
-                    };
-                    cb ? cb({ run }) : run();
-                }
-            });
-        });
+    createFromServiceWorker({ title, text, logo }, cb) {
+        const handler = r => {
+            if (r === 'granted') {
+                const run = () => {
+                    logo = logo ?? '/img/icons/favicon-32x32.png';
+
+                    serviceWorkerRegistration.value?.showNotification(
+                        title, {
+                            body: text,
+                            icon: logo
+                        }
+                    );
+                };
+                cb ? cb({ run }) : run();
+            }
+        };
+
+        if (!serviceWorkerIsReady.value) {
+            notifications.value = [...notifications.value, () => {
+                askNotificationPermission().then(handler);
+            }];
+        } else {
+            askNotificationPermission().then(handler);
+        }
+    }
+});
+
+document.addEventListener('service-worker-ready', ({ detail: { registration } }) => {
+    setServiceWorkerRegistration(registration);
+    setServiceWorkerReady();
+});
+
+watch(serviceWorkerIsReady, () => {
+    if (serviceWorkerIsReady.value) {
+        notifications.value.map(notification => notification());
+        notifications.value = [];
     }
 });
