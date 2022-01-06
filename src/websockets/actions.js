@@ -45,7 +45,8 @@ export const give_notify = (_ws, _channel, _type, data) => {
                         createNotif({
                             title: 'Mise à jour',
                             text: `L'application ${name} vient d'être mise à jour`,
-                            logo: app.value?.logo
+                            logo: app.value?.logo,
+                            tag: `app-updated-${app.value?.id}`
                         });
                     }
                 });
@@ -65,7 +66,8 @@ export const give_notify = (_ws, _channel, _type, data) => {
                         createNotif({
                             title: 'Nouvelle application',
                             text: `L'application ${name} vient de sortir`,
-                            logo: app.value?.logo
+                            logo: app.value?.logo,
+                            tag: `app-created-${app.value?.id}`
                         });
                     }
                 });
@@ -86,7 +88,8 @@ export const give_notify = (_ws, _channel, _type, data) => {
                         createNotif({
                             title: 'Nouveau commentaire',
                             text: `Un nouveau commentaire est disponnible`,
-                            logo: app.value?.logo
+                            logo: app.value?.logo,
+                            tag: `comment-created-${app.value?.id}`
                         });
                     }
                     // openToast(`L'application ${name} vient de sortir`, 4000);

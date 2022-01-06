@@ -77,6 +77,36 @@ self.addEventListener('fetch', function(event) {
   );
 });
 
+self.onnotificationclick = event => {
+  console.log('On notification click: ', event.notification.tag)
+  // event.notification.close()
+
+  // This looks to see if the current is already open and
+  // focuses if it is
+  event.waitUntil(
+    clients
+      .matchAll({ type: 'window' })
+      .then(clientList => {
+        for (let i = 0; i < clientList.length; i++) {
+          const client = clientList[i];
+
+          if (event.notification.tag.indexOf('app-created') !== -1 || event.notification.tag.indexOf('comment-created') !== -1) {
+            client.postMessage(JSON.stringify({
+              channel: 'notificationClick',
+              action: 'redirect',
+              routerConfig: {
+                name: 'ShowApp',
+                params: {
+                  appid: parseInt(event.notification.tag.split('-')[event.notification.tag.split('-').length - 1])
+                }
+              }
+            }));
+          }
+        }
+      })
+  );
+};
+
 /**
  * The workboxSW.precacheAndRoute() method efficiently caches and responds to
  * requests for URLs in the manifest.

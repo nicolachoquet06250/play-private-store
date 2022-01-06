@@ -36,16 +36,30 @@ const askNotificationPermission = () =>  new Promise((resolve, reject) => {
 });
 
 export const useNotif = () => ({
-    create(titre) {
+    create({ title, text, logo, tag, onClick, onClose, onError, onShow }) {
         askNotificationPermission().then(r => {
             if (r === 'granted') {
-                const img = '/img/icons/favicon-32x32.png';
-                const text = 'Coucou ! Votre tâche "' + titre + '" arrive maintenant à échéance.';
-                return new Notification('Liste de trucs à faire', { body: text, icon: img });
+                logo = logo ?? '/img/icons/favicon-32x32.png';
+                onClick = onClick ?? null;
+                onClose = onClose ?? null;
+                onError = onError ?? null;
+                onShow = onShow ?? null;
+
+                const n = new Notification(title, { 
+                    body: text, 
+                    icon: logo, 
+                    tag
+                });
+
+                if (onClick) n.onclick = onClick;
+                if (onClose) n.onclose = onClose;
+                if (onError) n.onerror = onError;
+                if (onShow) n.onshow = onShow;
             }
         });
     },
-    createFromServiceWorker({ title, text, logo }, cb) {
+
+    createFromServiceWorker({ title, text, logo, tag }, cb) {
         const handler = r => {
             if (r === 'granted') {
                 const run = () => {
@@ -54,10 +68,12 @@ export const useNotif = () => ({
                     serviceWorkerRegistration.value?.showNotification(
                         title, {
                             body: text,
-                            icon: logo
+                            icon: logo,
+                            tag
                         }
                     );
                 };
+
                 cb ? cb({ run }) : run();
             }
         };
@@ -83,3 +99,20 @@ watch(serviceWorkerIsReady, () => {
         notifications.value = [];
     }
 });
+
+navigator.serviceWorker.onmessage = messageEvent => {
+    const { channel, action, routerConfig } = JSON.parse(messageEvent.data);
+    console.log(JSON.parse(messageEvent.data));
+
+    switch (channel) {
+        case 'notificationClick':
+            if (action === 'redirect') {
+                localStorage.setItem('last_appid', routerConfig.params.appid);
+                window.location.href = '/app/' + routerConfig.params.appid;
+            }
+
+            break;
+
+        default: break;
+    }
+};
