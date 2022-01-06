@@ -101,6 +101,7 @@ self.onnotificationclick = event => {
                 }
               }
             }));
+            event.notification.close();
           }
         }
       })
