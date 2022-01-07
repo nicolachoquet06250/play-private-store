@@ -61,7 +61,8 @@
         },
         "signin": {
             "title": "Login",
-            "password": "Password"
+            "password": "Password",
+            "keep_connect": "Keep connect"
         },
         "signup": {
             "title": "Signup",

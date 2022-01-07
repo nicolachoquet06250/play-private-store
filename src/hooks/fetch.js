@@ -72,6 +72,8 @@ export function createFetch(url, options = {}, actions = {}) {
     return {
         /**
          * @param {String} uri 
+         * @param {*} complementarOptions
+         * @param {Record<String, *>} _options
          * @returns {Promise<Record<'data'|'error', { value: Record<string, any>|string|null }>>}
          */
         useFetch: async (uri, complementarOptions, _actions) => await useFetch(`${_url}${uri && uri !== '' ? `${_url.substr(-1) === '/' ? '' : '/'}${uri}` : ''}`, { 

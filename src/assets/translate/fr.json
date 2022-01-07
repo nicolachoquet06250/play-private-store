@@ -60,7 +60,8 @@
         },
         "signin": {
             "title": "Connexion",
-            "password": "Mot de passe"
+            "password": "Mot de passe",
+            "keep_connect": "Rester connecté"
         },
         "signup": {
             "title": "Inscription",

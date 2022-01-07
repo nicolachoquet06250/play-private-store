@@ -211,7 +211,10 @@ const description = computed(() => (app.value.description ?? '').split(' ').leng
         { cmp: 0, result: [] }
     ).result.join(' ') + ' ...' 
         : (app.value.description ?? ''));
-const apkUrl = computed(() => $repos[app.value.repo_type] + '/' + getUser(app.value.author).repo_pseudo[app.value.repo_type] + '/' + app.value.repoName + '/releases/download/' + app.value.version + '/' + app.value.nameSlug + '-' + app.value.versionSlug + '.apk')
+const apkUrl = computed(() => {
+    const user = getUser(app.value.author);
+    return $repos[app.value.repo_type] + '/' + user.value.repo_pseudo[app.value.repo_type] + '/' + app.value.repoName + '/releases/download/' + app.value.version + '/' + app.value.nameSlug + '-' + app.value.versionSlug + '.apk'
+});
 
 const mine = app.value?.author === guest.value?.id;
 

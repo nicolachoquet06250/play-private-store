@@ -35,6 +35,18 @@
                                 </ion-col>
                             </ion-row>
 
+                            <ion-row>
+                                <ion-col>
+                                    <ion-item>
+                                        <ion-checkbox color="primary" :value="keepConnect" @change="keepConnect = !keepConnect"></ion-checkbox>
+
+                                        <ion-label>
+                                            {{ __('pages.signin.keep_connect', 'Rester connecté') }}
+                                        </ion-label>
+                                    </ion-item>
+                                </ion-col>
+                            </ion-row>
+
                             <ion-row v-if="error">
                                 <ion-col>
                                     <div class="alert">
@@ -51,7 +63,7 @@
         <ion-footer style="height: 50px;">
             <CancelButton id="footer-cancel-signin-button" @click="cancelSignin" />
 
-            <ValidateButton id="footer-validate-signin-button" @click="signIn(email, password, 'Home')" />
+            <ValidateButton id="footer-validate-signin-button" @click="signIn(email, password, keepConnect, 'Home')" />
         </ion-footer>
     </ion-app>
 </template>
@@ -81,6 +93,7 @@ hide();
 
 const email = ref('');
 const password = ref('');
+const keepConnect = ref(false);
 
 /**********************************************************/
 /** DEFINITION DES FONCTIONS *****************************/

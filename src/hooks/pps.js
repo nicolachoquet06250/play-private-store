@@ -135,20 +135,16 @@ const { useFetch: getUsers } = createFetch(urls.getUsers, {
 /**
  * @param {String} email 
  * @param {String} password 
- * @returns {Promise<any>}
+ * @returns {Function}
  */
-const userLogin = async (email, password) => {
-    const { useFetch } = createFetch(urls.login, {
-        method: 'post',
-        headers: {
-            'Content-Type': 'application/json',
-            Origin: window.location.href
-        },
-        body: { email, password }
-    });
-
-    return await useFetch();
-};
+const userLogin = (email, password) =>  createFetch(urls.login, {
+    method: 'post',
+    headers: {
+        'Content-Type': 'application/json',
+        Origin: window.location.href
+    },
+    body: { email, password }
+}).useFetch;
 
 /**
  * @param {String} firstname 
